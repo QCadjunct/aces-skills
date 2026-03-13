@@ -8,3 +8,11 @@ wheels/
 
 # Virtual environments
 .venv
+
+# ACMS runtime artifacts
+output/
+audit.log
+deploy_audit.log
+*.md_2*
+*.yaml_2*
+*.toon_2*
