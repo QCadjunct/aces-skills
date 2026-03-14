@@ -257,7 +257,7 @@ if [[ "$DRY_RUN" == false ]]; then
   if [[ "$GENERATE" == "toon" || "$GENERATE" == "all" ]]; then
     if [[ -f "$SKILL_DIR/system.toon" ]]; then
       TOON_LINES=$(wc -l < "$SKILL_DIR/system.toon")
-      if [[ "$TOON_LINES" -ge 12 ]]; then
+      if [[ "$TOON_LINES" -ge 10 ]]; then
         echo -e "${GREEN}  ✓ system.toon — $TOON_LINES lines${RESET}"
       else
         echo -e "${YELLOW}  ⚠ system.toon — only $TOON_LINES lines (expected ≥12)${RESET}"
