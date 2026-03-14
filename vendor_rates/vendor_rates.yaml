@@ -91,6 +91,12 @@ vendors:
         context_window: 128000
         notes: "TheBeast dual RTX 5090 — high quality local"
       qwen3:32b:
+      gemma3:12b:
+        display_name: "Gemma3 12B"
+        input:  0.000000000
+        output: 0.000000000
+        context_window: 128000
+        notes: "FreedomTower RTX 5080 — 12s, better YAML quality"
         display_name: "Qwen3 32B"
         input:  0.000000000
         output: 0.000000000
