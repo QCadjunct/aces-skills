@@ -16,3 +16,5 @@ deploy_audit.log
 *.md_2*
 *.yaml_2*
 *.toon_2*
+.venv/
+.python-version
