@@ -257,7 +257,7 @@ if [[ "$DRY_RUN" == false ]]; then
   if [[ "$GENERATE" == "toon" || "$GENERATE" == "all" ]]; then
     if [[ -f "$SKILL_DIR/system.toon" ]]; then
       TOON_LINES=$(wc -l < "$SKILL_DIR/system.toon")
-      if [[ "$TOON_LINES" -ge 10 ]]; then
+      if [[ "$TOON_LINES" -ge 12 ]]; then
         echo -e "${GREEN}  ✓ system.toon — $TOON_LINES lines${RESET}"
       else
         echo -e "${YELLOW}  ⚠ system.toon — only $TOON_LINES lines (expected ≥12)${RESET}"
@@ -307,15 +307,21 @@ fi
 echo -e "  ⏱  $(($(date +%s%3N) - STEP_T))ms"
 STEPS_COMPLETED=$((STEPS_COMPLETED + 1))
 
-# ── Step 9: COST ──────────────────────────────────────────────────────────────
+# ── Step 9: COST — ADR-009 format, per-artifact breakdown ────────────────────
 echo -e "\n${BOLD}Step 9/9 — COST${RESET}"
 STEP_T=$(date +%s%3N)
 
-# Read rates from vendor_rates.yaml using python3 stdlib (no pip)
+# Generate RUN_ID (uuidv7-compatible via python3 stdlib)
+RUN_ID=$(python3 -c "import uuid; print(str(uuid.uuid4()))")
+
+# Locate transformer pattern prompts for token measurement
+TRANSFORMER_YAML_MD="$HOME/.config/fabric/patterns_custom/system.md_transformers/from_system.md_to_system.yaml/system.md"
+TRANSFORMER_TOON_MD="$HOME/.config/fabric/patterns_custom/system.md_transformers/from_system.md_to_system.toon/system.md"
+
+# Colon-aware YAML rate reader (ADR-008 stdlib-only pattern)
 compute_cost() {
   python3 - "$RATES_FILE" "$1" "$2" "$3" "$4" <<'PYEOF'
-import sys, re
-
+import sys
 rates_file, vendor, model, tokens_in, tokens_out = sys.argv[1:]
 tokens_in  = int(tokens_in)
 tokens_out = int(tokens_out)
@@ -325,24 +331,19 @@ rates = {}
 try:
   with open(rates_file) as f:
     current_path = []
-    in_model_block = False
-    model_indent = -1
     for line in f:
-      stripped = line.rstrip()
-      if not stripped or stripped.startswith('#'):
+      s = line.rstrip()
+      if not s or s.startswith('#'):
         continue
-      # Strip inline comments before processing
-      if ' #' in stripped:
-        stripped = stripped[:stripped.index(' #')].rstrip()
+      if ' #' in s:
+        s = s[:s.index(' #')].rstrip()
       indent = len(line) - len(line.lstrip())
       depth  = indent // 2
-      # Use first colon only for path keys — preserve colons in values
-      if ':' in stripped.lstrip():
-        lstripped = stripped.lstrip()
-        first_colon = lstripped.index(':')
-        key = lstripped[:first_colon].strip()
-        val = lstripped[first_colon+1:].strip()
-        # If val contains a colon it's a model name value — keep as-is
+      if ':' in s.lstrip():
+        ls = s.lstrip()
+        fc = ls.index(':')
+        key = ls[:fc].strip()
+        val = ls[fc+1:].strip()
         current_path = current_path[:depth] + [key]
         if val:
           rates['.'.join(current_path)] = val
@@ -352,58 +353,101 @@ except Exception:
 in_key  = f"vendors.{vendor}.models.{model}.input"
 out_key = f"vendors.{vendor}.models.{model}.output"
 
-# Default to zero — ollama is local, unknown vendors assumed free
 try:
   rate_in  = float(rates.get(in_key,  "0.0"))
   rate_out = float(rates.get(out_key, "0.0"))
 except ValueError:
   rate_in = 0.0; rate_out = 0.0
 
-cost = (tokens_in * rate_in) + (tokens_out * rate_out)
-print(f"{cost:.6f}")
+cost_in  = tokens_in  * rate_in
+cost_out = tokens_out * rate_out
+cost     = cost_in + cost_out
+print(f"{cost_in:.6f} {cost_out:.6f} {cost:.6f}")
 PYEOF
 }
 
-# Estimate token counts from file sizes (rough: ~4 chars per token)
-YAML_IN=0; YAML_OUT=0; TOON_IN=0; TOON_OUT=0
-if [[ -f "$SOURCE_ABS" ]]; then
-  SRC_CHARS=$(wc -c < "$SOURCE_ABS")
-  YAML_IN=$(( SRC_CHARS / 4 ))
-  TOON_IN=$YAML_IN
-fi
-if [[ -f "$SKILL_DIR/system.yaml" ]]; then
-  YAML_CHARS=$(wc -c < "$SKILL_DIR/system.yaml")
-  YAML_OUT=$(( YAML_CHARS / 4 ))
-fi
-if [[ -f "$SKILL_DIR/system.toon" ]]; then
-  TOON_CHARS=$(wc -c < "$SKILL_DIR/system.toon")
-  TOON_OUT=$(( TOON_CHARS / 4 ))
-fi
+# Token counter — file size / 4 chars per token estimate
+token_count() {
+  local f="$1"
+  if [[ -f "$f" ]]; then
+    local chars
+    chars=$(wc -c < "$f")
+    echo $(( chars / 4 ))
+  else
+    echo 0
+  fi
+}
 
-# Get default models from vendor_rates.yaml
+# ── Measure all artifact token counts ─────────────────────────────────────────
 SYNC_VENDOR="ollama"
 SYNC_MODEL="qwen3:8b"
 
-YAML_COST=$(compute_cost "$SYNC_VENDOR" "$SYNC_MODEL" "$YAML_IN" "$YAML_OUT" 2>/dev/null || echo "0.000000")
-TOON_COST=$(compute_cost "$SYNC_VENDOR" "$SYNC_MODEL" "$TOON_IN" "$TOON_OUT" 2>/dev/null || echo "0.000000")
+# Tier 1: Source files (input only — no output tokens)
+SRC_TOKENS=$(token_count "$SOURCE_ABS")
+TRANS_YAML_TOKENS=$(token_count "$TRANSFORMER_YAML_MD")
+TRANS_TOON_TOKENS=$(token_count "$TRANSFORMER_TOON_MD")
 
-TOTAL=$(python3 -c "print(f'{float('$YAML_COST') + float('$TOON_COST'):.6f}')" 2>/dev/null || echo "0.000000")
+# Tier 2: Derived artifacts
+# Combined input = skill.system.md + transformer prompt
+YAML_IN=$(( SRC_TOKENS + TRANS_YAML_TOKENS ))
+TOON_IN=$(( SRC_TOKENS + TRANS_TOON_TOKENS ))
+YAML_OUT=$(token_count "$SKILL_DIR/system.yaml")
+TOON_OUT=$(token_count "$SKILL_DIR/system.toon")
+
+# ── Compute costs per artifact ─────────────────────────────────────────────────
+read SRC_COST_IN   SRC_COST_OUT   SRC_COST   <<< $(compute_cost "$SYNC_VENDOR" "$SYNC_MODEL" "$SRC_TOKENS" 0)
+read TYAML_COST_IN TYAML_COST_OUT TYAML_COST <<< $(compute_cost "$SYNC_VENDOR" "$SYNC_MODEL" "$TRANS_YAML_TOKENS" 0)
+read TTOON_COST_IN TTOON_COST_OUT TTOON_COST <<< $(compute_cost "$SYNC_VENDOR" "$SYNC_MODEL" "$TRANS_TOON_TOKENS" 0)
+read YAML_COST_IN  YAML_COST_OUT  YAML_COST  <<< $(compute_cost "$SYNC_VENDOR" "$SYNC_MODEL" "$YAML_IN" "$YAML_OUT")
+read TOON_COST_IN  TOON_COST_OUT  TOON_COST  <<< $(compute_cost "$SYNC_VENDOR" "$SYNC_MODEL" "$TOON_IN" "$TOON_OUT")
+
+TOTAL=$(python3 -c "
+costs = [float('${YAML_COST:-0}'), float('${TOON_COST:-0}')]
+print(f'{sum(costs):.6f}')
+" 2>/dev/null || echo "0.000000")
+
 ELAPSED=$(( $(date +%s%3N) - STEP_START ))
 
-echo -e "  yaml transformer: ${CYAN}\$${YAML_COST}${RESET} (in:${YAML_IN} out:${YAML_OUT} tokens @ ${SYNC_VENDOR}/${SYNC_MODEL})"
-echo -e "  toon transformer: ${CYAN}\$${TOON_COST}${RESET} (in:${TOON_IN} out:${TOON_OUT} tokens @ ${SYNC_VENDOR}/${SYNC_MODEL})"
+# ── Display per-artifact breakdown ────────────────────────────────────────────
+echo -e "  ${BOLD}Artifact token breakdown:${RESET}"
+echo -e "  skill.system.md          : ${CYAN}${SRC_TOKENS} tokens${RESET} (source — input only)"
+echo -e "  transformer.yaml.system.md: ${CYAN}${TRANS_YAML_TOKENS} tokens${RESET} (prompt — input only)"
+echo -e "  transformer.toon.system.md: ${CYAN}${TRANS_TOON_TOKENS} tokens${RESET} (prompt — input only)"
+echo -e "  skill.system.yaml        : in=${YAML_IN} out=${YAML_OUT} → ${CYAN}\$${YAML_COST}${RESET}"
+echo -e "  skill.system.toon        : in=${TOON_IN} out=${TOON_OUT} → ${CYAN}\$${TOON_COST}${RESET}"
 echo -e "  ${BOLD}Total cost: \$${TOTAL}${RESET}"
+echo -e "  ${BOLD}RUN_ID: ${RUN_ID}${RESET}"
 
-# Write to audit log
+# ── Write ADR-009 format entries to cost_audit.log ────────────────────────────
 AUDIT_LOG="$HOME/.config/fabric/cost_audit.log"
 mkdir -p "$(dirname "$AUDIT_LOG")"
+
+# FQSN for skill field
+PILLAR="$(basename "$(dirname "$DOMAIN_DIR")")"
+ SKILL_FQSN="${PILLAR}/${DOMAIN}/${SKILL_NAME}"
+
 if [[ "$DRY_RUN" == false ]]; then
-  echo "[${TIMESTAMP}] sync_skill.sh | skill=${SKILL_NAME} | env=${ENV} | vendor=${SYNC_VENDOR} | model=${SYNC_MODEL} | tokens_in=$((YAML_IN + TOON_IN)) | tokens_out=$((YAML_OUT + TOON_OUT)) | cost=\$${TOTAL} | elapsed=${ELAPSED}ms" >> "$AUDIT_LOG"
-  echo -e "${GREEN}  ✓ Cost written to audit log${RESET}"
+  {
+    # skill.system.md — source measurement (input only)
+    echo "[${TIMESTAMP}] | sync_skill | ${RUN_ID} | ${SKILL_FQSN} | skill.system.md | ${SYNC_VENDOR} | ${SYNC_MODEL} | ${SRC_TOKENS} | 0 | ${SRC_COST_IN:-0.000000} | 0.000000 | ${SRC_COST:-0.000000} | 0 | ${ENV} | | source measured"
+
+    # transformer.yaml.system.md — prompt measurement (input only)
+    echo "[${TIMESTAMP}] | sync_skill | ${RUN_ID} | ${SKILL_FQSN} | transformer.yaml.system.md | ${SYNC_VENDOR} | ${SYNC_MODEL} | ${TRANS_YAML_TOKENS} | 0 | ${TYAML_COST_IN:-0.000000} | 0.000000 | ${TYAML_COST:-0.000000} | 0 | ${ENV} | | transformer prompt measured"
+
+    # transformer.toon.system.md — prompt measurement (input only)
+    echo "[${TIMESTAMP}] | sync_skill | ${RUN_ID} | ${SKILL_FQSN} | transformer.toon.system.md | ${SYNC_VENDOR} | ${SYNC_MODEL} | ${TRANS_TOON_TOKENS} | 0 | ${TTOON_COST_IN:-0.000000} | 0.000000 | ${TTOON_COST:-0.000000} | 0 | ${ENV} | | transformer prompt measured"
+
+    # skill.system.yaml — derived artifact (combined input)
+    echo "[${TIMESTAMP}] | sync_skill | ${RUN_ID} | ${SKILL_FQSN} | skill.system.yaml | ${SYNC_VENDOR} | ${SYNC_MODEL} | ${YAML_IN} | ${YAML_OUT} | ${YAML_COST_IN:-0.000000} | ${YAML_COST_OUT:-0.000000} | ${YAML_COST:-0.000000} | ${ELAPSED} | ${ENV} | | in=skill+transformer"
+
+    # skill.system.toon — derived artifact (combined input)
+    echo "[${TIMESTAMP}] | sync_skill | ${RUN_ID} | ${SKILL_FQSN} | skill.system.toon | ${SYNC_VENDOR} | ${SYNC_MODEL} | ${TOON_IN} | ${TOON_OUT} | ${TOON_COST_IN:-0.000000} | ${TOON_COST_OUT:-0.000000} | ${TOON_COST:-0.000000} | ${ELAPSED} | ${ENV} | | in=skill+transformer"
+  } >> "$AUDIT_LOG"
+
+  echo -e "${GREEN}  ✓ 5 ADR-009 cost entries written (per-artifact breakdown)${RESET}"
 fi
 echo -e "  ⏱  $(($(date +%s%3N) - STEP_T))ms"
 
-STEPS_COMPLETED=$((STEPS_COMPLETED + 1))
 # ── Final summary ─────────────────────────────────────────────────────────────
 echo ""
 echo -e "${BOLD}${GREEN}╔══════════════════════════════════════════════════════════╗${RESET}"
