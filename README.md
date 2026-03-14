@@ -137,7 +137,7 @@ PROD     patterns/ACMS_extract_wisdom/
 
 | Repo | Description |
 |------|-------------|
-| [QCadjunct/acms-langgraph-poc](https://github.com/QCadjunct/acms-langgraph-poc) | LangGraph execution controller, Marimo monitor, Pydantic V2 data model |
+| [QCadjunct/acms-repo](https://github.com/QCadjunct/acms-repo) | LangGraph execution controller, Marimo monitor, Pydantic V2 data model |
 | [QCadjunct/pydantic-v2-essentials](https://github.com/QCadjunct/pydantic-v2-essentials) | TOON implementation — `model_dump_tool()` |
 
 ---
