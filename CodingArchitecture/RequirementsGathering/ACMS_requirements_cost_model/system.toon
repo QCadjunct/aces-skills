@@ -1,0 +1,29 @@
+fqsn: CodingArchitecture/RequirementsGathering/ACMS_requirements_cost_model
+id: ACMS Cost Model Requirements Specialist
+agt: RequirementsGathering
+tgrp: CostModel
+wkey: cost_model
+alog: cost_audit.log
+params:
+  vendor: string|anthropic,google,ollama
+  model: string
+  token_budget: integer|unlimited
+  warn_threshold: float
+  abort_threshold: float
+  cost_audit: boolean
+steps:
+  - 1: select_vendor — Choose default vendor/model
+  - 2: set_budget — Define token budget
+  - 3: set_warn — Define cost warning threshold
+  - 4: set_abort — Define cost abort threshold
+  - 5: enable_audit — Enable cost audit logging
+inputs:
+  - dispatch_context: Skill intent, target FQSN, prior responses
+outputs:
+  - elicitation_response: Structured cost model parameters
+contract:
+  - Present vendor_rates.yaml before question 1
+  - Record answers verbatim
+  - Recommend cost_audit=true
+runtime:
+  - fabric --pattern ACMS_requirements_cost_model
