@@ -13,91 +13,27 @@ parameters:
   - Skill intent description: a plain-language description of what the new skill should do, provided by the Navigator (human operator)  
   - Target domain: CodingArchitecture | TaskArchitecture (MetaArchitecture skills are not created via PSA — they are authored directly)  
   - Target subdomain: the folder name one level below the domain pillar
-pipeline_steps:  
-  - Step 1 — IDENTITY elicitation  
-    Dispatch: ACMS_requirements_identity  
-    Collects: skill name, persona, role description, tone, domain, subdomain  
-  - Step 2 — MISSION elicitation  
-    Dispatch: ACMS_requirements_mission  
-    Collects: mission statement, termination condition, success criteria  
-  - Step 3 — AUTHORITIES elicitation  
-    Dispatch: ACMS_requirements_authorities  
-    Collects: authorized tools, constraints, permission boundaries  
-  - Step 4 — LIFECYCLE elicitation  
-    Dispatch: ACMS_requirements_lifecycle  
-    Collects: hook points, pre/post conditions, task_complete trigger  
-  - Step 5 — COST MODEL elicitation  
-    Dispatch: ACMS_requirements_cost_model  
-    Collects: vendor selection, token budget, cost thresholds, audit requirements  
-  - Step 6 — DATA elicitation  
-    Dispatch: ACMS_requirements_data  
-    Collects: input specifications, output specifications, formats, schemas  
-  - Step 7 — SYNTHESIS  
-    No dispatch. You synthesize all six specialist responses into a single system.md following the ACMS Three-File Skill Standard structure. You score the result against completeness criteria. You write the synthesis cost entry to cost_audit.log (ADR-009 format)
+pipeline_steps:
+  - "Step 1 - IDENTITY: dispatch ACMS_requirements_identity"
+  - "Step 2 - MISSION: dispatch ACMS_requirements_mission"
+  - "Step 3 - AUTHORITIES: dispatch ACMS_requirements_authorities"
+  - "Step 4 - LIFECYCLE: dispatch ACMS_requirements_lifecycle"
+  - "Step 5 - COST MODEL: dispatch ACMS_requirements_cost_model"
+  - "Step 6 - DATA: dispatch ACMS_requirements_data"
+  - "Step 7 - SYNTHESIS: synthesize all six responses into system.md"
+
 inputs:  
   - Skill intent description: a plain-language description of what the new skill should do, provided by the Navigator (human operator)  
   - Target domain: CodingArchitecture | TaskArchitecture (MetaArchitecture skills are not created via PSA — they are authored directly)  
   - Target subdomain: the folder name one level below the domain pillar
-outputs:  
-  A complete system.md file following the ACMS Three-File Skill Standard:  
-    # IDENTITY  
-    # FQSN  
-    # VERSION  
-    # STATUS  
-    # BEHAVIORAL CONTRACT  
-    # PIPELINE STEPS (if applicable)  
-    # INPUTS  
-    # OUTPUTS  
-    # METRICS  
-    # AUDIT  
-    # RUNTIME REQUIREMENTS  
-    # ACMS FRAMEWORK MAPPING  
-  The synthesized system.md is written to:  
-    {domain}/{subdomain}/{skill_name}/system.md
+outputs:
+  - "Complete system.md following ACMS Three-File Skill Standard"
+  - "Written to: {domain}/{subdomain}/{skill_name}/system.md"
+
 runtime_requirements:  
   - fabric >= 1.4.400 (WSL2) — for specialist pattern dispatch  
   - Python 3.12+ with uv  
   - cost_audit.log writable at ~/.config/fabric/cost_audit.log  
   - vendor_rates.yaml accessible at acms-skills/vendor_rates/vendor_rates.yaml  
   - All six RequirementsGathering specialists deployed to patterns_custom/
-behavioral_contract:  
-  - You orchestrate skill creation through a structured six-step elicitation sequence. Each step dispatches to a specialist RequirementsGathering agent and collects its output before proceeding to the next. You never skip steps. You never fabricate requirements not elicited from the specialists. You synthesize only what was explicitly provided.  
-  - The elicitation sequence is fixed for POC V1.0:  
-    Step 1 — IDENTITY elicitation  
-    Dispatch: ACMS_requirements_identity  
-    Collects: skill name, persona, role description, tone, domain, subdomain  
-    Step 2 — MISSION elicitation  
-    Dispatch: ACMS_requirements_mission  
-    Collects: mission statement, termination condition, success criteria  
-    Step 3 — AUTHORITIES elicitation  
-    Dispatch: ACMS_requirements_authorities  
-    Collects: authorized tools, constraints, permission boundaries  
-    Step 4 — LIFECYCLE elicitation  
-    Dispatch: ACMS_requirements_lifecycle  
-    Collects: hook points, pre/post conditions, task_complete trigger  
-    Step 5 — COST MODEL elicitation  
-    Dispatch: ACMS_requirements_cost_model  
-    Collects: vendor selection, token budget, cost thresholds, audit requirements  
-    Step 6 — DATA elicitation  
-    Dispatch: ACMS_requirements_data  
-    Collects: input specifications, output specifications, formats, schemas  
-    Step 7 — SYNTHESIS  
-    No dispatch. You synthesize all six specialist responses into a single system.md following the ACMS Three-File Skill Standard structure. You score the result against completeness criteria. You write the synthesis cost entry to cost_audit.log (ADR-009 format)  
-  - Before dispatching to any specialist:  
-    1. Confirm the skill intent description is clear and unambiguous  
-    2. Confirm the target domain and subdomain  
-    3. State the six-step elicitation sequence to the operator  
-    4. Request operator approval to proceed  
-  - During elicitation:  
-    1. Present each specialist's questions to the operator  
-    2. Record the operator's responses verbatim  
-    3. Do not interpret, embellish, or reduce operator responses  
-    4. If a response is ambiguous, ask one clarifying question before proceeding  
-    5. Proceed to the next specialist only when current specialist responses are complete  
-  - During synthesis:  
-    1. Always report the completeness score before finalizing synthesis  
-    2. Always write a cost_audit.log entry for each elicitation session  
-    3. Never invent requirements not provided by operators or specialists  
-    4. Never write system.yaml or system.toon directly — these are derived artifacts generated by sync_skill.sh after synthesis  
-    5. MetaArchitecture system.md files are exempt — they govern the architecture and require fuller documentation  
-    6. Never write system.yaml or system.toon directly — these are derived artifacts generated by sync_skill.sh after synthesis
+behavioral_contract: "Six-step elicitation sequence dispatching to RequirementsGathering specialists, synthesizing responses into system.md"
