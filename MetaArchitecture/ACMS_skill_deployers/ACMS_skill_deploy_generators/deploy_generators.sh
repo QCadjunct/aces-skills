@@ -273,6 +273,7 @@ ok "Deployment complete: $SKILL_FOLDER → $ENV"
 step "8" "LOG — appending to deploy_audit.log"
 
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+RUN_ID=$(python3 -c "import uuid; print(str(uuid.uuid4()))")
 OPERATOR=$(whoami)
 LOG_ENTRY="${TIMESTAMP} | ${SKILL_FOLDER} | ${ENV} | ${GENERATE} | ${DO_ARCHIVE} | SUCCESS | ${OPERATOR}"
 
@@ -291,7 +292,19 @@ echo -e "  TOT                                                                  
 
 # Append to cost_audit.log
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-echo "${TIMESTAMP} | ${SKILL_FOLDER} | ${ENV} | ${COST_VENDOR} | ${COST_MODEL} | in=${TOTAL_IN} | out=${TOTAL_OUT} | \$${TOTAL_COST} | $(whoami)" >> "$COST_LOG"
+  # ADR-009 per-artifact cost entries — Step 4 patch
+  SKILL_FQSN="${SKILL_FOLDER}"
+  SRC_TOKENS=$(wc -c < "$SOURCE" | awk '{print int($1/4)}')
+  TRANS_YAML_TOKENS=$(wc -c < "$HOME/.config/fabric/patterns_custom/system.md_transformers/from_system.md_to_system.yaml/system.md" 2>/dev/null | awk '{print int($1/4)}' || echo 0)
+  TRANS_TOON_TOKENS=$(wc -c < "$HOME/.config/fabric/patterns_custom/system.md_transformers/from_system.md_to_system.toon/system.md" 2>/dev/null | awk '{print int($1/4)}' || echo 0)
+  VENDOR_LC=$(echo "$COST_VENDOR" | tr 'A-Z' 'a-z')
+  {
+    echo "[${TIMESTAMP}] | deploy_generators | ${RUN_ID} | ${SKILL_FQSN} | skill.system.md | ${VENDOR_LC} | ${COST_MODEL} | ${SRC_TOKENS} | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | ${ENV} | | source measured"
+    echo "[${TIMESTAMP}] | deploy_generators | ${RUN_ID} | ${SKILL_FQSN} | transformer.yaml.system.md | ${VENDOR_LC} | ${COST_MODEL} | ${TRANS_YAML_TOKENS} | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | ${ENV} | | transformer prompt measured"
+    echo "[${TIMESTAMP}] | deploy_generators | ${RUN_ID} | ${SKILL_FQSN} | transformer.toon.system.md | ${VENDOR_LC} | ${COST_MODEL} | ${TRANS_TOON_TOKENS} | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | ${ENV} | | transformer prompt measured"
+    echo "[${TIMESTAMP}] | deploy_generators | ${RUN_ID} | ${SKILL_FQSN} | skill.system.yaml | ${VENDOR_LC} | ${COST_MODEL} | ${TOTAL_IN} | ${TOTAL_OUT} | 0.000000 | 0.000000 | ${TOTAL_COST} | 0 | ${ENV} | | in=skill+transformer"
+    echo "[${TIMESTAMP}] | deploy_generators | ${RUN_ID} | ${SKILL_FQSN} | skill.system.toon | ${VENDOR_LC} | ${COST_MODEL} | ${TOTAL_IN} | ${TOTAL_OUT} | 0.000000 | 0.000000 | ${TOTAL_COST} | 0 | ${ENV} | | in=skill+transformer"
+  } >> "$COST_LOG"
 ok "Cost log updated: $COST_LOG"
 
 # ── Summary ──────────────────────────────────────────────────
