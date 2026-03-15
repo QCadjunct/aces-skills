@@ -214,6 +214,19 @@ generate_artifact() {
   if [[ "$DRY_RUN" == false ]]; then
     if command -v fabric &>/dev/null; then
       fabric --pattern "$transformer" < "$SOURCE_ABS" > "$SKILL_DIR/$output_file"
+      # Strip markdown fences if transformer wrapped output in ```yaml or ```
+      python3 -c "
+import sys
+p = '$SKILL_DIR/$output_file'
+lines = open(p).read().splitlines()
+if lines and lines[0].strip().startswith('\`\`\`'):
+    lines = lines[1:]
+if lines and lines[-1].strip() == '\`\`\`':
+    lines = lines[:-1]
+open(p, 'w').write('
+'.join(lines) + '
+')
+" 2>/dev/null || true
       echo -e "${GREEN}  ✓ $label generated${RESET}"
     else
       echo -e "${YELLOW}  ⚠ fabric not in PATH — writing placeholder${RESET}"
