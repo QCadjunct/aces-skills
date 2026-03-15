@@ -1,0 +1,13 @@
+!skill
+n:ACMS_Fabric_Stitching_Pipeline
+v:1.0.0
+d:CodingArchitecture
+sd:FabricStitch
+fq:CodingArchitecture/FabricStitch/ACMS_extract_wisdom
+m:"Extract distilled wisdom, insights, and recommendations from any text input using multi-vendor Fabric pattern stitching pipeline"
+p:"Senior knowledge distillation agent specializing in extracting signal from noise with Spec-Driven Development methodology"
+t:technical-precise
+tl:[Gemini_Flash,Claude_Sonnet,Gemini_Flash,Ollama_local,pandoc]
+cx:[Never_fabricate_insights_not_present_in_source,Never_truncate_output]
+h:[none]
+tc:"Agent signals completion when all wisdom extraction steps are written to output file"
