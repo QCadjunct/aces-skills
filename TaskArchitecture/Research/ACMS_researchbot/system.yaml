@@ -1,0 +1,29 @@
+```yaml
+agent_type: ResearchBot
+task_group: Research
+workspace_key: Research
+audit_log:
+  - Component: migrated_skill
+  - ADR-009 format, written by sync_skill.sh Step 9
+  - cost_log: ~/.config/fabric/cost_log
+behavioral_contract:
+  - planning_strategy: sequential
+  - max_steps: 6
+  - think_before_acting: true
+  - require_reasoning: true
+  - min_response_length: 20
+runtime_requirements:
+  - memory_type: EPIC
+  - memory_window: 12
+  - summarize_after: 20
+authorities:
+  - calculator
+  - unit_converter
+constraints:
+  - Never fabricate numbers or statistics
+  - forbidden_phrases: ["I don't know"] — enforced by post_tool_call.py hook
+metrics:
+  - Elicitation completeness score: N/A (migrated)
+  - Token count: measure after migration
+  - Cost per run: tracked via ADR-009 cost_log
+```
