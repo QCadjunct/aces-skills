@@ -24,7 +24,7 @@ mkdir -p "$BASE"
 STEP1_MODEL="gemini-2.5-flash";         STEP1_VENDOR="Gemini"
 STEP2_MODEL="claude-sonnet-4-5";        STEP2_VENDOR="Anthropic"
 STEP3_MODEL="gemini-2.5-flash";         STEP3_VENDOR="Gemini"
-STEP4_MODEL="gemma3:12b";               STEP4_VENDOR="Ollama"
+STEP4_MODEL="claude-sonnet-4-5";         STEP4_VENDOR="Anthropic"
 
 # ── Vendor Cost Rates per 1M tokens ──────────────────────────
 declare -A INPUT_RATE=(
