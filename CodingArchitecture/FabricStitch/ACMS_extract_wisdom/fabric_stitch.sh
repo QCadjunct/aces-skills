@@ -21,9 +21,9 @@ UV_PYTHON="$HOME/projects/acms-skills/.venv/bin/python3"
 mkdir -p "$BASE"
 
 # ── Multi-Model Configuration ─────────────────────────────────
-STEP1_MODEL="gemini-2.0-flash";         STEP1_VENDOR="Gemini"
-STEP2_MODEL="claude-sonnet-4-6";        STEP2_VENDOR="Anthropic"
-STEP3_MODEL="gemini-2.0-flash";         STEP3_VENDOR="Gemini"
+STEP1_MODEL="gemini-2.5-flash";         STEP1_VENDOR="Gemini"
+STEP2_MODEL="claude-sonnet-4-5";        STEP2_VENDOR="Anthropic"
+STEP3_MODEL="gemini-2.5-flash";         STEP3_VENDOR="Gemini"
 STEP4_MODEL="gemma3:12b";               STEP4_VENDOR="Ollama"
 
 # ── Vendor Cost Rates per 1M tokens ──────────────────────────
