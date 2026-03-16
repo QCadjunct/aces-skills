@@ -206,10 +206,10 @@ else
 fi
 
 # Fabric smoke test (no LLM call)
-if fabric --listpatterns | grep -q "extract_wisdom" 2>/dev/null; then
-  pass "fabric --listpatterns finds extract_wisdom"
+if fabric --listpatterns | grep -q "ACMS_extract_wisdom" 2>/dev/null; then
+  pass "fabric --listpatterns finds ACMS_extract_wisdom"
 else
-  warn "extract_wisdom not in fabric pattern list"
+  warn "ACMS_extract_wisdom not in fabric pattern list"
 fi
 
 # ── Summary ───────────────────────────────────────────────────────────────────
