@@ -129,19 +129,54 @@ print(f'{in_cost + out_cost:.6f}')
 " 2>/dev/null || echo "0.000000"
 }
 
+# ── YouTube title extraction via yt-dlp ──────────────────────
+# Gets the actual video title — more reliable than narrative H1
+# Falls back to narrative H1 if yt-dlp is unavailable
+get_video_title() {
+    local url=$1
+    local title=""
+    if command -v yt-dlp &>/dev/null; then
+        title=$(yt-dlp --get-title "$url" 2>/dev/null | head -1)
+    fi
+    echo "$title"
+}
+
 # ── Title extraction from narrative ──────────────────────────
 extract_title() {
     local file=$1
     grep -m1 '^# ' "$file" 2>/dev/null | sed 's/^# //' | head -1
 }
 
-# ── Title to filesystem-safe slug ────────────────────────────
+# ── Title to filesystem-safe slug ───────────────────────────
+# No length cap on folder or file — full title preserved
+# UUIDv7 provides uniqueness — title provides readability
+# Rules:
+#   - Strip channel/venue suffix after | 
+#   - Replace & with "and" (preserves technical terms like Ports & Adapters)
+#   - Remove remaining special chars
+#   - Collapse spaces, convert to slug
 title_to_slug() {
-    echo "$1" | sed 's/[^a-zA-Z0-9 ]//g' | \
-                sed 's/  */ /g' | \
-                sed 's/^ //;s/ $//' | \
-                tr ' ' '-' | \
-                cut -c1-60
+    local raw="$1"
+    local max="${2:-0}"   # 0 = no cap (folder), N = cap at N chars (file)
+    # Strip everything after | (channel names, venue names)
+    local stripped
+    stripped=$(echo "$raw" | sed 's/ *|.*$//')
+    [[ -z "$stripped" ]] && stripped="$raw"
+    # Replace & with "and" — preserves technical meaning
+    stripped=$(echo "$stripped" | sed 's/ & / and /g; s/&/ and /g')
+    # Remove remaining special chars, collapse spaces, convert to slug
+    local slug
+    slug=$(echo "$stripped" | sed 's/[^a-zA-Z0-9 ]//g' | \
+                              sed 's/  */ /g' | \
+                              sed 's/^ //;s/ $//' | \
+                              tr ' ' '-')
+    # Apply length cap if specified
+    if [[ "$max" -gt 0 ]]; then
+        slug=$(echo "$slug" | cut -c1-$max)
+        # Trim trailing dash if cut mid-word
+        slug=$(echo "$slug" | sed 's/-$//')
+    fi
+    echo "$slug"
 }
 
 # ── Timing Helpers ────────────────────────────────────────────
@@ -257,11 +292,15 @@ R4=$(step_end "$t" "${STAGING}/step-05-combined-for-synthesis.md" \
               "${STAGING}/step-04-narrative.md" "$STEP4_VENDOR")
 DUR4=$(get_dur "$R4"); IN4=$(get_in "$R4"); OUT4=$(get_out "$R4"); COST4=$(get_cost "$R4")
 
-# ── Extract title — build final output directory ──────────────
-RAW_TITLE=$(extract_title "${STAGING}/step-04-narrative.md")
+# ── Extract title — prefer YouTube title over narrative H1 ────
+RAW_TITLE=$(get_video_title "$URL")
+if [[ -z "$RAW_TITLE" ]]; then
+    RAW_TITLE=$(extract_title "${STAGING}/step-04-narrative.md")
+fi
 [[ -z "$RAW_TITLE" ]] && RAW_TITLE="Untitled-$(date +%H%M%S)"
-SLUG=$(title_to_slug "$RAW_TITLE")
-FOLDER_NAME="${TODAY}-${SLUG}"
+# Folder slug — no cap, preserves full title meaning
+FOLDER_SLUG=$(title_to_slug "$RAW_TITLE" 0)
+FOLDER_NAME="${TODAY}-${FOLDER_SLUG}"
 FINAL_DIR="${OUTPUT_BASE}/${YEAR}/${MONTH}/${DAY}/${FOLDER_NAME}"
 mkdir -p "$FINAL_DIR"
 
@@ -277,8 +316,10 @@ mv "${STAGING}/step-04-narrative.md"              "${FINAL_DIR}/step-04-narrativ
 mv "${STAGING}/step-05-combined-for-synthesis.md" "${FINAL_DIR}/step-05-combined-for-synthesis.md"
 rmdir "$STAGING" 2>/dev/null || true
 
+# File slug — no cap, full title preserved
+FILE_SLUG=$(title_to_slug "$RAW_TITLE" 0)
 # Named base for output files: Title-YYYYMMDD-[uuidv7]
-FILE_BASE="${SLUG}-${TODAY}-${RUN_ID}"
+FILE_BASE="${FILE_SLUG}-${TODAY}-${RUN_ID}"
 
 # Build full report: narrative + appendix
 REPORT_MD="${FINAL_DIR}/${FILE_BASE}.md"
