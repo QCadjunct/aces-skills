@@ -236,6 +236,7 @@ for l in lines:
     clean.append(l)
 p.write_text('\n'.join(clean).rstrip() + '\n')
 " 2>/dev/null || true
+      yaml_fix "$SKILL_DIR/$output_file"
       echo -e "${GREEN}  ✓ $label generated${RESET}"
     else
       echo -e "${YELLOW}  ⚠ fabric not in PATH — writing placeholder${RESET}"
@@ -245,6 +246,38 @@ p.write_text('\n'.join(clean).rstrip() + '\n')
   else
     echo -e "  [DRY RUN] Would run: fabric --pattern $transformer < system.md > $output_file"
   fi
+}
+
+# Quote YAML scalar values containing colons — fixes transformer output parse errors
+yaml_fix() {
+  local file="$1"
+  [[ "$file" != *.yaml ]] && return 0
+  [[ ! -f "$file" ]] && return 0
+  python3 - "$file" << 'PYFIX'
+import sys, yaml
+from pathlib import Path
+p = Path(sys.argv[1])
+lines = p.read_text().splitlines()
+fixed = []
+for line in lines:
+    stripped = line.strip()
+    if stripped.startswith("-") or stripped.startswith("#") or ":" not in line:
+        fixed.append(line); continue
+    indent = len(line) - len(line.lstrip())
+    cp = stripped.index(":")
+    key = stripped[:cp]
+    val = stripped[cp+1:].strip()
+    if val and ":" in val and not val.startswith('"') and not val.startswith("''") and not val.startswith("["):
+        val = val.replace('"', "''")
+        line = " " * indent + key + ': "' + val + '"'
+    fixed.append(line)
+content = "\n".join(fixed)
+try:
+    yaml.safe_load(content)
+    p.write_text(content)
+except Exception:
+    pass
+PYFIX
 }
 
 case "$GENERATE" in
