@@ -324,6 +324,14 @@ FILE_BASE="${FILE_SLUG}-${TODAY}-${RUN_ID}"
 # Build full report: narrative + appendix
 REPORT_MD="${FINAL_DIR}/${FILE_BASE}.md"
 {
+  # Source attribution — Daniel Miessler's original thesis:
+  # read the synthesis to decide if the source is worth watching
+  echo "> **Source**: ${URL}"
+  echo ">"
+  echo "> *Synthesized by ACMS FabricStitch Pipeline — Mind Over Metadata LLC — $(date '+%Y-%m-%d')*"
+  echo ""
+  echo "---"
+  echo ""
   cat "${FINAL_DIR}/step-04-narrative.md"
   echo ""
   echo "---"
