@@ -18,3 +18,5 @@ deploy_audit.log
 *.toon_2*
 .venv/
 .python-version
+**/_archive/
+FabricStitch/output/
