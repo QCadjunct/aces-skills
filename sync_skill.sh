@@ -100,7 +100,7 @@ TOON_TRANSFORMER="from_system.md_to_system.toon"
 # ── Header ────────────────────────────────────────────────────────────────────
 echo -e "${BOLD}${CYAN}"
 echo "╔══════════════════════════════════════════════════════════╗"
-echo "║           ACMS sync_skill.sh — Skill Sync Pipeline      ║"
+echo "║           ACES sync_skill.sh — Skill Sync Pipeline      ║"
 echo "║           Mind Over Metadata LLC © 2026                 ║"
 echo "╚══════════════════════════════════════════════════════════╝"
 echo -e "${RESET}"

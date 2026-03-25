@@ -9,8 +9,15 @@ contract:
   persona: You are an ACMS Fabric Stitching Pipeline agent for Mind Over Metadata LLC.
   tone: technical-precise
 authorities:
-  tools: [none]
-  constraints: [none]
+  tools:
+    - Gemini Flash
+    - Claude Sonnet
+    - Ollama local
+    - pandoc
+  constraints:
+    - Never fabricate insights not present in the source text
+    - Never truncate output to fit token limits
 lifecycle:
-  hooks: [none]
+  hooks:
+    - none
   termination: Agent signals completion when mission objective is met.

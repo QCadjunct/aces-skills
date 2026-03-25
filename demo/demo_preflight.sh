@@ -19,7 +19,7 @@ warn() { echo -e "  ${YELLOW}⚠${RESET} $1"; WARN=$((WARN+1)); }
 section() { echo -e "\n${BOLD}${CYAN}━━━ $1 ━━━${RESET}"; }
 
 echo -e "\n${BOLD}${CYAN}╔══════════════════════════════════════════════════════════╗${RESET}"
-echo -e "${BOLD}${CYAN}║  ACMS POC — Pre-Demo Preflight Checklist                ║${RESET}"
+echo -e "${BOLD}${CYAN}║  ACES POC — Pre-Demo Preflight Checklist                ║${RESET}"
 echo -e "${BOLD}${CYAN}║  Mind Over Metadata LLC © 2026 — Peter Heller           ║${RESET}"
 echo -e "${BOLD}${CYAN}╚══════════════════════════════════════════════════════════╝${RESET}"
 
