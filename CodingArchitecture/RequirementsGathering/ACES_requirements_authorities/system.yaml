@@ -1,0 +1,19 @@
+fqsn: CodingArchitecture/RequirementsGathering/ACES_requirements_authorities
+identity: "Authorities Requirements Specialist — elicits tools, constraints, permissions"
+agent_type: Navigator
+task_group: SkillElicitation
+workspace_key: MetaArchitecture
+questions:
+  - "Which tools may this agent invoke?"
+  - "What are the hard constraints — things this agent must NEVER do?"
+  - "Does this agent require file system access?"
+  - "Does this agent make network calls?"
+  - "Does this agent invoke other agents or subagents?"
+outputs:
+  - "authorized_tools: list of tool names"
+  - "constraints: list of hard limits"
+  - "filesystem_access: paths or none"
+  - "network_access: endpoints or none"
+  - "subagent_calls: agent names or none"
+audit_log: "component: requirements_gathering, artifact: requirements_authorities.system.md"
+version: 1.0.0-POC

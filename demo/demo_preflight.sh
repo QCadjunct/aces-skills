@@ -55,19 +55,19 @@ check_file "cost/cost_analyzer.py" "cost_analyzer.py"
 check_file "vendor_rates/vendor_rates.yaml" "vendor_rates.yaml"
 check_file "docs/fabric-guide.md" "fabric-guide.md"
 check_file "docs/ADR-009-D4-MDLC-Governance.md" "ADR-009 spec"
-check_file "MetaArchitecture/PrincipalSystemArchitect/ACMS_principal_system_architect/system.md" \
+check_file "MetaArchitecture/PrincipalSystemArchitect/ACES_principal_system_architect/system.md" \
   "PrincipalSystemArchitect system.md"
-check_file "CodingArchitecture/FabricStitch/ACMS_extract_wisdom/system.md" \
-  "ACMS_extract_wisdom system.md"
-check_file "CodingArchitecture/FabricStitch/ACMS_extract_wisdom/system.yaml" \
-  "ACMS_extract_wisdom system.yaml"
-check_file "CodingArchitecture/FabricStitch/ACMS_extract_wisdom/system.toon" \
-  "ACMS_extract_wisdom system.toon"
+check_file "CodingArchitecture/FabricStitch/ACES_extract_wisdom/system.md" \
+  "ACES_extract_wisdom system.md"
+check_file "CodingArchitecture/FabricStitch/ACES_extract_wisdom/system.yaml" \
+  "ACES_extract_wisdom system.yaml"
+check_file "CodingArchitecture/FabricStitch/ACES_extract_wisdom/system.toon" \
+  "ACES_extract_wisdom system.toon"
 
 # RequirementsGathering specialists
 for specialist in identity mission authorities lifecycle cost_model data; do
-  check_file "CodingArchitecture/RequirementsGathering/ACMS_requirements_${specialist}/system.md" \
-    "ACMS_requirements_${specialist} system.md"
+  check_file "CodingArchitecture/RequirementsGathering/ACES_requirements_${specialist}/system.md" \
+    "ACES_requirements_${specialist} system.md"
 done
 
 # Demo scripts
@@ -138,8 +138,8 @@ check_pattern() {
 
 check_pattern "system.md_transformers/from_system.md_to_system.yaml"
 check_pattern "system.md_transformers/from_system.md_to_system.toon"
-check_pattern "ACMS_extract_wisdom"
-check_pattern "ACMS_requirements_identity"
+check_pattern "ACES_extract_wisdom"
+check_pattern "ACES_requirements_identity"
 
 # ── 6. Cost audit log ─────────────────────────────────────────────────────────
 section "6. Cost Audit Log"
@@ -190,7 +190,7 @@ section "8. Functional Tests"
 # Dry run sync
 echo -e "  Running sync dry-run..."
 if ./sync_skill.sh \
-    --source CodingArchitecture/FabricStitch/ACMS_extract_wisdom/system.md \
+    --source CodingArchitecture/FabricStitch/ACES_extract_wisdom/system.md \
     --dry-run --force \
     > /tmp/sync_dryrun.log 2>&1; then
   pass "sync_skill.sh dry-run passed"
@@ -206,10 +206,10 @@ else
 fi
 
 # Fabric smoke test (no LLM call)
-if fabric --listpatterns | grep -q "ACMS_extract_wisdom" 2>/dev/null; then
-  pass "fabric --listpatterns finds ACMS_extract_wisdom"
+if fabric --listpatterns | grep -q "ACES_extract_wisdom" 2>/dev/null; then
+  pass "fabric --listpatterns finds ACES_extract_wisdom"
 else
-  warn "ACMS_extract_wisdom not in fabric pattern list"
+  warn "ACES_extract_wisdom not in fabric pattern list"
 fi
 
 # ── Summary ───────────────────────────────────────────────────────────────────

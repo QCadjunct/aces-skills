@@ -48,7 +48,7 @@ echo ""
 # ── Find all leaf skill directories (contain system.md directly) ───────────────
 # A leaf is a directory that contains system.md at its immediate level
 # This handles both flat (patterns_custom/SKILL_NAME/system.md)
-# and nested (patterns_custom/ACMS_Skills/.../SKILL_NAME/system.md)
+# and nested (patterns_custom/ACES_Skills/.../SKILL_NAME/system.md)
 
 while IFS= read -r system_md; do
   skill_dir=$(dirname "$system_md")

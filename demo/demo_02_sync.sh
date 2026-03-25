@@ -41,7 +41,7 @@ read -p "Press Enter to run a DRY RUN first →"
 # ── Dry run ───────────────────────────────────────────────────────────────────
 section "2.2 — Dry Run (no files written)"
 ./sync_skill.sh \
-  --source CodingArchitecture/FabricStitch/ACMS_extract_wisdom/system.md \
+  --source CodingArchitecture/FabricStitch/ACES_extract_wisdom/system.md \
   --generate all \
   --env dev \
   --dry-run \
@@ -57,14 +57,14 @@ echo -e "${YELLOW}Generating system.yaml and system.toon via gemma3:12b...${RESE
 > ~/.config/fabric/cost_audit.log
 
 ./sync_skill.sh \
-  --source CodingArchitecture/FabricStitch/ACMS_extract_wisdom/system.md \
+  --source CodingArchitecture/FabricStitch/ACES_extract_wisdom/system.md \
   --generate all \
   --env dev \
   --force
 
 # ── Show generated artifacts ──────────────────────────────────────────────────
 section "2.4 — Generated Artifacts"
-SKILL="CodingArchitecture/FabricStitch/ACMS_extract_wisdom"
+SKILL="CodingArchitecture/FabricStitch/ACES_extract_wisdom"
 
 echo -e "${BOLD}system.yaml (full):${RESET}"
 cat "$SKILL/system.yaml"

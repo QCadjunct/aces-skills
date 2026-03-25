@@ -1,0 +1,225 @@
+To generate a `system.toon` file from a `system.md` file, you must follow a structured mapping of sections and their corresponding elements in the output. Here's a clear, step-by-step breakdown of how each part of the input is transformed into the final output format:
+
+---
+
+### **1. General Metadata**
+These fields are derived from the top-level sections of the `system.md`:
+
+- **`fqsn`** (Fully Qualified System Name):  
+  Taken directly from the `FQSN` section.  
+  Example:  
+  ```markdown
+  # FQSN
+  TaskArchitecture/Research/ACES_ResearchBot
+  ```  
+  → `fqsn: TaskArchitecture/Research/ACES_ResearchBot`
+
+- **`id`** (System Description):  
+  Taken from the `IDENTITY` section.  
+  Example:  
+  ```markdown
+  # IDENTITY
+  You are the ACMS ResearchBot — an agent that answers research questions using calculation and reasoning. Adapted from Cognitive Blueprint framework by Asif Razzaq (MarkTechPost, 2026-03-07).
+  ```  
+  → `id: You are the ACMS ResearchBot — ...`
+
+- **`agt`** (Agent Type):  
+  The last segment of the `FQSN` split by `/`.  
+  Example:  
+  ```markdown
+  # FQSN
+  TaskArchitecture/Research/ACES_ResearchBot
+  ```  
+  → `agt: ACES_ResearchBot`
+
+- **`tgrp`** (Task Group):  
+  The second segment of the `FQSN` split by `/`.  
+  Example:  
+  ```markdown
+  # FQSN
+  TaskArchitecture/Research/ACES_ResearchBot
+  ```  
+  → `tgrp: Research`
+
+- **`wkey`** (Workspace Key):  
+  Same as `agt`.  
+  → `wkey: ACES_ResearchBot`
+
+- **`alog`** (Audit Log Path):  
+  Extracted from the `AUDIT` section.  
+  Example:  
+  ```markdown
+  # AUDIT
+  - cost_audit.log: ~/.config/fabric/cost_audit.log
+  ```  
+  → `alog: ~/.config/fabric/cost_audit.log`
+
+---
+
+### **2. Parameters (`params`)**  
+These are derived from the `BEHAVIORAL CONTRACT` section. Each line is parsed into a key-value pair with type and options.  
+Example:  
+```markdown
+# BEHAVIORAL CONTRACT
+- planning_strategy: SEQUENTIAL
+- max_steps: 6
+- think_before_acting: true
+- require_reasoning: true
+- min_response_length: 20
+```  
+→  
+```yaml
+params:
+  planning_strategy: string|SEQUENTIAL
+  max_steps: integer|6
+  think_before_acting: boolean|true
+  require_reasoning: boolean|true
+  min_response_length: integer|20
+```
+
+---
+
+### **3. Steps (`steps`)**  
+These are derived from the `PIPELINE STEPS` section. Each line is a numbered step with a name and description.  
+Example:  
+```markdown
+# PIPELINE STEPS
+1: planning — define research objectives
+2: data_retrieval — gather relevant information
+3: analysis — evaluate data for insights
+4: synthesis — compile findings into coherent answer
+5: validation — check for logical consistency
+6: finalization — present answer with reasoning
+```  
+→  
+```yaml
+steps:
+  - 1: planning — define research objectives
+  - 2: data_retrieval — gather relevant information
+  - 3: analysis — evaluate data for insights
+  - 4: synthesis — compile findings into coherent answer
+  - 5: validation — check for logical consistency
+  - 6: finalization — present answer with reasoning
+```
+
+---
+
+### **4. Inputs and Outputs (`inputs`, `outputs`)**  
+These are derived from the `INPUTS` and `OUTPUTS` sections. Each line is parsed into a key-value pair.  
+Example:  
+```markdown
+# INPUTS
+- operator_input: derive from tool capabilities
+```  
+→  
+```yaml
+inputs:
+  - operator_input: derive from tool capabilities
+```  
+```markdown
+# OUTPUTS
+- research_answer: structured output with reasoning
+```  
+→  
+```yaml
+outputs:
+  - research_answer: structured output with reasoning
+```
+
+---
+
+### **5. Contract (`contract`)**  
+These are derived from the `BEHAVIORAL CONTRACT` section. Each line is a rule.  
+Example:  
+```markdown
+# BEHAVIORAL CONTRACT
+- planning_strategy: SEQUENTIAL
+- max_steps: 6
+- think_before_acting: true
+- require_reasoning: true
+- min_response_length: 20
+```  
+→  
+```yaml
+contract:
+  - planning_strategy: SEQUENTIAL
+  - max_steps: 6
+  - think_before_acting: true
+  - require_reasoning: true
+  - min_response_length: 20
+```
+
+---
+
+### **6. Runtime Requirements (`runtime`)**  
+These are derived from the `RUNTIME REQUIREMENTS` section. Each line is parsed into a key-value pair.  
+Example:  
+```markdown
+# RUNTIME REQUIREMENTS
+memory_type: EPISODIC
+memory_window: 12
+summarize_after: 20
+```  
+→  
+```yaml
+runtime:
+  - memory_type: EPISODIC
+  - memory_window: 12
+  - summarize_after: 20
+```
+
+---
+
+### **Final Output Format (`system.toon`)**  
+Combining all sections, the final `system.toon` file would look like this:  
+```yaml
+fqsn: TaskArchitecture/Research/ACES_ResearchBot
+id: You are the ACMS ResearchBot — an agent that answers research questions using calculation and reasoning. Adapted from Cognitive Blueprint framework by Asif Razzaq (MarkTechPost, 2026-03-07).
+agt: ACES_ResearchBot
+tgrp: Research
+wkey: ACES_ResearchBot
+alog: ~/.config/fabric/cost_audit.log
+params:
+  planning_strategy: string|SEQUENTIAL
+  max_steps: integer|6
+  think_before_acting: boolean|true
+  require_reasoning: boolean|true
+  min_response_length: integer|20
+steps:
+  - 1: planning — define research objectives
+  - 2: data_retrieval — gather relevant information
+  - 3: analysis — evaluate data for insights
+  - 4: synthesis — compile findings into coherent answer
+  - 5: validation — check for logical consistency
+  - 6: finalization — present answer with reasoning
+inputs:
+  - operator_input: derive from tool capabilities
+outputs:
+  - research_answer: structured output with reasoning
+contract:
+  - planning_strategy: SEQUENTIAL
+  - max_steps: 6
+  - think_before_acting: true
+  - require_reasoning: true
+  - min_response_length: 20
+runtime:
+  - memory_type: EPISODIC
+  - memory_window: 12
+  - summarize_after: 20
+```
+
+---
+
+### **Key Rules Summary**
+| Input Section              | Output Field          | Notes |
+|---------------------------|------------------------|-------|
+| FQSN                      | `fqsn`, `agt`, `tgrp`, `wkey` | Split by `/` |
+| IDENTITY                  | `id`                  | Directly copied |
+| AUDIT                     | `alog`                | Extracted from `cost_audit.log` |
+| BEHAVIORAL CONTRACT       | `params`, `contract`  | Parse into key-value pairs |
+| PIPELINE STEPS            | `steps`               | Numbered steps with name and description |
+| INPUTS                    | `inputs`              | Key-value pairs |
+| OUTPUTS                   | `outputs`             | Key-value pairs |
+| RUNTIME REQUIREMENTS      | `runtime`             | Key-value pairs |
+
+This structured mapping ensures the `system.toon` file is both human-readable and machine-parseable, aligning with the specified format and semantics.

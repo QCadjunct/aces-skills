@@ -104,7 +104,7 @@ COURSES = {
 }
 
 # ── Config ────────────────────────────────────────────────────
-FABRIC_STITCH = Path.home() / "projects/aces-skills/CodingArchitecture/FabricStitch/ACMS_extract_wisdom/fabric_course_stitch.sh"
+FABRIC_STITCH = Path.home() / "projects/aces-skills/CodingArchitecture/FabricStitch/ACES_extract_wisdom/fabric_course_stitch.sh"
 OUTPUT_BASE   = Path.home() / "projects/aces-skills/FabricStitch/output"
 
 # ── Helpers ───────────────────────────────────────────────────

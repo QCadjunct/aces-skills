@@ -16,8 +16,8 @@ BOLD='\033[1m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILLS_ROOT="$(dirname "$SCRIPT_DIR")"
-SOURCE_MD="${SKILLS_ROOT}/CodingArchitecture/FabricStitch/ACMS_extract_wisdom/system.md"
-DEPLOY_SCRIPT="${SKILLS_ROOT}/MetaArchitecture/ACMS_skill_deployers/ACMS_skill_deploy_generators/deploy_generators.sh"
+SOURCE_MD="${SKILLS_ROOT}/CodingArchitecture/FabricStitch/ACES_extract_wisdom/system.md"
+DEPLOY_SCRIPT="${SKILLS_ROOT}/MetaArchitecture/ACES_skill_deployers/ACES_skill_deploy_generators/deploy_generators.sh"
 
 echo ""
 echo -e "${BOLD}${NAVY}╔══════════════════════════════════════════════════╗${RESET}"

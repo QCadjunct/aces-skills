@@ -15,7 +15,7 @@ VALIDATE → HASH → DIFF → ARCHIVE → GENERATE → VALIDATE → DEPLOY → 
 ```bash
 # Standard dev sync
 ./sync_skill.sh \
-  --source CodingArchitecture/FabricStitch/ACMS_extract_wisdom/system.md \
+  --source CodingArchitecture/FabricStitch/ACES_extract_wisdom/system.md \
   --generate all \
   --env dev
 
@@ -61,9 +61,9 @@ prod → ~/.config/fabric/patterns/{skill_name}/
 ║           ACMS sync_skill.sh — Skill Sync Pipeline      ║
 ║           Mind Over Metadata LLC © 2026                 ║
 ╚══════════════════════════════════════════════════════════╝
-Skill:    ACMS_extract_wisdom
+Skill:    ACES_extract_wisdom
 Domain:   CodingArchitecture
-Source:   /home/pheller/projects/aces-skills/CodingArchitecture/FabricStitch/ACMS_extract_wisdom/system.md
+Source:   /home/pheller/projects/aces-skills/CodingArchitecture/FabricStitch/ACES_extract_wisdom/system.md
 Env:      dev → /home/pheller/.config/fabric/patterns_custom
 Generate: all
 
@@ -98,9 +98,9 @@ Step 6/9 — VALIDATE ARTIFACTS
   ⏱  28ms
 
 Step 7/9 — DEPLOY (dev)
-  ✓ Deployed: system.md → /home/pheller/.config/fabric/patterns_custom/ACMS_extract_wisdom/
-  ✓ Deployed: system.yaml → /home/pheller/.config/fabric/patterns_custom/ACMS_extract_wisdom/
-  ✓ Deployed: system.toon → /home/pheller/.config/fabric/patterns_custom/ACMS_extract_wisdom/
+  ✓ Deployed: system.md → /home/pheller/.config/fabric/patterns_custom/ACES_extract_wisdom/
+  ✓ Deployed: system.yaml → /home/pheller/.config/fabric/patterns_custom/ACES_extract_wisdom/
+  ✓ Deployed: system.toon → /home/pheller/.config/fabric/patterns_custom/ACES_extract_wisdom/
   ⏱  8ms
 
 Step 8/9 — HASH-STORE
@@ -116,7 +116,7 @@ Step 9/9 — COST
 
 ╔══════════════════════════════════════════════════════════╗
 ║  sync_skill.sh — COMPLETE                               ║
-║  Skill:    ACMS_extract_wisdom                          ║
+║  Skill:    ACES_extract_wisdom                          ║
 ║  Steps:    9/9 completed                                ║
 ║  Env:      dev                                          ║
 ║  Cost:     $0.000000                                    ║
@@ -138,7 +138,7 @@ unnecessary regeneration on first pull.
 ## Archive Structure
 
 ```
-CodingArchitecture/FabricStitch/ACMS_extract_wisdom/
+CodingArchitecture/FabricStitch/ACES_extract_wisdom/
 ├── system.md
 ├── system.yaml
 ├── system.toon

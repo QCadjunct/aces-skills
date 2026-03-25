@@ -101,17 +101,17 @@ fi
 echo -e "  ${BOLD}Step 3/3 — Verify ACMS patterns accessible${RESET}"
 echo ""
 
-ACMS_PATTERNS=(
-  "ACMS_extract_wisdom"
+ACES_PATTERNS=(
+  "ACES_extract_wisdom"
   "synthesize_eloquent_narrative_from_wisdom"
   "from_cognitive_blueprint_to_system_md"
   "from_system.md_to_system.yaml"
   "from_system.md_to_system.toon"
-  "ACMS_requirements_identity"
+  "ACES_requirements_identity"
 )
 
 ALL_OK=true
-for pattern in "${ACMS_PATTERNS[@]}"; do
+for pattern in "${ACES_PATTERNS[@]}"; do
   if fabric --listpatterns 2>/dev/null | grep -q "^${pattern}$"; then
     echo -e "  ${GREEN}✓${RESET} $pattern"
   else

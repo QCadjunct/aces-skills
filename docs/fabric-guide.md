@@ -716,7 +716,7 @@ fabric --scrape_question "LangGraph agent patterns 2026" \
 fabric --model gemma3:12b \
        --temperature 0 \
        --pattern from_system.md_to_system.yaml \
-       < CodingArchitecture/FabricStitch/ACMS_extract_wisdom/system.md \
+       < CodingArchitecture/FabricStitch/ACES_extract_wisdom/system.md \
        > /tmp/test_output.yaml
 
 # Validate result
@@ -754,11 +754,11 @@ fabric --pattern extract_wisdom \
 FabricStitch chains multiple fabric invocations into a multi-vendor,
 multi-step pipeline. Each step's output is the next step's input.
 
-### ACMS_extract_wisdom — 5-step pipeline
+### ACES_extract_wisdom — 5-step pipeline
 
 ```bash
 #!/usr/bin/env bash
-# ACMS_extract_wisdom FabricStitch pipeline
+# ACES_extract_wisdom FabricStitch pipeline
 # Multi-vendor: Gemini → Claude → Gemini → Ollama → Pandoc
 
 INPUT="$1"
@@ -890,7 +890,7 @@ fabric --pattern my_pattern < system.md
 # Simulate PSA dispatching to identity specialist
 fabric --model gemma3:12b \
        --temperature 0 \
-       --pattern ACMS_requirements_identity \
+       --pattern ACES_requirements_identity \
        << 'EOF'
 Skill intent: Extract and analyze cost data from cost_audit.log
 Target domain: TaskArchitecture
@@ -937,7 +937,7 @@ _track_fabric_call() {
 output=$(_track_fabric_call \
   "Google" "gemini-2.0-flash" "extract_wisdom" \
   "fabric_stitch.step_1" \
-  "CodingArchitecture/FabricStitch/ACMS_extract_wisdom" \
+  "CodingArchitecture/FabricStitch/ACES_extract_wisdom" \
   "$RUN_ID" "dev" \
   < input.md)
 ```

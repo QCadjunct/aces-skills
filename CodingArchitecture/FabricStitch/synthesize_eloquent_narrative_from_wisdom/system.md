@@ -17,7 +17,7 @@ CodingArchitecture/FabricStitch/synthesize_eloquent_narrative_from_wisdom
 2.0.0-ACMS
 
 # STATUS
-Production — replaces create_tags as Step 4 in ACMS_extract_wisdom pipeline
+Production — replaces create_tags as Step 4 in ACES_extract_wisdom pipeline
 
 # BEHAVIORAL CONTRACT
 

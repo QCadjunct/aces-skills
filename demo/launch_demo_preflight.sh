@@ -93,7 +93,7 @@ fi
 
 # ── Check 4: deploy_generators.sh present ────────────────────────────────────
 echo -e "${CYAN}[4/5]${RESET} deploy_generators.sh — present and executable"
-DEPLOY_SCRIPT="${HOME}/projects/aces-skills/MetaArchitecture/ACMS_skill_deployers/ACMS_skill_deploy_generators/deploy_generators.sh"
+DEPLOY_SCRIPT="${HOME}/projects/aces-skills/MetaArchitecture/ACES_skill_deployers/ACES_skill_deploy_generators/deploy_generators.sh"
 if [[ -x "$DEPLOY_SCRIPT" ]]; then
   check_pass "deploy_generators.sh present and executable"
 elif [[ -f "$DEPLOY_SCRIPT" ]]; then

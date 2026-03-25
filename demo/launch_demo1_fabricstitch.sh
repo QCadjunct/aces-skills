@@ -31,7 +31,7 @@ done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILLS_ROOT="$(dirname "$SCRIPT_DIR")"
-SKILL_DIR="${SKILLS_ROOT}/CodingArchitecture/FabricStitch/ACMS_extract_wisdom"
+SKILL_DIR="${SKILLS_ROOT}/CodingArchitecture/FabricStitch/ACES_extract_wisdom"
 FABRIC_STITCH="${SKILL_DIR}/fabric_stitch.sh"
 
 echo ""

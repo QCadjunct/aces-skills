@@ -584,19 +584,19 @@ def write_seed_entries(log_path: Path) -> None:
 
     entries = [
         # Sync run — source measurement
-        f"[{ts}] | sync_skill | {run_002} | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | skill.system.md | ollama | qwen3:8b | 478 | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | dev | {run_001} | source measured",
-        f"[{ts}] | sync_skill | {run_002} | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | transformer.yaml.system.md | ollama | qwen3:8b | 312 | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | dev | {run_001} | transformer prompt measured",
-        f"[{ts}] | sync_skill | {run_002} | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | transformer.toon.system.md | ollama | qwen3:8b | 287 | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | dev | {run_001} | transformer prompt measured",
-        f"[{ts}] | sync_skill | {run_002} | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | skill.system.yaml | ollama | qwen3:8b | 790 | 421 | 0.000000 | 0.000000 | 0.000000 | 23452 | dev | {run_001} | in=skill+transformer",
-        f"[{ts}] | sync_skill | {run_002} | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | skill.system.toon | ollama | qwen3:8b | 765 | 333 | 0.000000 | 0.000000 | 0.000000 | 23452 | dev | {run_001} | in=skill+transformer",
+        f"[{ts}] | sync_skill | {run_002} | CodingArchitecture/FabricStitch/ACES_extract_wisdom | skill.system.md | ollama | qwen3:8b | 478 | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | dev | {run_001} | source measured",
+        f"[{ts}] | sync_skill | {run_002} | CodingArchitecture/FabricStitch/ACES_extract_wisdom | transformer.yaml.system.md | ollama | qwen3:8b | 312 | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | dev | {run_001} | transformer prompt measured",
+        f"[{ts}] | sync_skill | {run_002} | CodingArchitecture/FabricStitch/ACES_extract_wisdom | transformer.toon.system.md | ollama | qwen3:8b | 287 | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | dev | {run_001} | transformer prompt measured",
+        f"[{ts}] | sync_skill | {run_002} | CodingArchitecture/FabricStitch/ACES_extract_wisdom | skill.system.yaml | ollama | qwen3:8b | 790 | 421 | 0.000000 | 0.000000 | 0.000000 | 23452 | dev | {run_001} | in=skill+transformer",
+        f"[{ts}] | sync_skill | {run_002} | CodingArchitecture/FabricStitch/ACES_extract_wisdom | skill.system.toon | ollama | qwen3:8b | 765 | 333 | 0.000000 | 0.000000 | 0.000000 | 23452 | dev | {run_001} | in=skill+transformer",
         # Fabric stitch execution
-        f"[{ts}] | fabric_stitch | {run_003} | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | fabric_stitch.step_1 | google | gemini-2.0-flash | 1240 | 892 | 0.000465 | 0.001338 | 0.001803 | 4821 | dev | {run_002} | extract_wisdom",
-        f"[{ts}] | fabric_stitch | {run_003} | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | fabric_stitch.step_2 | anthropic | claude-sonnet-4-6 | 2180 | 445 | 0.006540 | 0.006675 | 0.013215 | 8234 | dev | {run_002} | summarize",
-        f"[{ts}] | fabric_stitch | {run_003} | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | fabric_stitch.step_3 | google | gemini-2.0-flash | 1890 | 312 | 0.000709 | 0.000468 | 0.001177 | 3912 | dev | {run_002} | extract_insights",
-        f"[{ts}] | fabric_stitch | {run_003} | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | fabric_stitch.step_4 | ollama | qwen3:8b | 1340 | 89 | 0.000000 | 0.000000 | 0.000000 | 12341 | dev | {run_002} | create_tags",
+        f"[{ts}] | fabric_stitch | {run_003} | CodingArchitecture/FabricStitch/ACES_extract_wisdom | fabric_stitch.step_1 | google | gemini-2.0-flash | 1240 | 892 | 0.000465 | 0.001338 | 0.001803 | 4821 | dev | {run_002} | extract_wisdom",
+        f"[{ts}] | fabric_stitch | {run_003} | CodingArchitecture/FabricStitch/ACES_extract_wisdom | fabric_stitch.step_2 | anthropic | claude-sonnet-4-6 | 2180 | 445 | 0.006540 | 0.006675 | 0.013215 | 8234 | dev | {run_002} | summarize",
+        f"[{ts}] | fabric_stitch | {run_003} | CodingArchitecture/FabricStitch/ACES_extract_wisdom | fabric_stitch.step_3 | google | gemini-2.0-flash | 1890 | 312 | 0.000709 | 0.000468 | 0.001177 | 3912 | dev | {run_002} | extract_insights",
+        f"[{ts}] | fabric_stitch | {run_003} | CodingArchitecture/FabricStitch/ACES_extract_wisdom | fabric_stitch.step_4 | ollama | qwen3:8b | 1340 | 89 | 0.000000 | 0.000000 | 0.000000 | 12341 | dev | {run_002} | create_tags",
         # Hook entries
-        f"[{ts}] | post_tool_call | {run_003} | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | hook.post_tool_call | ollama | qwen3:8b | 512 | 280 | 0.000000 | 0.000000 | 0.000000 | 342 | dev | {run_002} |",
-        f"[{ts}] | task_complete | {run_003} | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | session.total | ollama | qwen3:8b | 1468 | 1034 | 0.000000 | 0.000000 | 0.016195 | 47891 | dev | {run_002} | 4 cost entries summed",
+        f"[{ts}] | post_tool_call | {run_003} | CodingArchitecture/FabricStitch/ACES_extract_wisdom | hook.post_tool_call | ollama | qwen3:8b | 512 | 280 | 0.000000 | 0.000000 | 0.000000 | 342 | dev | {run_002} |",
+        f"[{ts}] | task_complete | {run_003} | CodingArchitecture/FabricStitch/ACES_extract_wisdom | session.total | ollama | qwen3:8b | 1468 | 1034 | 0.000000 | 0.000000 | 0.016195 | 47891 | dev | {run_002} | 4 cost entries summed",
     ]
 
     with open(log_path, "a") as f:
@@ -620,7 +620,7 @@ Examples:
   python3 cost_analyzer.py --compare                # yaml vs toon comparison
   python3 cost_analyzer.py --ripple <RUN_ID>        # provenance chain
   python3 cost_analyzer.py --projection 0.20        # 20% trim projection
-  python3 cost_analyzer.py --skill CodingArchitecture/FabricStitch/ACMS_extract_wisdom
+  python3 cost_analyzer.py --skill CodingArchitecture/FabricStitch/ACES_extract_wisdom
   python3 cost_analyzer.py --seed                   # populate sample data
         """
     )

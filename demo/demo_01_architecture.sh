@@ -65,8 +65,8 @@ echo -e "  fabric --pattern from_system.md_to_system.yaml"
 echo -e "  fabric --pattern from_system.md_to_system.toon"
 
 # ── Example skill ─────────────────────────────────────────────────────────────
-section "1.4 — Example Skill: ACMS_extract_wisdom"
-SKILL="CodingArchitecture/FabricStitch/ACMS_extract_wisdom"
+section "1.4 — Example Skill: ACES_extract_wisdom"
+SKILL="CodingArchitecture/FabricStitch/ACES_extract_wisdom"
 echo -e "FQSN: ${CYAN}$SKILL${RESET}"
 echo ""
 echo -e "${BOLD}system.md (first 10 lines):${RESET}"
