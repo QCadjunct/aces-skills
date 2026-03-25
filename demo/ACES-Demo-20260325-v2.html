@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACES Demo — March 25, 2026 — Mind Over Metadata LLC</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:#1E2761; --ice:#CADCFC; --white:#FFFFFF; --offwhite:#F7F8FC;
+    --muted:#64748B; --border:#E2E8F0; --success:#0F6E56; --success-bg:#E1F5EE;
+    --info:#185FA5; --info-bg:#E6F1FB; --warn:#BA7517; --warn-bg:#FAEEDA;
+    --mono:'Consolas','Courier New',monospace;
+  }
+  body { font-family:'Cambria',Georgia,serif; background:var(--offwhite); color:#1E293B; font-size:15px; line-height:1.6; }
+  .shell { max-width:960px; margin:0 auto; padding:0 2rem 4rem; }
+
+  /* HERO */
+  .hero { background:var(--navy); color:#fff; padding:2.5rem 2rem 2rem; margin-bottom:2rem; }
+  .hero-eye { font-family:'Calibri',sans-serif; font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:var(--ice); margin-bottom:.5rem; }
+  .hero-title { font-size:32px; font-weight:normal; margin-bottom:.5rem; line-height:1.15; }
+  .hero-title em { font-style:italic; color:var(--ice); }
+  .hero-sub { font-family:'Calibri',sans-serif; font-size:14px; color:rgba(202,220,252,.85); max-width:640px; line-height:1.65; }
+
+  /* NAV */
+  .nav { display:flex; border-bottom:2px solid var(--navy); margin-bottom:2rem; overflow-x:auto; }
+  .nav-tab { font-family:'Calibri',sans-serif; font-size:13px; padding:.55rem 1.1rem; cursor:pointer; color:var(--muted); border:none; background:none; border-bottom:3px solid transparent; margin-bottom:-2px; white-space:nowrap; }
+  .nav-tab:hover { color:var(--navy); }
+  .nav-tab.active { color:var(--navy); border-bottom-color:var(--navy); font-weight:600; }
+  .panel { display:none; } .panel.active { display:block; }
+
+  /* SECTION */
+  .section { margin-bottom:2rem; }
+  .section-label { font-family:'Calibri',sans-serif; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:.75rem; padding-bottom:.4rem; border-bottom:1px solid var(--border); }
+
+  /* CARDS */
+  .card-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:1.5rem; }
+  .card { background:var(--white); border:1px solid var(--border); border-left:4px solid var(--navy); border-radius:6px; padding:1.1rem; }
+  .card-title { font-size:13px; font-weight:600; color:var(--navy); margin-bottom:.4rem; }
+  .card-body { font-family:'Calibri',sans-serif; font-size:12px; color:#475569; line-height:1.55; }
+
+  /* METRIC ROW */
+  .metric-row { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-bottom:1.5rem; }
+  .metric { background:var(--white); border:1px solid var(--border); border-radius:8px; padding:.9rem; }
+  .metric-label { font-family:'Calibri',sans-serif; font-size:11px; color:var(--muted); margin-bottom:5px; }
+  .metric-value { font-size:19px; font-weight:600; color:var(--navy); }
+  .metric-sub { font-family:'Calibri',sans-serif; font-size:11px; color:var(--muted); margin-top:3px; }
+
+  /* QUOTE */
+  .quote { border-left:4px solid var(--ice); background:var(--white); padding:1.1rem 1.4rem; margin-bottom:1.5rem; border-radius:0 6px 6px 0; }
+  .quote-text { font-size:14px; line-height:1.75; color:#334155; font-style:italic; }
+  .quote-attr { font-family:'Calibri',sans-serif; font-size:11px; color:var(--muted); margin-top:6px; }
+
+  /* DEMO STEPS */
+  .steps { display:flex; flex-direction:column; gap:8px; }
+  .step { display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:start;
+          background:var(--white); border:1px solid var(--border); border-radius:8px;
+          padding:1rem 1.1rem; cursor:pointer; transition:border-color .15s; }
+  .step:hover { border-color:var(--navy); }
+  .step.active { border-color:var(--navy); border-left-width:4px; background:var(--offwhite); }
+  .step-num { font-family:'Calibri',sans-serif; font-size:11px; font-weight:700; color:var(--muted); padding-top:2px; min-width:20px; }
+  .step.active .step-num { color:var(--navy); }
+  .step-title { font-size:13px; font-weight:600; color:var(--navy); margin-bottom:3px; }
+  .step-desc { font-family:'Calibri',sans-serif; font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:6px; }
+  .step-cmd { font-family:var(--mono); font-size:11px; background:#F1F5F9; padding:4px 10px; border-radius:4px; display:block; margin-top:4px; color:#334155; }
+  .step-cmd.ps { background:#E6F1FB; color:#185FA5; }
+  .step-meta { display:flex; flex-direction:column; align-items:flex-end; gap:4px; }
+
+  /* PILLS */
+  .pill { font-family:'Calibri',sans-serif; font-size:10px; font-weight:700; padding:2px 8px; border-radius:12px; white-space:nowrap; }
+  .pill-wsl { background:var(--success-bg); color:var(--success); }
+  .pill-ps  { background:var(--info-bg); color:var(--info); }
+  .pill-live { background:var(--success-bg); color:var(--success); }
+  .pill-new  { background:var(--warn-bg); color:var(--warn); }
+  .pill-close { background:var(--navy); color:#fff; }
+
+  /* CHEAT SHEET */
+  .cheat { background:var(--white); border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:1.5rem; }
+  .cheat-hdr { background:var(--navy); color:#fff; padding:.6rem 1rem; font-family:'Calibri',sans-serif; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; display:flex; align-items:center; gap:8px; }
+  .cheat-hdr .shell-badge { background:rgba(255,255,255,.2); padding:1px 8px; border-radius:10px; font-size:10px; }
+  .cheat-body { padding:.75rem 1rem; }
+  .cheat-row { display:grid; grid-template-columns:auto 1fr; gap:8px 14px; align-items:start; margin-bottom:.5rem; }
+  .cheat-step { font-family:'Calibri',sans-serif; font-size:10px; font-weight:700; color:var(--muted); padding-top:3px; min-width:22px; }
+  .cheat-cmd { font-family:var(--mono); font-size:11px; color:#334155; background:#F7F8FC; padding:3px 8px; border-radius:3px; }
+  .cheat-cmd.ps-cmd { background:#E6F1FB; color:#185FA5; }
+  .cheat-note { font-family:'Calibri',sans-serif; font-size:11px; color:var(--muted); grid-column:2; margin-top:-2px; margin-bottom:4px; }
+
+  /* TABLES */
+  .data-table { width:100%; border-collapse:collapse; font-family:'Calibri',sans-serif; font-size:12px; margin-bottom:1rem; }
+  .data-table th { text-align:left; font-size:10px; font-weight:700; color:var(--muted); padding:0 .6rem .4rem; border-bottom:2px solid var(--navy); }
+  .data-table td { padding:.45rem .6rem; border-bottom:1px solid var(--border); color:#475569; }
+  .data-table tr:last-child td { font-weight:700; color:var(--navy); border-bottom:none; background:var(--offwhite); }
+  .data-table .good { color:var(--success); }
+  .note { font-family:'Calibri',sans-serif; font-size:11px; color:var(--muted); margin-top:.5rem; line-height:1.5; }
+  .callout { border-left:4px solid var(--warn); background:var(--warn-bg); padding:.75rem 1rem; border-radius:0 6px 6px 0; margin-bottom:1rem; font-family:'Calibri',sans-serif; font-size:12px; color:#7A4F0A; }
+  .callout-ok { border-left-color:var(--success); background:var(--success-bg); color:#0A4A35; }
+
+  /* FLOW */
+  .flow { display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:1.5rem; }
+  .fn { background:var(--white); border:1px solid var(--border); border-radius:6px; padding:.5rem .85rem; text-align:center; min-width:100px; }
+  .fn.navy { background:var(--navy); border-color:var(--navy); }
+  .fn.navy .fl,.fn.navy .fn-name { color:#fff; }
+  .fn.ice { background:var(--info-bg); border-color:var(--ice); }
+  .fn.ice .fn-name { color:var(--info); }
+  .fl { font-family:'Calibri',sans-serif; font-size:9px; color:var(--muted); margin-bottom:1px; }
+  .fn-name { font-size:12px; font-weight:600; color:var(--navy); }
+  .fa { font-size:18px; color:var(--muted); }
+
+  .footer { font-family:'Calibri',sans-serif; font-size:11px; color:var(--muted); text-align:center; padding-top:1.5rem; border-top:1px solid var(--border); margin-top:2.5rem; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eye">Mind Over Metadata LLC &mdash; Peter Heller &mdash; March 25, 2026</div>
+  <div class="hero-title">Agentic AI <em>in Practice</em></div>
+  <div class="hero-sub">ACES Proof-of-Concept &mdash; D&sup4; MDLC governance infrastructure &mdash; 50/51 preflight checks passed &mdash; demo ready.</div>
+</div>
+
+<div class="shell">
+<div class="nav">
+  <button class="nav-tab active" onclick="showPanel('cheatsheet',this)">⚡ Cheat Sheet</button>
+  <button class="nav-tab" onclick="showPanel('thesis',this)">The Thesis</button>
+  <button class="nav-tab" onclick="showPanel('demo',this)">Demo Sequence</button>
+  <button class="nav-tab" onclick="showPanel('numbers',this)">The Numbers</button>
+  <button class="nav-tab" onclick="showPanel('architecture',this)">Architecture</button>
+  <button class="nav-tab" onclick="showPanel('questions',this)">Three Questions</button>
+</div>
+
+<!-- ═══════════════ CHEAT SHEET (default tab) ═══════════════ -->
+<div id="cheatsheet" class="panel active">
+  <div class="section">
+    <div class="section-label">Pre-demo setup &mdash; run these before the audience arrives</div>
+    <div class="callout callout-ok">✓ 50/51 preflight checks passed this morning &mdash; Demo is GO</div>
+
+    <div class="cheat">
+      <div class="cheat-hdr"><span class="shell-badge">WSL2</span> Terminal — start here</div>
+      <div class="cheat-body">
+        <div class="cheat-row">
+          <div class="cheat-step">01</div>
+          <div class="cheat-cmd">cd ~/projects/aces-skills</div>
+        </div>
+        <div class="cheat-row">
+          <div class="cheat-step">02</div>
+          <div class="cheat-cmd">bash demo/demo_preflight.sh</div>
+        </div>
+        <div class="cheat-note">Must show 50+/51 PASS — zero failures</div>
+        <div class="cheat-row">
+          <div class="cheat-step">03</div>
+          <div class="cheat-cmd">&gt; ~/.config/fabric/cost_audit.log</div>
+        </div>
+        <div class="cheat-note">Clear log for clean demo data</div>
+      </div>
+    </div>
+
+    <div class="cheat">
+      <div class="cheat-hdr"><span class="shell-badge">PowerShell</span> Windows — warm the monitor</div>
+      <div class="cheat-body">
+        <div class="cheat-row">
+          <div class="cheat-step">01</div>
+          <div class="cheat-cmd ps-cmd">cd "Z:\Active\aces-repo"</div>
+        </div>
+        <div class="cheat-row">
+          <div class="cheat-step">02</div>
+          <div class="cheat-cmd ps-cmd">$env:PYTHONPATH = "Z:\Active\aces-repo"</div>
+        </div>
+        <div class="cheat-row">
+          <div class="cheat-step">03</div>
+          <div class="cheat-cmd ps-cmd">.\.venv\Scripts\marimo.exe run ui\aces_monitor.py --port 2718</div>
+        </div>
+        <div class="cheat-note">Browser: http://127.0.0.1:2718 &rarr; Tab 6: 🧬 D&sup4; MDLC &rarr; Tab 8: 🔗 LangGraph EXC</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Demo run order &mdash; 15-20 minutes &mdash; all WSL2 except Section 4</div>
+
+    <div class="cheat">
+      <div class="cheat-hdr"><span class="shell-badge">WSL2</span> Section 1 — Architecture Overview (~2 min)</div>
+      <div class="cheat-body">
+        <div class="cheat-row">
+          <div class="cheat-step">cd</div>
+          <div class="cheat-cmd">~/projects/aces-skills</div>
+        </div>
+        <div class="cheat-row">
+          <div class="cheat-step">run</div>
+          <div class="cheat-cmd">bash demo/demo_01_architecture.sh</div>
+        </div>
+        <div class="cheat-note">Shows: FQSN taxonomy · 13 system.md files · Three-File Standard · DEC ACMS 1984 → ACES 2026 mapping</div>
+      </div>
+    </div>
+
+    <div class="cheat">
+      <div class="cheat-hdr"><span class="shell-badge">WSL2</span> Section 2 — Live Sync Pipeline (~3 min, runs gemma3:12b)</div>
+      <div class="cheat-body">
+        <div class="cheat-row">
+          <div class="cheat-step">cd</div>
+          <div class="cheat-cmd">~/projects/aces-skills</div>
+        </div>
+        <div class="cheat-row">
+          <div class="cheat-step">run</div>
+          <div class="cheat-cmd">bash demo/demo_02_sync.sh</div>
+        </div>
+        <div class="cheat-note">Shows: dry run first (all 9 steps) → live run → yaml + toon generated → 5 ADR-009 cost entries written</div>
+      </div>
+    </div>
+
+    <div class="cheat">
+      <div class="cheat-hdr"><span class="shell-badge">WSL2</span> Section 3 — D&sup4; MDLC Cost Intelligence (~2 min)</div>
+      <div class="cheat-body">
+        <div class="cheat-row">
+          <div class="cheat-step">cd</div>
+          <div class="cheat-cmd">~/projects/aces-skills</div>
+        </div>
+        <div class="cheat-row">
+          <div class="cheat-step">run</div>
+          <div class="cheat-cmd">bash demo/demo_03_cost.sh</div>
+        </div>
+        <div class="cheat-note">Shows: cost_analyzer.py · ADR-009 tier chain · bloat detection (Boris Cherney) · TOON comparison</div>
+      </div>
+    </div>
+
+    <div class="cheat">
+      <div class="cheat-hdr"><span class="shell-badge">PowerShell</span> Section 4 — ACES Monitor (~2 min, already running)</div>
+      <div class="cheat-body">
+        <div class="cheat-note" style="color:var(--success);font-weight:600;">Monitor already running from pre-demo setup — switch to browser</div>
+        <div class="cheat-row">
+          <div class="cheat-step">url</div>
+          <div class="cheat-cmd ps-cmd">http://127.0.0.1:2718</div>
+        </div>
+        <div class="cheat-note">Navigate to: Tab 6 🧬 D&sup4; MDLC (live data) · Tab 8 🔗 ACES EXC (architecture)</div>
+        <div class="cheat-note">If monitor stopped: <code style="font-family:var(--mono);font-size:10px;">.\.venv\Scripts\marimo.exe run ui\aces_monitor.py --port 2718</code></div>
+      </div>
+    </div>
+
+    <div class="cheat">
+      <div class="cheat-hdr"><span class="shell-badge">WSL2</span> Section 5 — PrincipalSystemArchitect (~3 min, runs gemma3:12b)</div>
+      <div class="cheat-body">
+        <div class="cheat-row">
+          <div class="cheat-step">cd</div>
+          <div class="cheat-cmd">~/projects/aces-skills</div>
+        </div>
+        <div class="cheat-row">
+          <div class="cheat-step">run</div>
+          <div class="cheat-cmd">bash demo/demo_05_psa.sh</div>
+        </div>
+        <div class="cheat-note">Shows: PSA system.md · RequirementsGathering specialist · live identity elicitation dispatch</div>
+      </div>
+    </div>
+
+    <div class="cheat">
+      <div class="cheat-hdr"><span class="shell-badge">WSL2</span> Section 6 — Fabric Pipeline (~3 min, runs gemma3:12b)</div>
+      <div class="cheat-body">
+        <div class="cheat-row">
+          <div class="cheat-step">cd</div>
+          <div class="cheat-cmd">~/projects/aces-skills</div>
+        </div>
+        <div class="cheat-row">
+          <div class="cheat-step">run</div>
+          <div class="cheat-cmd">bash demo/demo_06_fabric.sh</div>
+        </div>
+        <div class="cheat-note">Shows: live extract_wisdom · transformer patterns · multi-vendor model selection strategy</div>
+      </div>
+    </div>
+
+    <div class="cheat">
+      <div class="cheat-hdr" style="background:#0F6E56;"><span class="shell-badge" style="background:rgba(255,255,255,.25);">WSL2</span> Section 7 — FabricStitch → Word &mdash; THE CLOSING MOMENT (~3 min)</div>
+      <div class="cheat-body">
+        <div class="cheat-row">
+          <div class="cheat-step">cd</div>
+          <div class="cheat-cmd">~/projects/aces-skills/CodingArchitecture/FabricStitch/ACES_extract_wisdom</div>
+        </div>
+        <div class="cheat-row">
+          <div class="cheat-step">run</div>
+          <div class="cheat-cmd">./fabric_stitch.sh "https://www.youtube.com/watch?v=6I0z140c05o"</div>
+        </div>
+        <div class="cheat-note" style="color:var(--success);font-weight:600;">Watch: pipeline steps scroll → Step 5 pandoc → Word opens automatically on Windows</div>
+        <div class="cheat-note">Output: C:\Users\pheller\Documents\ACES-Output\ACES_[TIMESTAMP]_report.docx</div>
+        <div class="cheat-note">Cost: ~$0.07 · Duration: ~2.5 minutes · 3,000-word article</div>
+      </div>
+    </div>
+
+    <div class="cheat">
+      <div class="cheat-hdr"><span class="shell-badge">WSL2</span> Section 7b — ADR-009 Provenance (if time permits)</div>
+      <div class="cheat-body">
+        <div class="cheat-row">
+          <div class="cheat-step">cd</div>
+          <div class="cheat-cmd">~/projects/aces-skills</div>
+        </div>
+        <div class="cheat-row">
+          <div class="cheat-step">run</div>
+          <div class="cheat-cmd">bash demo/demo_07_adr009.sh</div>
+        </div>
+        <div class="cheat-note">Shows: ADR-009 format deep dive · RUN_ID provenance chain · all components writing entries · projection</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Recovery — if something breaks</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title">Fabric model error</div>
+        <div class="card-body">Check model string: <code style="font-family:var(--mono);font-size:10px;">fabric -L | grep gemini</code><br>Current: gemini-2.5-flash · claude-sonnet-4-5</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Monitor not loading</div>
+        <div class="card-body">Re-run: <code style="font-family:var(--mono);font-size:10px;">.\.venv\Scripts\marimo.exe run ui\aces_monitor.py --port 2718</code></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Pattern not found</div>
+        <div class="card-body">Run: <code style="font-family:var(--mono);font-size:10px;">./sync_patterns.sh</code> from ~/projects/aces-skills</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Word didn't open</div>
+        <div class="card-body">File at: C:\Users\pheller\Documents\ACES-Output\ — open manually. The pipeline still ran.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ THESIS ═══════════════ -->
+<div id="thesis" class="panel">
+  <div class="section">
+    <div class="section-label">The central argument</div>
+    <div class="quote">
+      <div class="quote-text">The most pressing challenge is not curriculum addition &mdash; it is curriculum transformation. Students will compete in a world where AI executes at light speed. The irreplaceable human contribution is domain expertise, architectural judgment, and the ability to direct rather than merely operate intelligent systems.</div>
+      <div class="quote-attr">&mdash; Peter Heller, Mind Over Metadata LLC, March 2026</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">Navigator + Driver — Spec-Driven Development</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-title">The Navigator</div><div class="card-body">Holds domain expertise. Authors the specification. Directs the work. Validates AI output. Cannot be automated — because judgment cannot be automated.</div></div>
+      <div class="card"><div class="card-title">The Driver</div><div class="card-body">Executes at light speed. Generates code, artifacts, documentation. Follows the spec. Scales infinitely. The role AI fills — not the role it replaces.</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">What this demo proves</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-title">Governance infrastructure is built</div><div class="card-body">ADR-009 cost accounting. 13 deployed skill contracts. 9-step sync pipeline. Real-time monitor. PrincipalSystemArchitect elicitation. All running on personal compute.</div></div>
+      <div class="card"><div class="card-title">Pipeline produces real deliverables</div><div class="card-body">YouTube video → 5-step multi-vendor pipeline → 3,000-word article → Word opens automatically. Total cost: $0.07.</div></div>
+      <div class="card"><div class="card-title">DEC ACMS 1984 → ACES 2026</div><div class="card-body">Task Definition Language = system.md. Exchange Steps = Fabric patterns. EXC = ACES LangGraph. DECforms = Marimo. 40 years of architecture validated.</div></div>
+      <div class="card" style="border-left-color:var(--success)"><div class="card-title" style="color:var(--success)">50/51 preflight checks passed</div><div class="card-body">Every component deployed and functional. Skills, transformers, monitor, demo scripts, cost accounting, Word interop. Demo is GO.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ DEMO SEQUENCE ═══════════════ -->
+<div id="demo" class="panel">
+  <div class="section">
+    <div class="section-label">Demo sequence — 15-20 minutes — March 25, 2026</div>
+    <div class="steps">
+
+      <div class="step active" onclick="selectStep(this)">
+        <div class="step-num">01</div>
+        <div>
+          <div class="step-title">Architecture overview — FQSN taxonomy, Three-File Standard, ACES mapping</div>
+          <div class="step-desc">Walks 13 system.md behavioral contracts. Shows system.md / system.yaml / system.toon side by side. Maps DEC ACMS 1984 to ACES 2026.</div>
+          <span class="step-cmd">cd ~/projects/aces-skills &amp;&amp; bash demo/demo_01_architecture.sh</span>
+        </div>
+        <div class="step-meta"><span class="pill pill-wsl">WSL2</span><span class="pill pill-live">live</span></div>
+      </div>
+
+      <div class="step" onclick="selectStep(this)">
+        <div class="step-num">02</div>
+        <div>
+          <div class="step-title">Live sync pipeline — gemma3:12b generates yaml + toon, 5 ADR-009 entries</div>
+          <div class="step-desc">Dry run first (shows all 9 steps). Then live: fabric transformers, artifact validation, deploy, cost entries. Boris Cherney insight: transformer prompts are 2.3× skill size.</div>
+          <span class="step-cmd">cd ~/projects/aces-skills &amp;&amp; bash demo/demo_02_sync.sh</span>
+        </div>
+        <div class="step-meta"><span class="pill pill-wsl">WSL2</span><span class="pill pill-live">live</span></div>
+      </div>
+
+      <div class="step" onclick="selectStep(this)">
+        <div class="step-num">03</div>
+        <div>
+          <div class="step-title">D&sup4; MDLC cost intelligence — bloat detection, TOON comparison, ADR-009 tier chain</div>
+          <div class="step-desc">Runs cost_analyzer.py against live log. 5-tier artifact chain. Boris Cherney 800-token threshold. TOON 14% reduction (⚠ below 15% target — live data, live issue).</div>
+          <span class="step-cmd">cd ~/projects/aces-skills &amp;&amp; bash demo/demo_03_cost.sh</span>
+        </div>
+        <div class="step-meta"><span class="pill pill-wsl">WSL2</span><span class="pill pill-live">live</span></div>
+      </div>
+
+      <div class="step" onclick="selectStep(this)">
+        <div class="step-num">04</div>
+        <div>
+          <div class="step-title">ACES Monitor — 8 tabs, D&sup4; MDLC live, LangGraph EXC architecture</div>
+          <div class="step-desc">Already running from pre-demo setup. Switch to browser. Tab 6 reads live cost_audit.log via WSL2 UNC. Tab 8 shows LangGraph state flow diagrams and ACES → LangGraph mapping.</div>
+          <span class="step-cmd ps">http://127.0.0.1:2718 → Tab 6 🧬 D⁴ MDLC → Tab 8 🔗 LangGraph EXC</span>
+        </div>
+        <div class="step-meta"><span class="pill pill-ps">Browser</span><span class="pill pill-live">live</span></div>
+      </div>
+
+      <div class="step" onclick="selectStep(this)">
+        <div class="step-num">05</div>
+        <div>
+          <div class="step-title">PrincipalSystemArchitect — meta-contract, 6-step elicitation, task-call-task</div>
+          <div class="step-desc">The only ACES skill whose tools are other skills. Shows PSA system.md. Runs live identity specialist dispatch. Completeness scoring 0-6. DEC ACMS task-call-task at the meta level.</div>
+          <span class="step-cmd">cd ~/projects/aces-skills &amp;&amp; bash demo/demo_05_psa.sh</span>
+        </div>
+        <div class="step-meta"><span class="pill pill-wsl">WSL2</span><span class="pill pill-new">new</span></div>
+      </div>
+
+      <div class="step" onclick="selectStep(this)">
+        <div class="step-num">06</div>
+        <div>
+          <div class="step-title">Fabric multi-vendor pipeline — model strategy, transformer patterns</div>
+          <div class="step-desc">Live extract_wisdom run. ACES transformer patterns shown. Multi-vendor strategy: local for structure (gemma3:12b), Gemini for extraction, Claude for synthesis.</div>
+          <span class="step-cmd">cd ~/projects/aces-skills &amp;&amp; bash demo/demo_06_fabric.sh</span>
+        </div>
+        <div class="step-meta"><span class="pill pill-wsl">WSL2</span><span class="pill pill-live">live</span></div>
+      </div>
+
+      <div class="step" onclick="selectStep(this)">
+        <div class="step-num">07</div>
+        <div>
+          <div class="step-title">FabricStitch → Word — Blake TEDx, 3,000-word article, Word auto-launch</div>
+          <div class="step-desc">Full 5-step pipeline: Gemini extracts, Claude summarizes, Gemini insights, Claude synthesizes 3,000-word narrative, pandoc generates docx. Word opens automatically on Windows. ~$0.07 total.</div>
+          <span class="step-cmd">cd ~/projects/aces-skills/CodingArchitecture/FabricStitch/ACES_extract_wisdom</span>
+          <span class="step-cmd">./fabric_stitch.sh "https://www.youtube.com/watch?v=6I0z140c05o"</span>
+        </div>
+        <div class="step-meta"><span class="pill pill-wsl">WSL2</span><span class="pill pill-close">closing</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ NUMBERS ═══════════════ -->
+<div id="numbers" class="panel">
+  <div class="section">
+    <div class="section-label">FabricStitch — Blake TEDx talk — validated production run today</div>
+    <table class="data-table">
+      <thead><tr><th>Step</th><th>Pattern</th><th>Vendor / Model</th><th>ms</th><th>In tokens</th><th>Out tokens</th><th>Cost</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>extract_wisdom</td><td>Gemini / gemini-2.5-flash</td><td>38,692</td><td>3,242</td><td>3,242</td><td>$0.001216</td></tr>
+        <tr><td>2</td><td>summarize</td><td>Anthropic / claude-sonnet-4-5</td><td>11,960</td><td>3,242</td><td>323</td><td>$0.014571</td></tr>
+        <tr><td>3</td><td>extract_insights</td><td>Gemini / gemini-2.5-flash</td><td>9,388</td><td>3,242</td><td>130</td><td>$0.000282</td></tr>
+        <tr><td>4</td><td>synthesize_eloquent_narrative</td><td>Anthropic / claude-sonnet-4-5</td><td>88,994</td><td>3,712</td><td>2,998</td><td>$0.056106</td></tr>
+        <tr><td>5</td><td>pandoc → docx + pdf + html</td><td>no LLM</td><td>2,500</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td colspan="3">Total</td><td>151,534</td><td>13,438</td><td>6,693</td><td class="good">$0.072175</td></tr>
+      </tbody>
+    </table>
+    <div class="note">Output: 3,000-word publishable article. Word opened automatically on Windows via WSL2 interop. Seven cents.</div>
+  </div>
+  <div class="section">
+    <div class="section-label">ADR-009 artifact breakdown — sync_skill.sh — ACES_extract_wisdom</div>
+    <table class="data-table">
+      <thead><tr><th>Artifact</th><th>Tier</th><th>Tokens in</th><th>Tokens out</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>skill.system.md</td><td>tier_1_source</td><td>478</td><td>0</td><td>source — input only</td></tr>
+        <tr><td>transformer.yaml.system.md</td><td>tier_1_source</td><td>1,091</td><td>0</td><td>2.3× skill size</td></tr>
+        <tr><td>transformer.toon.system.md</td><td>tier_1_source</td><td>982</td><td>0</td><td>2.1× skill size</td></tr>
+        <tr><td>skill.system.yaml</td><td>tier_2_derived</td><td>1,569</td><td>421</td><td>in = skill + transformer</td></tr>
+        <tr><td>skill.system.toon</td><td>tier_2_derived</td><td>1,460</td><td>362</td><td>14% reduction — ⚠ below 15% target</td></tr>
+        <tr><td colspan="2">Total</td><td>5,580</td><td>783</td><td class="good">$0.000000 — local ollama</td></tr>
+      </tbody>
+    </table>
+    <div class="note">Boris Cherney Principle: transformer prompts are 2.3× the skill they transform. Every sync costs 3× source tokens in combined inputs.</div>
+  </div>
+  <div class="section">
+    <div class="section-label">What was built — March 14-15, 2026</div>
+    <div class="metric-row">
+      <div class="metric"><div class="metric-label">Git commits</div><div class="metric-value">20+</div><div class="metric-sub">aces-skills · aces-repo</div></div>
+      <div class="metric"><div class="metric-label">Skills deployed</div><div class="metric-value">13</div><div class="metric-sub">PSA · 6 specialists · more</div></div>
+      <div class="metric"><div class="metric-label">Preflight</div><div class="metric-value">50/51</div><div class="metric-sub">Zero failures</div></div>
+      <div class="metric"><div class="metric-label">Pipeline cost</div><div class="metric-value">$0.07</div><div class="metric-sub">TEDx → 3,000-word article</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ARCHITECTURE ═══════════════ -->
+<div id="architecture" class="panel">
+  <div class="section">
+    <div class="section-label">FQSN taxonomy — BGD governance applied to AI skills</div>
+    <div class="flow">
+      <div class="fn navy"><div class="fl">abstract</div><div class="fn-name">MetaArchitecture</div></div>
+      <div class="fa">&rarr;</div>
+      <div class="fn ice"><div class="fl">reusable HOW</div><div class="fn-name">CodingArchitecture</div></div>
+      <div class="fa">+</div>
+      <div class="fn"><div class="fl">domain WHAT</div><div class="fn-name">TaskArchitecture</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">Three-file skill standard</div>
+    <div class="flow">
+      <div class="fn navy"><div class="fl">source of truth</div><div class="fn-name">system.md</div></div>
+      <div class="fa">&rarr; sync_skill.sh &rarr;</div>
+      <div class="fn"><div class="fl">LLM config</div><div class="fn-name">system.yaml</div></div>
+      <div class="fa">+</div>
+      <div class="fn"><div class="fl">~14% smaller</div><div class="fn-name">system.toon</div></div>
+      <div class="fa">&rarr;</div>
+      <div class="fn ice"><div class="fl">EXC target</div><div class="fn-name">LangGraph</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">DEC ACMS 1984 → modern ACES 2026</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-title">Task Definition Language (TDL)</div><div class="card-body">system.md — behavioral contract. Human-readable, machine-governable, version-controlled.</div></div>
+      <div class="card"><div class="card-title">Application Definition Utility (ADU)</div><div class="card-body">sync_skill.sh — 9-step pipeline transforming system.md into deployed skill artifacts.</div></div>
+      <div class="card"><div class="card-title">Execution Controller (EXC)</div><div class="card-body">fabric_stitch.sh (current POC) → LangGraph StateGraph (Phase 2). Tab 8 shows the planned state flow.</div></div>
+      <div class="card"><div class="card-title">DECforms</div><div class="card-body">Marimo — 8-tab reactive monitor. Tab 6 reads live cost_audit.log. Tab 8 shows LangGraph architecture.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ THREE QUESTIONS ═══════════════ -->
+<div id="questions" class="panel">
+  <div class="section">
+    <div class="section-label">Not a pitch — a perspective</div>
+    <div class="quote">
+      <div class="quote-text">Dr. William Blake stood at Morgan State University and said: "Do not allow your fear to prevent you from changing to the world of artificial intelligence." We ran his talk through a five-step agentic AI pipeline. Gemini extracted the wisdom. Claude synthesized a 3,000-word article. Pandoc generated the document. Word opened on Windows. Total cost: seven cents. That is not a demonstration of technology. That is a demonstration of what the Navigator + Driver model produces when the spec is right.</div>
+      <div class="quote-attr">&mdash; Peter Heller, March 25, 2026</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">Three questions for the room</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-title">01 — The pipeline question</div><div class="card-body">If we eliminate entry-level roles, where does the next generation of Navigators come from? The institutions removing those roles are practicing institutional celibacy — and they will not survive the generation gap they are creating.</div></div>
+      <div class="card"><div class="card-title">02 — The transformation question</div><div class="card-body">Are we adding AI to the curriculum — or transforming what the curriculum is for? Addition keeps the old model intact. Transformation asks what is irreplaceable when AI executes at light speed.</div></div>
+    </div>
+    <div class="card-grid">
+      <div class="card"><div class="card-title">03 — The definition question</div><div class="card-body">What is the irreplaceable human contribution in an AI-native workforce? Domain expertise, architectural judgment, the ability to direct — not operate — intelligent systems.</div></div>
+      <div class="card" style="border-left-color:var(--info)"><div class="card-title" style="color:var(--info)">What I bring</div><div class="card-body">40 years of systems architecture. A working agentic AI POC on personal compute. D⁴, Nav-SDD published methodologies. A classroom at CUNY Queens College where these questions are already being answered.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">Mind Over Metadata LLC &mdash; Peter Heller &mdash; mindovermetadata.com &mdash; QCadjunct &mdash; March 25, 2026</div>
+</div>
+
+<script>
+function showPanel(id,tab){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  tab.classList.add('active');
+}
+function selectStep(el){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>
