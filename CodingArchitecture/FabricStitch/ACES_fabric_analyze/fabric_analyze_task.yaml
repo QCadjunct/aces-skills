@@ -1,0 +1,62 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# fabric_analyze Task Definition — ACES-style manifest
+# FQSN: CodingArchitecture/FabricStitch/ACES_fabric_analyze
+# VERSION: 2.0.0
+#
+# Run:  bash fabric_analyze.sh --manifest=fabric_analyze_task.yaml
+# Edit: marimo run fabric_analyze_ui.py
+#
+# synthesize_eloquent_narrative_from_wisdom is already installed at:
+#   ~/.config/fabric/patterns/synthesize_eloquent_narrative_from_wisdom/
+# Managed by sync_patterns.sh — do NOT copy or reinstall manually.
+#
+# ROLES:  full | primary | contrast | supporting | background
+# INPUTS: any URL · youtube.com/youtu.be (auto -y) · any pandoc-readable file
+# ═══════════════════════════════════════════════════════════════════════════════
+
+task:
+  title: "UOR Framework — Multi-Source Fabric Analysis"
+  vendor: "Ollama"
+  model: "qwen3.5:397b-cloud"
+  word_limit: 4000
+  outdir: "~/fabric-analysis/uor-framework"
+  obsidian: "~/CSCI381-CourseVault/research/uor-framework"
+  consolidated: true
+  skip_synthesis: false
+  skip_qa: false
+  skip_docx: false
+
+agents:
+
+  - source: "https://next.redhat.com/2022/07/13/the-uor-framework/"
+    title: "UOR Framework — Red Hat Introduction"
+    role: full
+    enabled: true
+
+  - source: "https://www.youtube.com/watch?v=REPLACE_WITH_REAL_ID"
+    title: "UOR Framework — Conference Talk"
+    role: primary
+    enabled: false
+    # YouTube auto-detected — Fabric uses -y flag (yt-dlp transcript)
+
+  - source: "/home/pheller/docs/paper.pdf"
+    title: "Supporting Paper"
+    role: supporting
+    enabled: false
+    # Any pandoc-readable: .pdf .docx .pptx .html .json .rst .org .epub .odt .csv .md .txt
+
+  - source: "https://example.com/competing-view"
+    title: "Opposing Viewpoint"
+    role: contrast
+    enabled: false
+
+  - source: "https://example.com/deep-dive"
+    title: "Technical Deep Dive — Custom Patterns"
+    patterns:
+      - extract_article_wisdom
+      - analyze_claims
+      - extract_questions
+    vendor: "Anthropic"
+    model: "claude-sonnet-4-6"
+    word_limit: 6000
+    enabled: false
