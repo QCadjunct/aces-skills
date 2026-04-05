@@ -86,7 +86,7 @@ agents:
   - pattern: ACES_temporal_gap_analysis
     label:   "Temporal Gap — current state vs original claims"
     vendor:  "Anthropic"
-    model:   "claude-sonnet-4-6"
+    model:   "claude-sonnet-4-5"
     source:  "https://github.com/QCadjunct/UOR-Framework"
     spawn_delay_ms: 1500
     retry:   1
@@ -102,8 +102,8 @@ barrier:
 # ── SYNTHESIS NODE ────────────────────────────────────────────────────────────
 synthesis:
   pattern:        "synthesize_analysis_brief_from_wisdom"
-  vendor:         "Ollama"
-  model:          "gpt-oss:120b-cloud"
+  vendor:         "Anthropic"
+  model:          "claude-opus-4-5"
   word_minimum:   5000
   word_target:    6500
   word_limit:     8000
