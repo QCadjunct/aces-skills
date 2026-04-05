@@ -85,8 +85,8 @@ agents:
 
   - pattern: ACES_temporal_gap_analysis
     label:   "Temporal Gap — current state vs original claims"
-    vendor:  "Ollama"
-    model:   "glm-4.7:cloud"
+    vendor:  "Anthropic"
+    model:   "claude-sonnet-4-6"
     source:  "https://github.com/QCadjunct/UOR-Framework"
     spawn_delay_ms: 1500
     retry:   1
