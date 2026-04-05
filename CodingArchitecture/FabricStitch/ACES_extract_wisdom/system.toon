@@ -1,13 +1,13 @@
 !skill
-n:ACES_extract_wisdom
+n:aces_extract_wisdom
 v:1.0.0
 d:CodingArchitecture
 sd:FabricStitch
 fq:CodingArchitecture/FabricStitch/ACES_extract_wisdom
-m:"Extract distilled wisdom, insights, and recommendations from any text input using multi-vendor Fabric pattern stitching pipeline"
-p:"ACES_extract_wisdom agent specializing in spec-driven wisdom extraction with SDD methodology"
+m:"Extract wisdom from text sources using SDD methodology."
+p:"Multi-vendor pipeline agent for data extraction and report generation."
 t:technical-precise
-tl:[Gemini Flash,Claude Sonnet,Gemini Flash,Ollaama local,pandoc]
+tl:[extract_wisdom,summarize,extract_insights,create_tags,pandoc]
 cx:[Never fabricate insights not present in source,Never truncate output]
-h:[none]
-tc:"Agent signals completion when all wisdom extraction steps are written to output file"
+h:[append_to_audit_log]
+tc:"Agent signals completion when all wisdom extraction steps are written to output file."
