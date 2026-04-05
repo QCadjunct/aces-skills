@@ -496,15 +496,32 @@ async def synthesis_node(
     print(f"  Words   : {chain.synthesis.word_limit} target")
     print(f"{'─'*62}")
 
-    # Build synthesis input — complete acquired context
+    # Build synthesis input in the three-step format the pattern expects:
+    # STEP 1 — EXTRACTED WISDOM  (ideas, quotes, habits, facts, references)
+    # STEP 2 — SUMMARY           (distilled key points)
+    # STEP 3 — INSIGHTS          (deeper analysis and connections)
+
+    # Map our six patterns into the three-step structure
+    STEP1_PATTERNS = ["extract_article_wisdom", "extract_wisdom",
+                      "extract_ideas", "extract_questions", "analyze_claims"]
+    STEP2_PATTERNS = ["summarize"]
+    STEP3_PATTERNS = ["extract_wisdom", "analyze_claims"]
+
+    step1 = "\n\n".join(
+        context_map[p] for p in STEP1_PATTERNS if p in context_map
+    )
+    step2 = "\n\n".join(
+        context_map[p] for p in STEP2_PATTERNS if p in context_map
+    )
+    step3 = "\n\n".join(
+        context_map[p] for p in STEP3_PATTERNS if p in context_map
+    )
+
     lines = [
         f"word_limit={chain.synthesis.word_limit}",
         "",
-        f"Source: {chain.source}",
-        "",
     ]
 
-    # Prepend the synthesis directive if the theme provided one
     if chain.synthesis.directive.strip():
         lines += [
             "SYNTHESIS DIRECTIVE:",
@@ -512,13 +529,17 @@ async def synthesis_node(
             "",
         ]
 
-    # Append each completed pattern's output
-    for pattern, output in context_map.items():
-        lines += [
-            f"== {pattern.upper()} ==",
-            output,
-            "",
-        ]
+    lines += [
+        "# STEP 1 — EXTRACTED WISDOM",
+        step1,
+        "",
+        "# STEP 2 — SUMMARY",
+        step2,
+        "",
+        "# STEP 3 — INSIGHTS",
+        step3,
+        "",
+    ]
 
     synthesis_input = "\n".join(lines)
 
@@ -535,9 +556,9 @@ async def synthesis_node(
         *cmd,
         stdin  = asyncio.subprocess.PIPE,
         stdout = asyncio.subprocess.PIPE,
-        stderr = asyncio.subprocess.DEVNULL,
+        stderr = asyncio.subprocess.PIPE,
     )
-    stdout, _ = await asyncio.wait_for(
+    stdout, stderr_out = await asyncio.wait_for(
         proc.communicate(input=synthesis_input.encode()),
         timeout=600,
     )
@@ -545,7 +566,11 @@ async def synthesis_node(
 
     output = stdout.decode("utf-8", errors="replace").strip()
     wc     = len(output.split())
-    print(f"  ✓  {elapsed:,}ms · {wc:,} words")
+    if not output and stderr_out:
+        err = stderr_out.decode("utf-8", errors="replace").strip()
+        print(f"  ✗  {elapsed:,}ms · stderr: {err[:200]}")
+    else:
+        print(f"  ✓  {elapsed:,}ms · {wc:,} words")
 
     return output
 
