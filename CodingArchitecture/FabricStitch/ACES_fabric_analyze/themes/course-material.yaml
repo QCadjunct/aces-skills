@@ -1,0 +1,34 @@
+# Course Material — 3,500 words
+# For: CSCI 381, instructional use, student comprehension
+theme: course-material
+title_suffix: "Course Material — Student Comprehension Guide"
+word_limit: 3500
+tone: "pedagogically clear, example-rich, accessible without being simplistic"
+synthesis_directive: |
+  You are writing 3,500 words of course material for advanced undergraduate
+  computer science students who have not read the source. Write for a student
+  who understands databases, networking, and basic cryptography.
+
+  What Problem Are We Solving? (600 words): Explain the fragility of
+    location-based addressing using concrete, student-relatable examples.
+    What breaks when a server moves? Why does link rot exist?
+  The Core Idea (700 words): Explain attribute-based addressing as clearly as
+    possible. Use the duck/platypus example from the source. Build up from
+    hashes to schemas to datasets step by step.
+  How It Works — The Components (900 words): UOR Model, UOR Client, Universal
+    Runtime, UROs, and Attribution. Explain each component's role as if
+    explaining it to a student who will be asked about it on an exam.
+  Real-World Analogy (500 words): Find one extended analogy that makes the
+    entire framework click. Library cataloging systems? DNS but for content?
+    Make it stick.
+  Critical Thinking Questions (800 words): Five questions written as prose
+    that a student should be able to answer after reading this material.
+    Each question followed by enough context that the student knows where
+    to look in their understanding for the answer.
+
+  Pedagogically precise. Never condescending. Examples over abstractions.
+patterns_required:
+  - extract_article_wisdom
+  - extract_ideas
+  - summarize
+  - extract_wisdom

@@ -1,0 +1,33 @@
+# Vision Analysis — 4,000 words
+# For: strategy, research, long-horizon planning
+theme: vision-analysis
+title_suffix: "Vision and Goals Analysis"
+word_limit: 4000
+tone: "analytically balanced, temporally structured, intellectually honest"
+synthesis_directive: |
+  You are writing a 4,000-word vision and goals analysis for a technologist or
+  strategist who wants to understand where this technology is going and whether
+  its ambitions are grounded or speculative.
+
+  The Vision (600 words): What fundamental shift in how we think about digital
+    information does this framework propose? What is the central thesis stated
+    elegantly and precisely?
+  Short-Term Goals — Now to 2 Years (800 words): What is demonstrable or
+    prototypable today with current technology? Which parts already exist in
+    implemented standards? What is the realistic near-term deliverable?
+  Medium-Term Goals — 2 to 5 Years (800 words): What requires ecosystem
+    adoption, tooling maturity, or protocol standardization? What is on the
+    critical path? What dependencies must resolve first?
+  Long-Term Goals — 5 to 10 Years (800 words): What is the genuinely visionary
+    claim? If the framework succeeds, what does the world look like? Where does
+    Universal Runtime and attribution lead at scale?
+  Bounded in Theory Only? (1,000 words): An honest assessment. Which claims are
+    technically sound? Which are speculative? Which are repackaging of existing
+    work? What must be proven before this moves from proposal to reality?
+
+  No bullet points. Flowing analytical prose. Temporally honest.
+patterns_required:
+  - extract_article_wisdom
+  - analyze_claims
+  - extract_wisdom
+  - summarize

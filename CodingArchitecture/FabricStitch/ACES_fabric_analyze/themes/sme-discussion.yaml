@@ -1,0 +1,27 @@
+# SME Discussion — 3,000 words
+# For: author meetings, expert panels, technical interviews
+theme: sme-discussion
+title_suffix: "SME Discussion Preparation"
+word_limit: 3000
+tone: "analytically rigorous, inquisitive, intellectually honest"
+synthesis_directive: |
+  You are preparing someone for a substantive discussion with the author or a
+  subject-matter expert. Write 3,000 words of flowing analytical prose covering:
+
+  The Argument (600 words): Reconstruct the author's full argument precisely.
+    What are they claiming, what evidence do they cite, what do they assume?
+  The Strongest Points (600 words): Where the argument is genuinely compelling.
+    What existing evidence or standards support the core claims?
+  The Contested Ground (800 words): Where claims are speculative, derivative,
+    or insufficiently evidenced. Name the specific gaps without being dismissive.
+  Questions Worth Asking (1,000 words): Ten substantive questions written as
+    prose — each question followed by why it matters and what the author's
+    likely position is based on the text. These are not softballs.
+
+  No bullet points in the narrative. Questions may be formatted as bold lead-ins
+  followed by explanatory prose. Analytically honest throughout.
+patterns_required:
+  - extract_article_wisdom
+  - extract_questions
+  - analyze_claims
+  - extract_wisdom

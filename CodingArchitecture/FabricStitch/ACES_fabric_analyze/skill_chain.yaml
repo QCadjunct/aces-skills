@@ -1,0 +1,94 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# skill_chain.yaml — ACES Skill Chain Definition (canonical form)
+# FQSN: CodingArchitecture/FabricStitch/ACES_fabric_analyze
+#
+# This is the canonical YAML form of a SkillChain.
+# The Python dataclass (skill_chain_orchestrator.py) is the runtime form.
+# Theme YAMLs in themes/ auto-derive a SkillChain for single-theme runs.
+#
+# Run:
+#   uv run python skill_chain_orchestrator.py --chain=skill_chain.yaml
+#
+# $AND BARRIER: all enabled agents run in parallel via asyncio.gather().
+# The barrier releases when ALL complete (or per on_failure policy).
+# The complete acquired context is then passed to the synthesis node.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+title:   "UOR Framework — Parallel Skill Chain Analysis"
+source:  "https://next.redhat.com/2022/07/13/the-uor-framework/"
+vendor:  "Ollama"
+model:   "qwen3.5:397b-cloud"
+outdir:  "~/fabric-analysis/uor-framework"
+obsidian: "~/CSCI381-CourseVault/research/uor-framework"
+skip_docx: false
+
+# ── PARALLEL SUBAGENTS (all run simultaneously) ───────────────────────────────
+# Each agent is an independent subprocess. asyncio.gather() is the $AND barrier.
+# on_failure policy: retry | partial | fail_fast
+
+agents:
+  - pattern: extract_article_wisdom
+    label:   "Article Wisdom — summary, ideas, quotes, facts, refs"
+    retry:   1
+    timeout: 600
+    enabled: true
+
+  - pattern: extract_wisdom
+    label:   "Deep Wisdom — insights, habits, recommendations"
+    retry:   1
+    timeout: 600
+    enabled: true
+
+  - pattern: extract_ideas
+    label:   "Idea Inventory — all concepts surfaced"
+    retry:   1
+    timeout: 600
+    enabled: true
+
+  - pattern: extract_questions
+    label:   "Discussion Questions — raw question set"
+    retry:   1
+    timeout: 300
+    enabled: true
+
+  - pattern: analyze_claims
+    label:   "Claims Analysis — evidence, gaps, counters"
+    retry:   1
+    timeout: 600
+    enabled: true
+
+  - pattern: summarize
+    label:   "Executive Summary — distilled key points"
+    retry:   1
+    timeout: 300
+    enabled: true
+
+# ── $AND BARRIER ──────────────────────────────────────────────────────────────
+# Releases when all enabled agents complete.
+# on_failure options:
+#   retry      — retry each failed agent once, then proceed with what completed
+#   partial    — release immediately with whatever completed, note gaps
+#   fail_fast  — cancel all, raise error, abort synthesis
+
+barrier:
+  name:       "and_barrier"
+  on_failure: "retry"
+  required:   []   # empty = all enabled agents required at barrier
+
+# ── SYNTHESIS NODE (post-barrier) ─────────────────────────────────────────────
+# Receives complete acquired context from all completed agents.
+# directive: leave empty to use the pattern's own behavioral contract.
+# Override directive here for theme-specific synthesis focus.
+
+synthesis:
+  pattern:    "synthesize_eloquent_narrative_from_wisdom"
+  word_limit: 4000
+  directive:  |
+    You are writing a 4,000-word vision and goals analysis.
+    Structure as five flowing sections of prose — no bullet points:
+
+    The Vision (600 words): What fundamental shift does this framework propose?
+    Short-Term Goals — Now to 2 Years (800 words): What is demonstrable today?
+    Medium-Term Goals — 2 to 5 Years (800 words): What requires ecosystem adoption?
+    Long-Term Goals — 5 to 10 Years (800 words): What is the visionary claim?
+    Bounded in Theory Only? (1,000 words): Honest assessment — proven vs speculative.

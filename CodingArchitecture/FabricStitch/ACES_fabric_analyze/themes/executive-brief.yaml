@@ -1,0 +1,24 @@
+# Executive Brief — 1,500 words
+# For: C-suite, department heads, funding decisions
+theme: executive-brief
+title_suffix: "Executive Brief"
+word_limit: 1500
+tone: "authoritative, concise, non-technical"
+synthesis_directive: |
+  You are writing a 1,500-word executive brief for a senior leader who will not
+  read the source material. Structure as flowing prose with these four movements:
+
+  What It Is (250 words): The core idea in plain language. No jargon.
+  What Problem It Solves (350 words): The specific pain in current systems this
+    addresses. Concrete examples. Dollar or time cost if inferable.
+  What It Will Take (450 words): Resources, ecosystem adoption, timeline, and
+    risk. Be honest about what is proven versus proposed.
+  Decision Relevance (450 words): Why this matters to this organization now.
+    What to watch, fund, pilot, or ignore. One clear recommendation.
+
+  No bullet points. No headers other than implied by the four movements.
+  Every sentence must earn its place. An executive reads this in 5 minutes.
+patterns_required:
+  - summarize
+  - analyze_claims
+  - extract_article_wisdom

@@ -1,0 +1,30 @@
+# Technical Deep Dive — 5,000 words
+# For: architects, engineers, technical evaluators
+theme: technical-deep-dive
+title_suffix: "Technical Deep Dive"
+word_limit: 5000
+tone: "precise, architectural, evidence-based"
+synthesis_directive: |
+  You are writing a 5,000-word technical analysis for a senior architect or
+  engineer evaluating this technology for production consideration.
+
+  Architecture Overview (800 words): What the system actually does at a
+    component level. Name every component. Describe its role precisely.
+  Standards and Dependencies (800 words): What existing standards does this
+    build on or conflict with? What must exist in the ecosystem for this to work?
+  Implementation Reality (1,000 words): What would it take to implement this
+    today? What is missing? What is hand-waving vs. specified?
+  Security and Integrity Analysis (800 words): Where does trust live in this
+    system? What are the attack surfaces? What does the security model assume?
+  Comparison to Alternatives (800 words): How does this compare to IPFS,
+    semantic web (RDF/SPARQL), OCI, and content-addressable storage? What does
+    it add that those do not provide?
+  Verdict (800 words): Proven, promising, or premature? What would need to be
+    true for this to become production infrastructure?
+
+  Precise language throughout. Call out unproven claims explicitly.
+patterns_required:
+  - extract_article_wisdom
+  - analyze_claims
+  - extract_ideas
+  - extract_wisdom
