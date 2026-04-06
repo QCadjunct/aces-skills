@@ -9,8 +9,8 @@
 # spawn_delay_ms staggers launch to prevent Ollama queue saturation.
 # ═══════════════════════════════════════════════════════════════════════════════
 
-title:   "UOR Framework — Parallel Skill Chain Analysis"
-source:  "https://next.redhat.com/2022/07/13/the-uor-framework/"
+title:   "UOR Framework — Current State Analysis (QCadjunct Fork)"
+source:  "https://github.com/QCadjunct/UOR-Framework"
 vendor:  "Ollama"
 model:   "qwen3.5:397b-cloud"
 outdir:  "~/fabric-analysis/uor-framework"
@@ -27,7 +27,7 @@ agents:
     label:   "Article Wisdom — summary, ideas, quotes, facts, refs"
     vendor:  "Ollama"
     model:   "qwen3.5:397b-cloud"
-    source:  ""                        # uses chain.source
+    source:  "https://next.redhat.com/2022/07/13/the-uor-framework/"                        # uses chain.source
     spawn_delay_ms: 0
     retry:   1
     timeout: 600
