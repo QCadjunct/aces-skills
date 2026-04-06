@@ -4,7 +4,7 @@
 # VERSION: 3.0.0
 #
 # 7 parallel agents — each with model optimized for cognitive task.
-# Agent 7 (ACES_temporal_gap_analysis) has its own source override:
+# Agent 7 (ACES_gap_analysis) has its own source override:
 #   it fetches the CURRENT repo state while agents 1-6 fetch the article.
 # spawn_delay_ms staggers launch to prevent Ollama queue saturation.
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -83,7 +83,7 @@ agents:
     timeout: 300
     enabled: true
 
-  - pattern: ACES_temporal_gap_analysis
+  - pattern: ACES_gap_analysis
     label:   "Temporal Gap — current state vs original claims"
     vendor:  "Anthropic"
     model:   "claude-sonnet-4-5"

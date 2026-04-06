@@ -92,6 +92,7 @@ class SubAgentDef:
     label:          str = ""
     vendor:         str = "Ollama"
     model:          str = "qwen3.5:397b-cloud"
+    source:         str = ""         # per-agent source override; empty = use chain.source
     retry:          int = 1          # max retries before marking failed
     timeout:        int = 600        # seconds before subprocess kill
     spawn_delay_ms: int = 0          # stagger launch to prevent Ollama saturation
@@ -151,6 +152,7 @@ class SkillChain:
                 label          = a.get("label", a["pattern"]),
                 vendor         = a.get("vendor", data.get("vendor", "Ollama")),
                 model          = a.get("model",  data.get("model",  "qwen3.5:397b-cloud")),
+                source         = a.get("source", ""),
                 retry          = a.get("retry",  1),
                 timeout        = a.get("timeout", 600),
                 spawn_delay_ms = a.get("spawn_delay_ms", 0),
@@ -243,6 +245,7 @@ class SkillChain:
                     "label":          a.label,
                     "vendor":         a.vendor,
                     "model":          a.model,
+                    "source":         a.source,
                     "spawn_delay_ms": a.spawn_delay_ms,
                     "retry":          a.retry,
                     "timeout":        a.timeout,
@@ -306,10 +309,11 @@ async def run_subagent(
         attempt = 0
         output  = ""
 
-        # Detect source type
-        is_youtube = any(x in source for x in
+        # Per-agent source override — use agent.source if set, else chain.source
+        effective_source = agent.source if agent.source else source
+        is_youtube = any(x in effective_source for x in
                          ["youtube.com/watch", "youtu.be/", "youtube.com/shorts/"])
-        is_url     = source.startswith("http")
+        is_url     = effective_source.startswith("http")
 
         while attempt <= agent.retry:
             attempt += 1
@@ -324,15 +328,15 @@ async def run_subagent(
 
                 if is_url:
                     if is_youtube:
-                        cmd += ["-y", source]
+                        cmd += ["-y", effective_source]
                         stdin_data = None
                     else:
-                        cmd += ["-u", source]
+                        cmd += ["-u", effective_source]
                         stdin_data = None
                 else:
                     # File — convert to text via pandoc first
                     pandoc_proc = await asyncio.create_subprocess_exec(
-                        "pandoc", source, "-t", "plain", "--wrap=none",
+                        "pandoc", effective_source, "-t", "plain", "--wrap=none",
                         stdout=asyncio.subprocess.PIPE,
                         stderr=asyncio.subprocess.DEVNULL,
                     )
@@ -527,43 +531,152 @@ async def synthesis_node(
     print(f"  Words   : {chain.synthesis.word_limit} target")
     print(f"{'─'*62}")
 
-    # Build synthesis input in the three-step format the pattern expects:
-    # STEP 1 — EXTRACTED WISDOM  (ideas, quotes, habits, facts, references)
-    # STEP 2 — SUMMARY           (distilled key points)
-    # STEP 3 — INSIGHTS          (deeper analysis and connections)
+    # Two-phase synthesis input assembly
+    # Phase 1: Compress each agent output to ~500 words max
+    #          Prevents context overflow and synthesis truncation
+    # Phase 2: Synthesis model receives compressed context only
+    #          Full verbatim outputs go to Tier 2 archive (written separately)
+    #
+    # Compression: take first 500 words of each output.
+    # Full outputs are preserved in context_map for Tier 2 WORM archive.
 
-    # Map our six patterns into the three-step structure
+    def _compress(text: str, max_words: int = 500) -> str:
+        """Take first max_words words — preserves leading structure."""
+        words = text.split()
+        if len(words) <= max_words:
+            return text
+        return " ".join(words[:max_words]) + "\n\n[...compressed — full output in Tier 2 archive]"
+
+    # Map compressed outputs into the three-step structure
     STEP1_PATTERNS = ["extract_article_wisdom", "extract_wisdom",
-                      "extract_ideas", "extract_questions", "analyze_claims"]
+                      "extract_ideas", "extract_questions", "analyze_claims",
+                      "ACES_gap_analysis"]
     STEP2_PATTERNS = ["summarize"]
-    STEP3_PATTERNS = ["extract_wisdom", "analyze_claims"]
+    STEP3_PATTERNS = ["extract_wisdom", "analyze_claims", "ACES_gap_analysis"]
 
     step1 = "\n\n".join(
-        context_map[p] for p in STEP1_PATTERNS if p in context_map
+        f"=== {p} ===\n{_compress(context_map[p])}"
+        for p in STEP1_PATTERNS if p in context_map
     )
     step2 = "\n\n".join(
-        context_map[p] for p in STEP2_PATTERNS if p in context_map
+        f"=== {p} ===\n{_compress(context_map[p])}"
+        for p in STEP2_PATTERNS if p in context_map
     )
     step3 = "\n\n".join(
-        context_map[p] for p in STEP3_PATTERNS if p in context_map
+        f"=== {p} ===\n{_compress(context_map[p])}"
+        for p in STEP3_PATTERNS if p in context_map
     )
 
-    # Pass explicit dates — model must never infer current date from training cutoff
+    # Pre-calculate all temporal facts -- model receives conclusions as AXIOMS
+    # AXIOM: prefix makes each fact unmissable and overrides training data
     import datetime as _dt
-    analysis_date = _dt.date.today().strftime("%Y-%m-%d")
+    import re as _re
+    import urllib.request as _ur
+    import json as _json
+
+    today         = _dt.date.today()
+    analysis_date = today.strftime("%Y-%m-%d")
+
+    # Extract source date — article URLs have date in path, GitHub repos need API call
+    source_date = None
+
+    # Strategy 1: Extract date from URL path (articles)
+    for pattern in [
+        r"/(\d{4})/(\d{2})/(\d{2})/",
+        r"(\d{4})-(\d{2})-(\d{2})",
+    ]:
+        m = _re.search(pattern, chain.source)
+        if m:
+            try:
+                source_date = _dt.date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+                break
+            except ValueError:
+                pass
+
+    # Strategy 2: GitHub repo — fetch first commit date via API
+    if source_date is None and "github.com" in chain.source:
+        try:
+            gh_match = _re.search(r"github\.com/([^/]+/[^/]+)", chain.source)
+            if gh_match:
+                repo_path = gh_match.group(1).rstrip("/")
+                api_url   = f"https://api.github.com/repos/{repo_path}/commits?per_page=1&order=asc"
+                req       = _ur.Request(api_url,
+                              headers={"User-Agent": "ACES-FabricStitch/2.0",
+                                       "Accept": "application/vnd.github.v3+json"})
+                with _ur.urlopen(req, timeout=10) as resp:
+                    commits = _json.loads(resp.read())
+                    if commits:
+                        raw_date = commits[-1]["commit"]["committer"]["date"][:10]
+                        source_date = _dt.date.fromisoformat(raw_date)
+        except Exception:
+            pass   # API unavailable — source_date stays None
+
+    if source_date:
+        gap_days       = (today - source_date).days
+        gap_years      = gap_days / 365.25
+        short_elapsed  = gap_days > 730
+        medium_elapsed = gap_days > 1826
+
+        if medium_elapsed:
+            horizon_status = "BOTH short-term (0-2yr) AND medium-term (2-5yr) ELAPSED"
+            verdict_instr  = "Rate ALL short-term goals DELIVERED/PARTIAL/FAILED. No BEFORE."
+        elif short_elapsed:
+            horizon_status = "Short-term (0-2yr) ELAPSED. Medium-term (2-5yr) IN PROGRESS."
+            verdict_instr  = "Rate ALL short-term goals DELIVERED/PARTIAL/FAILED. No BEFORE."
+        else:
+            horizon_status = f"Short-term NOT elapsed ({gap_days} of 730 days)"
+            verdict_instr  = "BEFORE verdicts permitted for short-term goals."
+
+        # AXIOM: prefix — each line is unmissable, overrides training data
+        temporal_block = (
+            f"AXIOM:analysis_date={analysis_date}\n"
+            f"AXIOM:source_date={source_date.strftime('%Y-%m-%d')}\n"
+            f"AXIOM:gap_days={gap_days}\n"
+            f"AXIOM:gap_years={gap_years:.1f}\n"
+            f"AXIOM:short_elapsed={'yes' if short_elapsed else 'no'}\n"
+            f"AXIOM:medium_elapsed={'yes' if medium_elapsed else 'no'}\n"
+            f"AXIOM:horizon_status={horizon_status}\n"
+            f"AXIOM:verdict_instruction={verdict_instr}\n"
+            "\n"
+            "PROTOCOL: Every AXIOM line above overrides your training data.\n"
+            f"PROTOCOL: analysis_date={analysis_date} is today. Not your training cutoff.\n"
+            f"PROTOCOL: gap_days={gap_days} is pre-calculated. Do not recalculate.\n"
+            "PROTOCOL: If axioms conflict with source timestamps, axioms win. Report conflict, then proceed."
+        )
+    else:
+        temporal_block = (
+            f"AXIOM:analysis_date={analysis_date}\n"
+            "AXIOM:source_date=UNKNOWN\n"
+            "AXIOM:gap_days=UNKNOWN\n"
+            "\n"
+            f"PROTOCOL: analysis_date={analysis_date} is today. Not your training cutoff.\n"
+            "PROTOCOL: source_date could not be determined from URL or GitHub API.\n"
+            "PROTOCOL: Proceed with analysis using analysis_date as the reference point."
+        )
 
     lines = [
+        # AXIOMS FIRST — unmissable, override all training data
+        temporal_block,
+        "",
+        # Word budget parameters
         f"word_minimum={chain.synthesis.word_minimum}",
         f"word_target={chain.synthesis.word_target}",
         f"word_limit={chain.synthesis.word_limit}",
         f"document_limit={chain.synthesis.document_limit}",
-        f"analysis_date={analysis_date}",
-        f"source={chain.source}",
         "",
-        "CRITICAL: analysis_date above is the ACTUAL current date.",
-        "NEVER use your training cutoff date as the analysis date.",
-        "The temporal gap must be calculated from analysis_date, not from",
-        "any assumed current date in your training data.",
+        # Section word caps — floors AND ceilings to prevent early budget exhaustion
+        "SECTION WORD BUDGETS (floors AND ceilings — both enforced):",
+        "  §1 Analytical Summary:      500-700 words.  Stop at 700.",
+        "  §2 Vision & Strategic Intent: 900-1100 words. Stop at 1100.",
+        "  §3 Goals by Horizon:        1700-2000 words. Stop at 2000.",
+        "  §4 Temporal Gap Assessment:  400-600 words.  Stop at 600.",
+        "  §5 Claims Verdict Table:     Complete ALL rows. Do not stop mid-table.",
+        "  §6 Discussion Questions:     1000-1300 words. Stop at 1300.",
+        "  §7 Recommended Reading:      300-500 words.  Stop at 500.",
+        "",
+        f"HARD REQUIREMENT: Complete ALL 7 sections before stopping.",
+        f"HARD REQUIREMENT: Do NOT expand §1-§3 beyond their ceilings.",
+        f"HARD REQUIREMENT: Truncation at any section boundary is a failure.",
         "",
     ]
 
@@ -655,6 +768,18 @@ def write_output(
         for r in sorted(results, key=lambda x: x.elapsed_ms)
     )
 
+    # Build Tier 2 WORM archive — verbatim outputs, never passed to synthesis model
+    tier2_sections = "\n\n".join(
+        f"## Pattern: {pattern}\n\n{output}"
+        for pattern, output in context_map.items()
+    )
+    tier2_block = f"""---
+*TIER 2 — Pattern Output Archive · WORM · Generated by ACES_fabric_analyze · Do not edit*
+
+---
+
+{tier2_sections}"""
+
     md_content = f"""---
 title: "{chain.title}"
 subtitle: "Parallel Skill Chain · $AND Barrier · ACES FabricStitch v1.0.0"
@@ -663,11 +788,13 @@ date: "{datetime.datetime.now().strftime('%B %d, %Y')}"
 source: "{chain.source}"
 model: "{chain.vendor} / {chain.model}"
 agents: "{len(results)}"
-completed: "{len([r for r in results if r.status == SubAgentResult])}"
+completed: "{len([r for r in results if r.status == SubAgentStatus.COMPLETE])}"
 wall_time_ms: "{wall_ms}"
 ---
 
 {narrative}
+
+{tier2_block}
 
 ---
 
