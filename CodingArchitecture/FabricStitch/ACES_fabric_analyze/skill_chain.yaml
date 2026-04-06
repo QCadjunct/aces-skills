@@ -1,15 +1,20 @@
 # ═══════════════════════════════════════════════════════════════════════════════
-# skill_chain.yaml — ACES Skill Chain Definition (canonical WORM form)
+# skill_chain.yaml — ACES Skill Chain Definition
 # FQSN: CodingArchitecture/FabricStitch/ACES_fabric_analyze
-# VERSION: 3.0.0
+# VERSION: 4.0.0
 #
-# 7 parallel agents — each with model optimized for cognitive task.
-# Agent 7 (ACES_gap_analysis) has its own source override:
-#   it fetches the CURRENT repo state while agents 1-6 fetch the article.
-# spawn_delay_ms staggers launch to prevent Ollama queue saturation.
+# Three-phase sequential pipeline — promise → delivery → gap
+# Each phase completes before the next starts ($AND barrier per phase).
+# Three agents total (reduced from 7).
+# Only synthesis uses Anthropic — all extraction uses Ollama cloud ($0.00).
+#
+# Phase 1: Extract promises from 2022 article  → qwen3.5:397b-cloud
+# Phase 2: Extract delivery from current repo  → qwen3-next:80b-cloud
+# Phase 3: Gap analysis (promise vs delivery)  → qwen3.5:397b-cloud
+# Synthesis: Analytical brief                  → claude-opus-4-5 (Anthropic)
 # ═══════════════════════════════════════════════════════════════════════════════
 
-title:   "UOR Framework — Current State Analysis (QCadjunct Fork)"
+title:   "UOR Framework — Promise vs Delivery Gap Analysis"
 source:  "https://github.com/QCadjunct/UOR-Framework"
 vendor:  "Ollama"
 model:   "qwen3.5:397b-cloud"
@@ -17,89 +22,53 @@ outdir:  "~/fabric-analysis/uor-framework"
 obsidian: ""
 skip_docx: false
 
-# ── PARALLEL AGENTS (7 total) ─────────────────────────────────────────────────
-# Agents 1-6: fetch the original article (chain.source)
-# Agent 7:    fetches the CURRENT repo state (source override)
+# ── PHASED SEQUENTIAL PIPELINE ───────────────────────────────────────────────
+# depends_on: [] means start immediately
+# depends_on: [1] means wait for Phase 1 $AND barrier to release
+# depends_on: [1, 2] means wait for both Phase 1 AND Phase 2
 
-agents:
+phases:
 
-  - pattern: extract_article_wisdom
-    label:   "Article Wisdom — summary, ideas, quotes, facts, refs"
-    vendor:  "Ollama"
-    model:   "qwen3.5:397b-cloud"
-    source:  "https://next.redhat.com/2022/07/13/the-uor-framework/"                        # uses chain.source
-    spawn_delay_ms: 0
-    retry:   1
-    timeout: 600
-    enabled: true
+  - phase: 1
+    label: "PROMISE — what was claimed (2022-07-13)"
+    depends_on: []
+    agents:
+      - pattern: extract_article_wisdom
+        label:   "Extract all claims, goals, promises from 2022 article"
+        vendor:  "Ollama"
+        model:   "qwen3.5:397b-cloud"
+        source:  "https://next.redhat.com/2022/07/13/the-uor-framework/"
+        retry:   2
+        timeout: 600
+        enabled: true
 
-  - pattern: extract_wisdom
-    label:   "Deep Wisdom — insights, habits, recommendations"
-    vendor:  "Ollama"
-    model:   "qwen3-next:80b-cloud"
-    source:  ""
-    spawn_delay_ms: 3000
-    retry:   1
-    timeout: 600
-    enabled: true
+  - phase: 2
+    label: "DELIVERY — what exists today (2026-04-06)"
+    depends_on: [1]
+    agents:
+      - pattern: extract_wisdom
+        label:   "Extract current state, implementations, evidence from repo"
+        vendor:  "Ollama"
+        model:   "qwen3-next:80b-cloud"
+        source:  "https://github.com/QCadjunct/UOR-Framework"
+        retry:   2
+        timeout: 600
+        enabled: true
 
-  - pattern: extract_ideas
-    label:   "Idea Inventory — all concepts surfaced"
-    vendor:  "Ollama"
-    model:   "ministral-3:14b-cloud"
-    source:  ""
-    spawn_delay_ms: 1000
-    retry:   1
-    timeout: 600
-    enabled: true
+  - phase: 3
+    label: "GAP — promise vs delivery · 1,362 days elapsed"
+    depends_on: [1, 2]
+    agents:
+      - pattern: ACES_gap_analysis
+        label:   "Allen Interval gap analysis — DELIVERED/PARTIAL/FAILED per claim"
+        vendor:  "Ollama"
+        model:   "qwen3.5:397b-cloud"
+        source:  ""
+        retry:   2
+        timeout: 600
+        enabled: true
 
-  - pattern: extract_questions
-    label:   "Discussion Questions — raw question set"
-    vendor:  "Ollama"
-    model:   "gemma4:31b-cloud"
-    source:  ""
-    spawn_delay_ms: 1000
-    retry:   1
-    timeout: 300
-    enabled: true
-
-  - pattern: analyze_claims
-    label:   "Claims Analysis — evidence, gaps, counters"
-    vendor:  "Ollama"
-    model:   "devstral-small-2:24b-cloud"
-    source:  ""
-    spawn_delay_ms: 2000
-    retry:   1
-    timeout: 600
-    enabled: true
-
-  - pattern: summarize
-    label:   "Executive Summary — distilled key points"
-    vendor:  "Ollama"
-    model:   "qwen3.5:cloud"
-    source:  ""
-    spawn_delay_ms: 500
-    retry:   1
-    timeout: 300
-    enabled: true
-
-  - pattern: ACES_gap_analysis
-    label:   "Temporal Gap — current state vs original claims"
-    vendor:  "Anthropic"
-    model:   "claude-sonnet-4-5"
-    source:  "https://github.com/QCadjunct/UOR-Framework"
-    spawn_delay_ms: 1500
-    retry:   1
-    timeout: 300
-    enabled: true
-
-# ── $AND BARRIER ──────────────────────────────────────────────────────────────
-barrier:
-  name:       "and_barrier"
-  on_failure: "retry"
-  required:   []
-
-# ── SYNTHESIS NODE ────────────────────────────────────────────────────────────
+# ── SYNTHESIS ─────────────────────────────────────────────────────────────────
 synthesis:
   pattern:        "synthesize_analysis_brief_from_wisdom"
   vendor:         "Anthropic"

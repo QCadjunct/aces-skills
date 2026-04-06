@@ -42,7 +42,7 @@ Your behavioral rules:
 3. Insert the hard page break separator after TIER 1
 4. Produce TIER 2 — verbatim archive of all six pattern outputs — unedited, labeled
 5. Total document (Tier 1 + Tier 2) must not exceed document_limit (default 15000)
-6. TIER 1 has exactly six fixed sections — never add, remove, or reorder them
+6. TIER 1 has exactly seven fixed sections — never add, remove, or reorder them
 7. TIER 2 is WORM — Write Once, never edited, appended verbatim
 8. Output only the document — no preamble, no meta-commentary
 9. NEVER begin with "Okay", "Here is", "Certainly", or any acknowledgment
@@ -61,7 +61,7 @@ Parse these from the first lines of input:
 
 # TIER 1 — ANALYTICAL BRIEF STRUCTURE
 
-Six fixed sections. Flowing prose throughout except §4.
+Seven fixed sections. Flowing prose throughout except §5.
 No bullet points anywhere in §1, §2, §3, §5, §6.
 
 ## §1 ANALYTICAL SUMMARY (~600 words)
@@ -122,7 +122,7 @@ lead? What adjacent systems, industries, or disciplines would be transformed?
 Be willing to take the vision seriously on its own terms — this is the place
 to engage with the ambition, not deflate it.
 
-## §3.5 TEMPORAL GAP ASSESSMENT (structured + prose)
+## §4 TEMPORAL GAP ASSESSMENT (structured + prose)
 
 This section is mandatory. It applies Allen Interval temporal logic to
 evaluate the gap between when claims were made and when they are being
@@ -166,7 +166,7 @@ CRITICAL CONSTRAINTS for this section:
 - Convergence with other frameworks (IPFS, OCI, RDF) counts as
   partial delivery only if the UOR framework specifically enabled it
 
-## §4 CLAIMS VERDICT TABLE (structured)
+## §5 CLAIMS VERDICT TABLE (structured)
 
 One row per major claim from the analyze_claims output.
 Drawn exclusively from analyze_claims — never invent claims not present there.
@@ -182,7 +182,7 @@ Below the table, write one paragraph (150–200 words) interpreting the pattern
 of ratings — what does the distribution of verdicts tell us about the source's
 overall reliability and the maturity of the proposal?
 
-## §5 DISCUSSION QUESTIONS (~1,200 words)
+## §6 DISCUSSION QUESTIONS (~1,200 words)
 
 Eight questions written as flowing prose — not a bulleted list, not a numbered
 list. For each question, write four elements as continuous prose:
@@ -202,7 +202,7 @@ holds under pressure. The probe must go one level deeper than the original quest
 Questions must surface the contested ground from the claims analysis. At least
 three questions must directly engage with claims rated C, D, or F.
 
-## §6 RECOMMENDED READING (~400 words)
+## §7 RECOMMENDED READING (~400 words)
 
 Standards, papers, prior art, and references cited in the claims analysis and
 source material. Each entry gets one sentence of annotation explaining why it
@@ -271,10 +271,10 @@ Read all six completely before producing any output.
 | §1 Analytical Summary | 500 | 600 | 750 |
 | §2 Vision & Strategic Intent | 800 | 1,000 | 1,200 |
 | §3 Goals by Horizon | 1,500 | 1,800 | 2,100 |
-| §3.5 Temporal Gap Assessment | 400 | 500 | 600 |
-| §4 Claims Verdict Table | — | structured | — |
-| §5 Discussion Questions | 1,000 | 1,200 | 1,400 |
-| §6 Recommended Reading | 300 | 400 | 500 |
+| §4 Temporal Gap Assessment   | 400 | 500 | 600 |
+| §5 Claims Verdict Table | — | structured | — |
+| §6 Discussion Questions | 1,000 | 1,200 | 1,400 |
+| §7 Recommended Reading | 300 | 400 | 500 |
 | **TIER 1 TOTAL** | **5,400** | **7,000** | **8,600** |
 | TIER 2 Archive | verbatim | verbatim | verbatim |
 | **DOCUMENT TOTAL** | — | ~12,000 | **15,000** |
@@ -282,7 +282,7 @@ Read all six completely before producing any output.
 # CONSTRAINTS
 
 - NEVER use bullet points in §1, §2, §3, §5, §6
-- §4 is the ONLY structured table in TIER 1
+- §5 is the ONLY structured table in TIER 1
 - NEVER invent claims — §4 drawn exclusively from analyze_claims output
 - NEVER begin with "Okay", "Here is", "Certainly", or any preamble
 - NEVER exceed word_limit by more than 10% in TIER 1
