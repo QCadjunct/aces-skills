@@ -1,0 +1,103 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# gap_analysis_v1.yaml — WORM Template
+# FQSN:    CodingArchitecture/FabricStitch/gap_analysis
+# Version: 1.0.0
+# Status:  Production
+#
+# WORM — never edit after registration
+# To update: create gap_analysis_v2.yaml with version: 2.0.0
+# Register: uv run python template_registry.py --register gap_analysis_v1.yaml
+#
+# Author: Peter Heller / Mind Over Metadata LLC
+# Repo:   QCadjunct/aces-skills
+# ═══════════════════════════════════════════════════════════════════════════════
+
+fqsn:    CodingArchitecture/FabricStitch/gap_analysis
+version: 1.0.0
+title:   Promise vs Delivery Gap Analysis
+description: >
+  Three-phase sequential pipeline comparing what a framework promised
+  against what it delivered. Uses Allen Interval temporal logic to
+  render DELIVERED/PARTIAL/FAILED verdicts per claim after the
+  short-term horizon (730 days) has elapsed.
+author:  Peter Heller / Mind Over Metadata LLC
+
+# ── Morph Contract ────────────────────────────────────────────────────────────
+# fixed:       topology, phase count, barrier type, pattern names — WORM
+# overridable: source URLs, models, word budget — bind at instantiation
+morph_contract:
+  fixed:
+    - topology
+    - phase_count
+    - barrier_type
+    - pattern_names
+  overridable:
+    - source_url
+    - model_per_phase
+    - phase_enabled
+    - pattern_per_phase
+    - synthesis_model
+    - word_minimum
+    - word_target
+    - word_limit
+  constrained:
+    - param: source_url
+      allowed_types: [url, github_url, file_path]
+      required: true
+    - param: model_per_phase
+      vendor_whitelist: [Ollama, Anthropic, OpenAI, Google]
+    - param: pattern_per_phase
+      must_match_role: true
+
+# ── Phase Topology (WORM) ─────────────────────────────────────────────────────
+phases:
+
+  - phase: 1
+    label:      "PROMISE — what was claimed (original source)"
+    depends_on: []
+    agents:
+      - pattern: extract_article_wisdom
+        label:   "Extract all claims, goals, and promises"
+        vendor:  Ollama
+        model:   qwen3.5:397b-cloud
+        source:  ""           # bind at morph() — promise source URL
+        retry:   2
+        timeout: 600
+        enabled: true
+
+  - phase: 2
+    label:      "DELIVERY — what exists today (current repo)"
+    depends_on: [1]
+    agents:
+      - pattern: extract_wisdom
+        label:   "Extract current implementation state"
+        vendor:  Ollama
+        model:   qwen3-next:80b-cloud
+        source:  ""           # bind at morph() — delivery source URL
+        retry:   2
+        timeout: 600
+        enabled: true
+
+  - phase: 3
+    label:      "GAP — Allen Interval analysis (promise vs delivery)"
+    depends_on: [1, 2]
+    agents:
+      - pattern: ACES_gap_analysis
+        label:   "Render DELIVERED/PARTIAL/FAILED per claim"
+        vendor:  Ollama
+        model:   qwen3.5:397b-cloud
+        source:  ""           # receives dual corpus from orchestrator
+        retry:   2
+        timeout: 600
+        enabled: true
+
+# ── Synthesis (post-pipeline) ─────────────────────────────────────────────────
+synthesis:
+  pattern:        synthesize_analysis_brief_from_wisdom
+  vendor:         Anthropic
+  model:          claude-opus-4-5
+  word_minimum:   5000
+  word_target:    6500
+  word_limit:     8000
+  document_limit: 15000
+  directive:      ""
