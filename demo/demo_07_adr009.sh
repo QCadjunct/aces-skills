@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # demo_07_adr009.sh
-# ACMS POC Demo — Section 7: ADR-009 Provenance Chain
+# ACES POC Demo — Section 7: ADR-009 Provenance Chain
 # Mind Over Metadata LLC © 2026 — Peter Heller
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -18,7 +18,7 @@ banner() {
 
 section() { echo -e "\n${BOLD}${YELLOW}━━━ $1 ━━━${RESET}\n"; }
 
-banner "ACMS POC — Section 7: ADR-009 Provenance Chain"
+banner "ACES POC — Section 7: ADR-009 Provenance Chain"
 
 # ── ADR-009 overview ──────────────────────────────────────────────────────────
 section "7.1 — ADR-009: Why Provenance Matters"
@@ -112,7 +112,7 @@ echo -e "  WSL2 path: ${CYAN}\\\\wsl\$\\Ubuntu\\home\\pheller\\.config\\fabric\\
 echo -e "  Monitor:   ${CYAN}http://127.0.0.1:2718${RESET} → Tab 6: 🧬 D⁴ MDLC"
 
 # ── Final summary ─────────────────────────────────────────────────────────────
-section "7.6 — ACMS POC: What We Built Today"
+section "7.6 — ACES POC: What We Built Today"
 echo -e "  ${GREEN}✓${RESET} ADR-009 governance spec — D⁴ MDLC cost accounting standard"
 echo -e "  ${GREEN}✓${RESET} sync_skill.sh — 9-step pipeline, ADR-009, gemma3:12b"
 echo -e "  ${GREEN}✓${RESET} deploy_generators.sh — ADR-009 cost tracking"
@@ -127,7 +127,7 @@ echo -e "  ${BOLD}Repo:${RESET} github.com/QCadjunct/aces-skills"
 echo -e "  ${BOLD}Repo:${RESET} github.com/QCadjunct/aces-repo"
 echo ""
 echo -e "${BOLD}${GREEN}╔══════════════════════════════════════════════════════════╗${RESET}"
-echo -e "${BOLD}${GREEN}║  ACMS POC Demo Complete                                 ║${RESET}"
+echo -e "${BOLD}${GREEN}║  ACES POC Demo Complete                                 ║${RESET}"
 echo -e "${BOLD}${GREEN}║  Mind Over Metadata LLC © 2026 — Peter Heller           ║${RESET}"
 echo -e "${BOLD}${GREEN}║  D⁴ MDLC — Domain-Driven Database Design               ║${RESET}"
 echo -e "${BOLD}${GREEN}║           Metadata-Driven Lifecycle                     ║${RESET}"

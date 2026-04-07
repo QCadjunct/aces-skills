@@ -1,6 +1,6 @@
 # vendor_rates — LLM Cost Rate Registry
 
-Single source of truth for LLM cost rates across the ACMS pipeline.
+Single source of truth for LLM cost rates across the ACES pipeline.
 
 ## Files
 
@@ -75,12 +75,12 @@ print(f"Cost: ${cost:.6f}")   # → Cost: $0.000450
 
 ## Cost Audit Log Format
 
-Every ACMS component writes to `~/.config/fabric/cost_audit.log`:
+Every ACES component writes to `~/.config/fabric/cost_audit.log`:
 
 ```
-[2026-03-14T10:31:39] deploy_generators.sh | skill=ACMS_extract_wisdom | vendor=ollama | model=qwen3:8b | tokens_in=420 | tokens_out=195 | cost=$0.000000 | elapsed=1247ms
-[2026-03-14T10:32:11] sync_skill.sh | skill=ACMS_extract_wisdom | env=dev | vendor=ollama | model=qwen3:8b | tokens_in=384 | tokens_out=180 | cost=$0.000000 | elapsed=847ms
-[2026-03-14T10:33:05] post_tool_call.py | skill=ACMS_extract_wisdom | tool=fabric_pattern | tokens_in=512 | tokens_out=280 | cost=$0.000000 | exit_code=0
+[2026-03-14T10:31:39] deploy_generators.sh | skill=ACES_extract_wisdom | vendor=ollama | model=qwen3:8b | tokens_in=420 | tokens_out=195 | cost=$0.000000 | elapsed=1247ms
+[2026-03-14T10:32:11] sync_skill.sh | skill=ACES_extract_wisdom | env=dev | vendor=ollama | model=qwen3:8b | tokens_in=384 | tokens_out=180 | cost=$0.000000 | elapsed=847ms
+[2026-03-14T10:33:05] post_tool_call.py | skill=ACES_extract_wisdom | tool=fabric_pattern | tokens_in=512 | tokens_out=280 | cost=$0.000000 | exit_code=0
 ```
 
 ## Thresholds

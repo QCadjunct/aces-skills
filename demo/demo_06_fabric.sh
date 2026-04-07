@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # demo_06_fabric.sh
-# ACMS POC Demo — Section 6: Fabric Multi-Vendor Pipeline
+# ACES POC Demo — Section 6: Fabric Multi-Vendor Pipeline
 # Mind Over Metadata LLC © 2026 — Peter Heller
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -18,7 +18,7 @@ banner() {
 
 section() { echo -e "\n${BOLD}${YELLOW}━━━ $1 ━━━${RESET}\n"; }
 
-banner "ACMS POC — Section 6: Fabric Multi-Vendor Pipeline"
+banner "ACES POC — Section 6: Fabric Multi-Vendor Pipeline"
 
 # ── FabricStitch overview ─────────────────────────────────────────────────────
 section "6.1 — FabricStitch Architecture"
@@ -54,11 +54,11 @@ echo -e "  Elapsed: ${CYAN}${T_ELAPSED}ms${RESET}"
 echo -e "  Input tokens (est): ${CYAN}$(wc -c < docs/fabric-guide.md | awk '{print int($1/4)}')${RESET}"
 echo -e "  Output tokens (est): ${CYAN}$(echo "$WISDOM" | wc -c | awk '{print int($1/4)}')${RESET}"
 
-read -p "Press Enter to see Fabric transformer for ACMS →"
+read -p "Press Enter to see Fabric transformer for ACES →"
 
-# ── ACMS transformer ──────────────────────────────────────────────────────────
-section "6.3 — ACMS Transformer Patterns"
-echo -e "The ACMS uses two custom Fabric patterns to generate derived artifacts:\n"
+# ── ACES transformer ──────────────────────────────────────────────────────────
+section "6.3 — ACES Transformer Patterns"
+echo -e "The ACES uses two custom Fabric patterns to generate derived artifacts:\n"
 
 echo -e "${BOLD}from_system.md_to_system.yaml (transformer prompt):${RESET}"
 YAML_TRANS="$HOME/.config/fabric/patterns_custom/system.md_transformers/from_system.md_to_system.yaml/system.md"

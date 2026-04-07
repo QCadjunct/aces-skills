@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # sync_skill.sh
-# ACMS Skill Synchronization Pipeline
+# ACES Skill Synchronization Pipeline
 # © 2026 Mind Over Metadata LLC — Peter Heller
 #
 # Detects system.md changes via MD5 hash, versions prior artifacts with

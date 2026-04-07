@@ -6,7 +6,7 @@ identity:
   fqsn: TaskArchitecture/DiaryWriter/ACES_daily_diary
 contract:
   mission: Generate a structured daily diary entry for the Obsidian vault from a summary of the day's work.
-  persona: ACMS Daily Diary Writer — disciplined, concise, architecturally aware.
+  persona: ACES Daily Diary Writer — disciplined, concise, architecturally aware.
   tone: reflective-precise
 authorities:
   tools:

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # cost_analyzer.py
-# ACMS Cost Intelligence Analyzer — D⁴ MDLC Governance Layer
+# ACES Cost Intelligence Analyzer — D⁴ MDLC Governance Layer
 # © 2026 Mind Over Metadata LLC — Peter Heller
 #
 # Reads ~/.config/fabric/cost_audit.log and presents cost intelligence
@@ -276,7 +276,7 @@ def print_df(df: pl.DataFrame, max_rows: int = 50) -> None:
 # ── Reports ────────────────────────────────────────────────────────────────────
 def report_summary(df: pl.DataFrame) -> None:
     """Overall summary statistics."""
-    header("ACMS Cost Intelligence — Summary Report")
+    header("ACES Cost Intelligence — Summary Report")
     print(f"  Log entries:    {len(df):,}")
     print(f"  Skills:         {df['skill'].n_unique()}")
     print(f"  Components:     {df['component'].n_unique()}")
@@ -335,7 +335,7 @@ def report_by_artifact(df: pl.DataFrame) -> None:
         print("  No three-file standard entries yet — run sync_skill.sh to populate")
 
 def report_by_component(df: pl.DataFrame) -> None:
-    """Cost breakdown by ACMS component."""
+    """Cost breakdown by ACES component."""
     header("Cost by Component")
     print("  Shows which layer of the architecture is consuming tokens\n")
 
@@ -611,7 +611,7 @@ def write_seed_entries(log_path: Path) -> None:
 # ── Main ───────────────────────────────────────────────────────────────────────
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="ACMS Cost Intelligence Analyzer — D⁴ MDLC Governance Layer",
+        description="ACES Cost Intelligence Analyzer — D⁴ MDLC Governance Layer",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -640,7 +640,7 @@ Examples:
     args = parser.parse_args()
 
     if args.version:
-        print(f"cost_analyzer.py v{VERSION} — ACMS D⁴ MDLC Governance Layer")
+        print(f"cost_analyzer.py v{VERSION} — ACES D⁴ MDLC Governance Layer")
         print(f"© 2026 Mind Over Metadata LLC — Peter Heller")
         return 0
 
@@ -653,7 +653,7 @@ Examples:
         return 0
 
     # Load log
-    print(f"\n{BOLD}ACMS Cost Intelligence Analyzer{RESET} v{VERSION}")
+    print(f"\n{BOLD}ACES Cost Intelligence Analyzer{RESET} v{VERSION}")
     print(f"© 2026 Mind Over Metadata LLC — Peter Heller")
     print(f"\nLog: {log_path}")
 

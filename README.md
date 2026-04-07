@@ -1,13 +1,13 @@
 # aces-skills
 
-**ACMS Skill Repository — Mind Over Metadata LLC**  
+**ACES Skill Repository — Mind Over Metadata LLC**  
 Peter Heller · [mindovermetadata.com](https://mindovermetadata.com) · [@QCadjunct](https://github.com/QCadjunct)
 
 ---
 
 ## What this is
 
-This repository implements the **Three-File Skill Standard** — the operational unit of the ACMS (Agentic Content Management System) proof-of-concept.
+This repository implements the **Three-File Skill Standard** — the operational unit of the ACES (Agentic Content Management System) proof-of-concept.
 
 Every skill in this repo is a directory containing exactly three files:
 
@@ -83,7 +83,7 @@ VALIDATE → RESOLVE → ARCHIVE → GENERATE → WRITE → CONFIRM → DEPLOY �
 
 ## TOON — Token-Optimized Object Notation
 
-TOON is the wire format for ACMS skill dispatch. It delivers **~19% token reduction** vs YAML on the same data — validated: 392 vs 482 out tokens on `ACES_extract_wisdom`.
+TOON is the wire format for ACES skill dispatch. It delivers **~19% token reduction** vs YAML on the same data — validated: 392 vs 482 out tokens on `ACES_extract_wisdom`.
 
 ```
 # system.yaml (482 out tokens)          # system.toon (392 out tokens)
@@ -94,7 +94,7 @@ identity:                                !skill
 ...                                      ...
 ```
 
-`model_dump_tool()` is the canonical TOON serialization method in the ACMS Pydantic V2 data model.
+`model_dump_tool()` is the canonical TOON serialization method in the ACES Pydantic V2 data model.
 
 ---
 
@@ -121,7 +121,7 @@ Every bash utility in this repo includes **cost accounting as Step N** — a sta
 
 ## Flat deploy pattern (ADR-003)
 
-Fabric does not walk `patterns/` recursively. The ACMS taxonomy is the source of truth. `deploy_generators.sh` bridges taxonomy to the Fabric flat runtime:
+Fabric does not walk `patterns/` recursively. The ACES taxonomy is the source of truth. `deploy_generators.sh` bridges taxonomy to the Fabric flat runtime:
 
 ```
 SOURCE   patterns_custom/ACES_Skills/CodingArchitecture/FabricStitch/ACES_extract_wisdom/
@@ -145,7 +145,7 @@ PROD     patterns/ACES_extract_wisdom/
 ## Architecture Decision Records
 
 Eight ADRs govern this repository — documented in  
-`Mind-Over-Metadata/10-AI-Agent-Orchestration/ACMS-Architecture-Decisions-20260313.md`
+`Mind-Over-Metadata/10-AI-Agent-Orchestration/ACES-Architecture-Decisions-20260313.md`
 
 | ADR | Decision |
 |-----|----------|
@@ -167,7 +167,7 @@ deterministic pre/post processing implemented as zero-dependency Python scripts 
 is adapted from Reza Rezvani's `claude-skills` repository
 (github.com/alirezarezvani/claude-skills), used under open source license.
 
-The ACMS architectural framework, FQSN taxonomy, three-file skill standard
+The ACES architectural framework, FQSN taxonomy, three-file skill standard
 (system.md / system.yaml / system.toon), TOON serialization, two-pillar hierarchy,
 deployment pipeline, cost accounting standard, and D⁴ methodology are original
 work of **Peter Heller / Mind Over Metadata LLC © 2026**.

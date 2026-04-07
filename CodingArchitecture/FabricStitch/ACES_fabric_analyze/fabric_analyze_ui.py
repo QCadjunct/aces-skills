@@ -385,7 +385,7 @@ def _dcg_viz(task):
             f'<rect x="{syn_x}" y="{SYN_Y+20}" width="{syn_w}" height="8" fill="#02C39A"/>',
             f'<text x="{syn_cx}" y="{SYN_Y+18}" text-anchor="middle" '
             f'font-family="Arial" font-size="12" font-weight="bold" fill="#0d1b3e">'
-            f'synthesize_eloquent_narrative_from_wisdom v2.0.0-ACMS</text>',
+            f'synthesize_eloquent_narrative_from_wisdom v2.0.0-ACES</text>',
             f'<text x="{syn_cx}" y="{SYN_Y+44}" text-anchor="middle" '
             f'font-family="Arial" font-size="11" fill="#CADCFC">'
             f'word_limit={cfg.get("word_limit",4000)} · all agent outputs merged → one narrative</text>',

@@ -46,6 +46,6 @@ Each agent: source · title · role · patterns · vendor · model · word_limit
 
 Script: fabric_analyze.sh v2.0.0
 UI: fabric_analyze_ui.py (Marimo DCG Navigator)
-Synthesis pattern: synthesize_eloquent_narrative_from_wisdom v2.0.0-ACMS
+Synthesis pattern: synthesize_eloquent_narrative_from_wisdom v2.0.0-ACES
 Author: Peter Heller / Mind Over Metadata LLC
 Repo: QCadjunct/aces-skills

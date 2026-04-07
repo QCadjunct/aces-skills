@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # launch_demo1_fabricstitch.sh
-# ACMS Demo Step 01 — FabricStitch multi-vendor AI pipeline.
+# ACES Demo Step 01 — FabricStitch multi-vendor AI pipeline.
 # Architecture Standard: Mind Over Metadata LLC — Peter Heller
 #
 # Usage:

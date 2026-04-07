@@ -1,6 +1,6 @@
 """
 guide_renderer.py
-ACMS Guide Renderer — Mind Over Metadata LLC
+ACES Guide Renderer — Mind Over Metadata LLC
 Peter Heller
 
 Renders a saved step-04-guide-draft.md to Obsidian or Repo Markdown.
@@ -47,7 +47,7 @@ def render_repo(content: str, metadata: dict) -> str:
         header.append(f"> **Source**: {source_url}")
     if part_num and course:
         header.append(f"> Part {part_num} — {course}")
-    header.append(f"> Synthesized: {date} — ACMS FabricStitch Pipeline — Mind Over Metadata LLC")
+    header.append(f"> Synthesized: {date} — ACES FabricStitch Pipeline — Mind Over Metadata LLC")
     if run_id:
         header.append(f"> Pipeline Run ID (ADR): `{run_id}`")
 
@@ -94,7 +94,7 @@ tags:
         obsidian_header.append(f"**Source**: {source_url}")
     obsidian_header.append(
         f"**Synthesized**: {date} — "
-        f"[[ACMS-FabricStitch-Pipeline|ACMS FabricStitch]]"
+        f"[[ACES-FabricStitch-Pipeline|ACES FabricStitch]]"
     )
     if run_id:
         obsidian_header.append(
@@ -207,7 +207,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="ACMS Guide Renderer — render saved guide draft to Obsidian or Repo Markdown"
+        description="ACES Guide Renderer — render saved guide draft to Obsidian or Repo Markdown"
     )
     parser.add_argument("folder",
                         help="Path to Part-NN-Title/ folder containing step-04-guide-draft.md")
@@ -229,7 +229,7 @@ if __name__ == "__main__":
         "tags":          [t.strip() for t in args.tags.split(",")] if args.tags else [],
     }
 
-    print(f"\n  ACMS Guide Renderer")
+    print(f"\n  ACES Guide Renderer")
     print(f"  Folder : {folder}")
     print(f"  Format : {args.format}")
     print()

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # update_fabric.sh
-# Update Fabric to latest patterns then immediately restore ACMS customizations.
+# Update Fabric to latest patterns then immediately restore ACES customizations.
 #
 # Sequence:
 #   1. fabric --updatepatterns  (pulls latest from danielmiessler/fabric)
-#   2. ./sync_patterns.sh       (restores ACMS custom patterns to patterns/)
+#   2. ./sync_patterns.sh       (restores ACES custom patterns to patterns/)
 #   3. Report: new patterns added, customizations restored
 #
 # Usage:
@@ -34,7 +34,7 @@ for arg in "$@"; do
 done
 
 echo -e "\n${BOLD}${CYAN}╔══════════════════════════════════════════════════════════╗${RESET}"
-echo -e "${BOLD}${CYAN}║  update_fabric.sh — Fabric Update + ACMS Sync           ║${RESET}"
+echo -e "${BOLD}${CYAN}║  update_fabric.sh — Fabric Update + ACES Sync           ║${RESET}"
 echo -e "${BOLD}${CYAN}║  Mind Over Metadata LLC © 2026 — Peter Heller           ║${RESET}"
 echo -e "${BOLD}${CYAN}╚══════════════════════════════════════════════════════════╝${RESET}"
 echo ""
@@ -72,9 +72,9 @@ else
   echo -e "  ─ No new patterns (already current)"
 fi
 
-# ── Step 4: Restore ACMS customizations ───────────────────────────────────────
+# ── Step 4: Restore ACES customizations ───────────────────────────────────────
 echo ""
-echo -e "  ${BOLD}Step 2/3 — Restore ACMS custom patterns${RESET}"
+echo -e "  ${BOLD}Step 2/3 — Restore ACES custom patterns${RESET}"
 
 SYNC_SCRIPT="$SCRIPT_DIR/sync_patterns.sh"
 
@@ -97,8 +97,8 @@ else
   echo -e "  Copy sync_patterns.sh to the same directory as update_fabric.sh"
 fi
 
-# ── Step 5: Verify ACMS patterns are accessible ───────────────────────────────
-echo -e "  ${BOLD}Step 3/3 — Verify ACMS patterns accessible${RESET}"
+# ── Step 5: Verify ACES patterns are accessible ───────────────────────────────
+echo -e "  ${BOLD}Step 3/3 — Verify ACES patterns accessible${RESET}"
 echo ""
 
 ACES_PATTERNS=(
@@ -129,7 +129,7 @@ done
 
 echo ""
 if [[ "$ALL_OK" == true ]]; then
-  echo -e "  ${GREEN}${BOLD}✓ All ACMS patterns verified — Fabric is current${RESET}"
+  echo -e "  ${GREEN}${BOLD}✓ All ACES patterns verified — Fabric is current${RESET}"
 else
   echo -e "  ${YELLOW}⚠ Some patterns missing — run sync_patterns.sh manually${RESET}"
 fi
@@ -138,6 +138,6 @@ fi
 echo ""
 echo -e "  ${BOLD}Next steps:${RESET}"
 echo -e "  • New Fabric patterns available: ${CYAN}fabric --listpatterns${RESET}"
-echo -e "  • Test ACMS pipeline: ${CYAN}./sync_skill.sh --source <path> --dry-run${RESET}"
+echo -e "  • Test ACES pipeline: ${CYAN}./sync_skill.sh --source <path> --dry-run${RESET}"
 echo -e "  • Update vendor_rates.yaml if new models were added"
 echo ""

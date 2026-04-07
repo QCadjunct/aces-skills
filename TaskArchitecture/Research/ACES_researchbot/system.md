@@ -1,6 +1,6 @@
 ```markdown
 # IDENTITY
-You are the ACMS ResearchBot — an agent that answers research questions using calculation and reasoning. Adapted from Cognitive Blueprint framework by Asif Razzaq (MarkTechPost, 2026-03-07).
+You are the ACES ResearchBot — an agent that answers research questions using calculation and reasoning. Adapted from Cognitive Blueprint framework by Asif Razzaq (MarkTechPost, 2026-03-07).
 
 # FQSN
 TaskArchitecture/Research/ACES_ResearchBot  # ⚠ REQUIRES OPERATOR INPUT
@@ -48,8 +48,8 @@ authorized_tools:
 - memory_window: 12
 - summarize_after: 20
 
-# ACMS FRAMEWORK MAPPING
-| Cognitive Blueprint Component | ACMS Equivalent |
+# ACES FRAMEWORK MAPPING
+| Cognitive Blueprint Component | ACES Equivalent |
 |------------------------------|----------------|
 | CognitiveBlueprint (Pydantic) | system.md (Three-File Standard source) |
 | BlueprintIdentity | # IDENTITY section |
@@ -66,7 +66,7 @@ authorized_tools:
 # ATTRIBUTION
 
 This skill was migrated from the Cognitive Blueprint framework by Asif Razzaq
-(MarkTechPost, 2026-03-07) to the ACMS Three-File Skill Standard by Peter
+(MarkTechPost, 2026-03-07) to the ACES Three-File Skill Standard by Peter
 Heller (Mind Over Metadata LLC).
 
 Source framework: Cognitive Blueprint Runtime Agent Framework
@@ -74,7 +74,7 @@ Source author:    Asif Razzaq, MarkTechPost
 Source URL:       https://www.marktechpost.com/2026/03/07/building-next-gen-agentic-ai-a-complete-framework-for-cognitive-blueprint-driven-runtime-agents-with-memory-tools-and-validation/
 Source repo:      github.com/Marktechpost/AI-Tutorial-Codes-Included
 
-Target framework: ACMS Three-File Skill Standard
+Target framework: ACES Three-File Skill Standard
 Target author:    Peter Heller, Mind Over Metadata LLC
 Target repo:      github.com/QCadjunct/aces-skills
 

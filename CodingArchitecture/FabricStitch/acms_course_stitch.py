@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 acms_course_stitch.py
-ACMS Course FabricStitch Pipeline
+ACES Course FabricStitch Pipeline
 Mind Over Metadata LLC — Peter Heller
 
 Processes a multi-part course — one article at a time or fully automated.
@@ -300,7 +300,7 @@ def write_course_manifest(course: dict, results: list,
         "parts_failed": len(failed),
         "total_cost_usd": round(total_cost, 6),
         "total_duration_seconds": round(total_duration, 1),
-        "pipeline": "ACMS FabricStitch — Mind Over Metadata LLC",
+        "pipeline": "ACES FabricStitch — Mind Over Metadata LLC",
         "pipeline_run_id_explanation": (
             "Architectural Decision Record (ADR) course-level manifest. "
             "Each part has its own manifest.json with individual run IDs. "
@@ -333,7 +333,7 @@ def print_summary(course: dict, results: list):
 # ── Main ──────────────────────────────────────────────────────
 def main():
     parser = argparse.ArgumentParser(
-        description="ACMS Course FabricStitch Pipeline",
+        description="ACES Course FabricStitch Pipeline",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__
     )
@@ -377,7 +377,7 @@ def main():
         sys.exit(1)
 
     # Print plan
-    banner(f"ACMS Course FabricStitch — {course['title']}")
+    banner(f"ACES Course FabricStitch — {course['title']}")
     print(f"\n  Author      : {course['author']}")
     print(f"  Publisher   : {course['publisher']}")
     print(f"  Parts       : {len(parts)} of {len(course['parts'])} total")

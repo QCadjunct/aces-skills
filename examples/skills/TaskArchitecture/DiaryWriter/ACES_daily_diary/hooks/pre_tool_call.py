@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # pre_tool_call.py
-# ACMS Lifecycle Hook — Pre Tool Call
+# ACES Lifecycle Hook — Pre Tool Call
 # Skill:     ACES_daily_diary
 # Domain:    TaskArchitecture/DiaryWriter
 # Generated: 2026-03-14

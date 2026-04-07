@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # demo_03_cost.sh
-# ACMS POC Demo — Section 3: D⁴ MDLC Cost Intelligence
+# ACES POC Demo — Section 3: D⁴ MDLC Cost Intelligence
 # Mind Over Metadata LLC © 2026 — Peter Heller
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -18,7 +18,7 @@ banner() {
 
 section() { echo -e "\n${BOLD}${YELLOW}━━━ $1 ━━━${RESET}\n"; }
 
-banner "ACMS POC — Section 3: D⁴ MDLC Cost Intelligence"
+banner "ACES POC — Section 3: D⁴ MDLC Cost Intelligence"
 
 # ── ADR-009 format explanation ────────────────────────────────────────────────
 section "3.1 — ADR-009: Cost Audit Log Format"

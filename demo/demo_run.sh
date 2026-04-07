@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # demo_run.sh — Master demo launcher
-# ACMS POC Demo — Mind Over Metadata LLC © 2026 — Peter Heller
+# ACES POC Demo — Mind Over Metadata LLC © 2026 — Peter Heller
 # Run from: ~/projects/aces-skills/demo/
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -10,7 +10,7 @@ cd "$REPO_ROOT"
 BOLD='\033[1m'; CYAN='\033[0;36m'; GREEN='\033[0;32m'; YELLOW='\033[0;33m'; RESET='\033[0m'
 
 echo -e "\n${BOLD}${CYAN}╔══════════════════════════════════════════════════════════╗${RESET}"
-echo -e "${BOLD}${CYAN}║  ACMS POC Demo — Master Launcher                        ║${RESET}"
+echo -e "${BOLD}${CYAN}║  ACES POC Demo — Master Launcher                        ║${RESET}"
 echo -e "${BOLD}${CYAN}║  Mind Over Metadata LLC © 2026 — Peter Heller           ║${RESET}"
 echo -e "${BOLD}${CYAN}╚══════════════════════════════════════════════════════════╝${RESET}\n"
 

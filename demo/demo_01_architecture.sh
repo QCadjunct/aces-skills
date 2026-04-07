@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # demo_01_architecture.sh
-# ACMS POC Demo — Section 1: Architecture Overview
+# ACES POC Demo — Section 1: Architecture Overview
 # Mind Over Metadata LLC © 2026 — Peter Heller
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -21,13 +21,13 @@ section() {
   echo -e "\n${BOLD}${YELLOW}━━━ $1 ━━━${RESET}\n"
 }
 
-banner "ACMS POC — Section 1: Architecture Overview"
+banner "ACES POC — Section 1: Architecture Overview"
 echo -e "${BOLD}Mind Over Metadata LLC — Peter Heller${RESET}"
 echo -e "D⁴ MDLC — Domain-Driven Database Design Metadata-Driven Lifecycle\n"
 
 # ── FQSN Taxonomy ─────────────────────────────────────────────────────────────
 section "1.1 — FQSN Taxonomy (Fully Qualified Skill Name)"
-echo -e "The ACMS skill repository follows a three-level BGD hierarchy:"
+echo -e "The ACES skill repository follows a three-level BGD hierarchy:"
 echo -e ""
 echo -e "  ${BOLD}PILLAR/DOMAIN/SKILL_NAME${RESET}"
 echo -e ""
@@ -54,7 +54,7 @@ echo -e "  ${GREEN}$(find . -name "system.toon" | grep -v ".git\|_archive" | wc 
 
 # ── Three-File Standard ───────────────────────────────────────────────────────
 section "1.3 — Three-File Skill Standard"
-echo -e "Every ACMS skill has exactly three artifacts:"
+echo -e "Every ACES skill has exactly three artifacts:"
 echo ""
 echo -e "  ${BOLD}system.md${RESET}    — Human-readable behavioral contract (source of truth)"
 echo -e "  ${BOLD}system.yaml${RESET}  — LLM-readable structured form (derived)"
@@ -78,9 +78,9 @@ echo ""
 echo -e "${BOLD}system.toon (first 8 lines):${RESET}"
 head -8 "$SKILL/system.toon"
 
-# ── ACMS Framework Mapping ────────────────────────────────────────────────────
-section "1.5 — ACMS Framework Mapping"
-echo -e "DEC ACMS (1980s)              →  Modern ACMS POC"
+# ── ACES Framework Mapping ────────────────────────────────────────────────────
+section "1.5 — ACES Framework Mapping"
+echo -e "DEC ACES (1980s)              →  Modern ACES POC"
 echo -e "─────────────────────────────────────────────────────"
 echo -e "Application Definition Utility →  system.md (TDL)"
 echo -e "Task Definition Language       →  sync_skill.sh"

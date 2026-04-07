@@ -58,7 +58,7 @@ prod → ~/.config/fabric/patterns/{skill_name}/
 
 ```
 ╔══════════════════════════════════════════════════════════╗
-║           ACMS sync_skill.sh — Skill Sync Pipeline      ║
+║           ACES sync_skill.sh — Skill Sync Pipeline      ║
 ║           Mind Over Metadata LLC © 2026                 ║
 ╚══════════════════════════════════════════════════════════╝
 Skill:    ACES_extract_wisdom

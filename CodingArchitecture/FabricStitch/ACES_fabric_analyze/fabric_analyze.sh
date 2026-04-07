@@ -405,7 +405,7 @@ patterns: "${patterns[*]}"
 
 # Part 1 — Narrative Synthesis
 
-*synthesize_eloquent_narrative_from_wisdom v2.0.0-ACMS · word_limit=${word_limit}*
+*synthesize_eloquent_narrative_from_wisdom v2.0.0-ACES · word_limit=${word_limit}*
 
 ${SYNTHESIS}
 

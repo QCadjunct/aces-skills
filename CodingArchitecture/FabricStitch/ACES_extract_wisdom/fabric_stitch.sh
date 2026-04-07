@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# ACMS BASH Agent — Fabric Stitching Pipeline v3
+# ACES BASH Agent — Fabric Stitching Pipeline v3
 # Mind Over Metadata LLC — Peter Heller
 # skill: CodingArchitecture/FabricStitch/ACES_extract_wisdom
 #
@@ -49,7 +49,7 @@ SOURCE_VIDEO=""    # Local video file
 SOURCE_TYPE=""     # youtube | file | web | video
 WORD_LIMIT=3000
 OUTPUT_BASE="$HOME/projects/aces-skills/FabricStitch/output"
-WIN_OUTPUT_DIR="/mnt/c/Users/pheller/Documents/ACMS-Output"
+WIN_OUTPUT_DIR="/mnt/c/Users/pheller/Documents/ACES-Output"
 UV_PYTHON="$HOME/projects/aces-skills/.venv/bin/python3"
 
 while [[ $# -gt 0 ]]; do
@@ -120,7 +120,7 @@ DAY=$(date +%d)
 PIPELINE_START_TIME=$(date '+%Y-%m-%d %H:%M:%S')
 
 # ── Run ID — Architectural Decision Record (ADR) identifier ───
-# ADR-009 governs the ACMS cost audit format
+# ADR-009 governs the ACES cost audit format
 # This UUID ties all pipeline artifacts to their cost audit entries
 RUN_ID=$(generate_uuidv7)
 
@@ -286,7 +286,7 @@ get_cost() { echo "$1" | cut -d'|' -f4; }
 
 # ── Pipeline Header ───────────────────────────────────────────
 echo "============================================================"
-echo "ACMS Fabric Stitching Pipeline v3"
+echo "ACES Fabric Stitching Pipeline v3"
 echo "Mind Over Metadata LLC — Peter Heller"
 echo "============================================================"
 echo "Source      : $SOURCE_LABEL"
@@ -509,7 +509,7 @@ cat > "${FINAL_DIR}/manifest.json" << MANIFEST
 
   "pipeline_run_id": "${RUN_ID}",
   "pipeline_run_id_explanation": "Architectural Decision Record (ADR) identifier — this ID links every file in this folder to the cost audit trail in cost_audit.log. Search for this ID to trace every token spent, every model used, and every decision made during this pipeline run.",
-  "governance_standard": "ADR-009 — ACMS Cost Audit Format (16-field pipe-delimited log)",
+  "governance_standard": "ADR-009 — ACES Cost Audit Format (16-field pipe-delimited log)",
 
   "word_limit_requested": ${WORD_LIMIT},
   "word_count_produced": ${WORD_COUNT},
@@ -577,7 +577,7 @@ MANIFEST
 
 echo ""
 echo "============================================================"
-echo "ACMS PIPELINE COMPLETION REPORT"
+echo "ACES PIPELINE COMPLETION REPORT"
 echo "============================================================"
 printf "  %-5s %-24s %-30s %8s %8s %8s %12s\n" \
     "Step" "Pattern" "Vendor|Model" "ms" "In" "Out" "Cost"

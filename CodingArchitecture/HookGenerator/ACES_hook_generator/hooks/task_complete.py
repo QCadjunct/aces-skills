@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # task_complete.py
-# ACMS Lifecycle Hook — Task Complete
+# ACES Lifecycle Hook — Task Complete
 # Skill:     ACES_extract_wisdom
 # Domain:    CodingArchitecture/FabricStitch
 # Generated: 2026-03-14
@@ -151,7 +151,7 @@ def main() -> int:
     # Step 5: Print completion receipt (mirrors deploy_generators.sh Step 9)
     result = "PASS" if not missing else "FAIL"
     print(f"╔══════════════════════════════════════════════════════════╗")
-    print(f"║  ACMS task_complete — {SKILL_NAME:<35} ║")
+    print(f"║  ACES task_complete — {SKILL_NAME:<35} ║")
     print(f"║  Result:      {result:<43} ║")
     print(f"║  Total cost:  ${total_cost:.6f} ({entry_count} cost entries){'':<17} ║")
     print(f"║  Duration:    {duration_ms}ms{'':<42} ║")

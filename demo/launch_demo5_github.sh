@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # launch_demo5_github.sh
-# ACMS Demo Step 05 — open GitHub repos in browser.
+# ACES Demo Step 05 — open GitHub repos in browser.
 # Architecture Standard: Mind Over Metadata LLC — Peter Heller
 #
 # Opens both repos in sequence — aces-skills first, then acms-langgraph-poc.

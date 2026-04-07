@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # launch_demo2_generators.sh
-# ACMS Demo Step 02 — deploy_generators.sh nine-step pipeline.
+# ACES Demo Step 02 — deploy_generators.sh nine-step pipeline.
 # Architecture Standard: Mind Over Metadata LLC — Peter Heller
 #
 # Usage:

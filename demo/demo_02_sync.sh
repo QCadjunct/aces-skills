@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # demo_02_sync.sh
-# ACMS POC Demo — Section 2: Live Sync Pipeline
+# ACES POC Demo — Section 2: Live Sync Pipeline
 # Mind Over Metadata LLC © 2026 — Peter Heller
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -18,11 +18,11 @@ banner() {
 
 section() { echo -e "\n${BOLD}${YELLOW}━━━ $1 ━━━${RESET}\n"; }
 
-banner "ACMS POC — Section 2: Live Sync Pipeline"
+banner "ACES POC — Section 2: Live Sync Pipeline"
 
 # ── sync_skill.sh overview ────────────────────────────────────────────────────
 section "2.1 — sync_skill.sh — Nine-Step Pipeline"
-echo -e "sync_skill.sh is the ACMS Task Definition Language executor."
+echo -e "sync_skill.sh is the ACES Task Definition Language executor."
 echo -e "It transforms system.md into system.yaml + system.toon via Fabric.\n"
 echo -e "  Step 1  VALIDATE    — required sections present"
 echo -e "  Step 2  HASH        — MD5 change detection"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # launch_demo4_diary.sh
-# ACMS Demo Step 04 — open Navigator Diary in Obsidian.
+# ACES Demo Step 04 — open Navigator Diary in Obsidian.
 # Architecture Standard: Mind Over Metadata LLC — Peter Heller
 #
 # Opens Obsidian to the NavigatorDiary vault graph view.

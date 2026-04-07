@@ -1,13 +1,13 @@
 # Navigator Diary — 2026-03-14
 **Mind Over Metadata LLC — Peter Heller**
-**Project: ACMS Proof-of-Concept**
+**Project: ACES Proof-of-Concept**
 **Status at end of day: DEMO IS GO — 50/50 preflight checks passed**
 
 ---
 
 ## What We Set Out to Do
 
-Complete the ACMS POC build sequence end-to-end in a single session — from ADR-009 governance spec through demo scripts and preflight verification — in preparation for the March 16 demo.
+Complete the ACES POC build sequence end-to-end in a single session — from ADR-009 governance spec through demo scripts and preflight verification — in preparation for the March 16 demo.
 
 ---
 
@@ -20,7 +20,7 @@ Established the 16-field pipe-delimited cost audit log format as the governance 
 Built the D⁴ MDLC cost intelligence CLI with seven report modes: summary, by-artifact, by-component, by-vendor, by-skill, bloat detection, TOON comparison, and ripple projection. Validated live: TOON reduction 14% (target ≥15% — flagged as review item), skill.system.md 478 tokens (✅ under 800 threshold). First real architectural insight of the day: the transformer prompts (1,091 tokens yaml, 982 tokens toon) are 2× larger than the skill they transform — the Boris Cherney principle made visible in data.
 
 ### Step 3 — sync_skill.sh Patch
-Upgraded Step 9 from a single legacy aggregate log entry to 5 ADR-009 format per-artifact entries per sync run: skill.system.md (source measurement), transformer.yaml.system.md (prompt measurement), transformer.toon.system.md (prompt measurement), skill.system.yaml (combined input), skill.system.toon (combined input). Added RUN_ID generation per run, full three-level FQSN (CodingArchitecture/FabricStitch/ACMS_extract_wisdom), and switched default model from qwen3:8b to gemma3:12b (12s vs 23s, better YAML quality). Live validated: 5 ADR-009 entries written, cost_analyzer.py reading them correctly.
+Upgraded Step 9 from a single legacy aggregate log entry to 5 ADR-009 format per-artifact entries per sync run: skill.system.md (source measurement), transformer.yaml.system.md (prompt measurement), transformer.toon.system.md (prompt measurement), skill.system.yaml (combined input), skill.system.toon (combined input). Added RUN_ID generation per run, full three-level FQSN (CodingArchitecture/FabricStitch/ACES_extract_wisdom), and switched default model from qwen3:8b to gemma3:12b (12s vs 23s, better YAML quality). Live validated: 5 ADR-009 entries written, cost_analyzer.py reading them correctly.
 
 ### Step 4 — deploy_generators.sh Patch
 Same ADR-009 upgrade applied to the deploy generators script. 5 per-artifact entries, RUN_ID, SKILL_FQSN. Committed f20ee6d.
@@ -32,17 +32,17 @@ Patched post_tool_call.py and task_complete.py to write ADR-009 format. post_too
 Added a seventh tab to the Marimo monitor reading live from cost_audit.log via WSL2 UNC path. Seven accordions: KPIs + Filters, Cost by Artifact Tier (the full tier_0→tier_4 chain), Cost by Artifact (Three-File Standard), Cost by Vendor/Model, Cost by Skill (FQSN), Bloat Detection (Boris Cherney callout), TOON Efficiency comparison. First tab in the monitor showing real production data — all other tabs still run on deterministic mock data pending PostgreSQL. Survived BOM stripping, em-dash removal, and triple-quote restoration before launching cleanly. Committed 80f01df to aces-repo main.
 
 ### Step 7 — PrincipalSystemArchitect system.md
-Authored the meta-contract: the only ACMS skill whose tools are other skills. 182 lines, 6-step elicitation sequence, completeness scoring (0-6), Boris Cherney exemption for MetaArchitecture skills, ACMS framework mapping (task-call-task at the meta level), POC-V1.0 status with refinement gate. system.yaml required manual YAML repair post-transformer — documented as known POC limitation of the local transformer quality.
+Authored the meta-contract: the only ACES skill whose tools are other skills. 182 lines, 6-step elicitation sequence, completeness scoring (0-6), Boris Cherney exemption for MetaArchitecture skills, ACES framework mapping (task-call-task at the meta level), POC-V1.0 status with refinement gate. system.yaml required manual YAML repair post-transformer — documented as known POC limitation of the local transformer quality.
 
 ### Step 8 — RequirementsGathering 6 Specialists
-Built all six specialists programmatically from a single Python builder: identity, mission, authorities, lifecycle, cost_model, data. Each: ~100 lines, POC-V1.0, structured 4-6 questions, YAML output spec, ACMS framework mapping, constraints section. Sync loop ran for 4 skills before Ctrl+C — turned out not to be an endless loop, just 6×23s = 2.5 minutes with no progress indicator between skills. Noted as UX improvement for multi-skill sync runs. 16 files committed, b6a1166.
+Built all six specialists programmatically from a single Python builder: identity, mission, authorities, lifecycle, cost_model, data. Each: ~100 lines, POC-V1.0, structured 4-6 questions, YAML output spec, ACES framework mapping, constraints section. Sync loop ran for 4 skills before Ctrl+C — turned out not to be an endless loop, just 6×23s = 2.5 minutes with no progress indicator between skills. Noted as UX improvement for multi-skill sync runs. 16 files committed, b6a1166.
 
 ### Step 9 — fabric-guide.md
-977-line comprehensive Fabric CLI reference: all 60+ flags grouped into 13 categories, combinations reference matrix, dangerous combinations table, standalone examples, FabricStitch pipeline examples, ACMS transformer invocations, PrincipalSystemArchitect dispatch simulation, cost accounting wrapper pattern. Committed 96d3c52.
+977-line comprehensive Fabric CLI reference: all 60+ flags grouped into 13 categories, combinations reference matrix, dangerous combinations table, standalone examples, FabricStitch pipeline examples, ACES transformer invocations, PrincipalSystemArchitect dispatch simulation, cost accounting wrapper pattern. Committed 96d3c52.
 
 ### Step 10 — Demo Scripts (7 Sections)
 Built seven demo scripts for the March 16 presentation:
-- demo_01_architecture.sh — FQSN taxonomy, repo structure, three-file standard, ACMS mapping (no LLM)
+- demo_01_architecture.sh — FQSN taxonomy, repo structure, three-file standard, ACES mapping (no LLM)
 - demo_02_sync.sh — live sync_skill.sh run with dry-run then live, artifact display
 - demo_03_cost.sh — cost_analyzer.py with bloat detection and TOON comparison
 - demo_04_monitor.ps1 — Marimo monitor launch with D⁴ MDLC tab walkthrough

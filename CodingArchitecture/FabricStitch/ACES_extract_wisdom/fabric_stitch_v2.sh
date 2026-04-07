@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# ACMS BASH Agent — Fabric Stitching Pipeline v2
+# ACES BASH Agent — Fabric Stitching Pipeline v2
 # Mind Over Metadata LLC — Peter Heller
 # skill: CodingArchitecture/FabricStitch/bash.cli/
 #
@@ -12,7 +12,7 @@
 
 URL=${1:?"ERROR: YouTube URL required as first argument"}
 OUTPUT_DIR=${2:-"$HOME/projects/aces-skills/FabricStitch/output"}
-WIN_OUTPUT_DIR="/mnt/c/Users/pheller/Documents/ACMS-Output"
+WIN_OUTPUT_DIR="/mnt/c/Users/pheller/Documents/ACES-Output"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 BASE="${OUTPUT_DIR}/${TIMESTAMP}"
 AUDIT_LOG="$HOME/projects/aces-skills/FabricStitch/audit.log"
@@ -114,7 +114,7 @@ get_cost() { echo "$1" | cut -d'|' -f4; }
 
 # ── Pipeline Header ───────────────────────────────────────────
 echo "============================================================"
-echo "ACMS Fabric Stitching Pipeline v2"
+echo "ACES Fabric Stitching Pipeline v2"
 echo "Mind Over Metadata LLC — Peter Heller"
 echo "============================================================"
 echo "URL        : $URL"
@@ -211,12 +211,12 @@ pandoc "${BASE}/00_full_report.md" \
        -o "${BASE}/full_report.pdf" \
        --pdf-engine=xelatex \
        -V geometry:margin=1in \
-       --metadata title="ACMS Fabric Stitch Report" \
+       --metadata title="ACES Fabric Stitch Report" \
        && echo "  Done: full_report.pdf" || echo "  Failed: full_report.pdf"
 
 pandoc "${BASE}/00_full_report.md" \
        -o "${BASE}/full_report.docx" \
-       --metadata title="ACMS Fabric Stitch Report" \
+       --metadata title="ACES Fabric Stitch Report" \
        && echo "  Done: full_report.docx"
 
 # Copy docx to Windows via WSL2 interop and launch Word
@@ -233,7 +233,7 @@ cp "${BASE}/full_report.docx" "$WIN_FILE" 2>/dev/null && {
 pandoc "${BASE}/00_full_report.md" \
        -o "${BASE}/full_report.html" \
        --standalone \
-       --metadata title="ACMS Fabric Stitch Report" \
+       --metadata title="ACES Fabric Stitch Report" \
        && echo "  Done: full_report.html"
 
 R5=$(step_end "$t" "${BASE}/00_full_report.md" "${BASE}/00_full_report.md" "none")
@@ -255,7 +255,7 @@ print(f'{total:.6f}')
 
 echo ""
 echo "============================================================"
-echo "ACMS PIPELINE COMPLETION REPORT"
+echo "ACES PIPELINE COMPLETION REPORT"
 echo "============================================================"
 printf "  %-5s %-20s %-35s %8s %8s %8s %12s\n" \
     "Step" "Pattern" "Vendor|Model" "ms" "In" "Out" "Cost"
@@ -289,7 +289,7 @@ ls -lh "$BASE"
 # ── Audit Log ─────────────────────────────────────────────────
 cat >> "$AUDIT_LOG" << AUDIT
 ============================================================
-ACMS AUDIT ENTRY
+ACES AUDIT ENTRY
 Timestamp   : $(date '+%Y-%m-%d %H:%M:%S')
 Session     : ${TIMESTAMP}
 URL         : ${URL}

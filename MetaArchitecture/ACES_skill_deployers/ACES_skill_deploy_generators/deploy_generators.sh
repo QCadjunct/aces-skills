@@ -32,7 +32,7 @@ RST='\033[0m'
 
 # ── Usage ────────────────────────────────────────────────────
 usage() {
-    echo -e "${BLD}ACMS Skill Deploy Generators v${SCRIPT_VERSION}${RST}"
+    echo -e "${BLD}ACES Skill Deploy Generators v${SCRIPT_VERSION}${RST}"
     echo -e "FQSN: MetaArchitecture/ACES_skill_deployers/ACES_skill_deploy_generators"
     echo ""
     echo -e "${BLD}Usage:${RST}"

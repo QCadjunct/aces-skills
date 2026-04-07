@@ -1,7 +1,7 @@
 #!/bin/bash
 # ============================================================
 # run_fabricstitch.sh
-# Wrapper for ACMS FabricStitch Pipeline
+# Wrapper for ACES FabricStitch Pipeline
 # Mind Over Metadata LLC — Peter Heller
 #
 # Usage:
@@ -75,7 +75,7 @@ fi
 
 # ── Launch ────────────────────────────────────────────────────
 echo ""
-echo "  ACMS FabricStitch Pipeline"
+echo "  ACES FabricStitch Pipeline"
 echo "  URL        : $URL"
 echo "  Word limit : $WORD_LIMIT ($LABEL)"
 echo ""

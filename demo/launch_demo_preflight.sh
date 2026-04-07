@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # launch_demo_preflight.sh
-# ACMS Demo — Pre-flight health checks.
+# ACES Demo — Pre-flight health checks.
 # Architecture Standard: Mind Over Metadata LLC — Peter Heller
 #
 # Run this 15 minutes before the co-chair joins.
@@ -26,7 +26,7 @@ FAIL=0
 print_header() {
   echo ""
   echo -e "${BOLD}${NAVY}╔══════════════════════════════════════════════════╗${RESET}"
-  echo -e "${BOLD}${NAVY}║  ACMS Demo — Pre-Flight Checklist                ║${RESET}"
+  echo -e "${BOLD}${NAVY}║  ACES Demo — Pre-Flight Checklist                ║${RESET}"
   echo -e "${BOLD}${NAVY}║  Mind Over Metadata LLC — Peter Heller           ║${RESET}"
   echo -e "${BOLD}${NAVY}╚══════════════════════════════════════════════════╝${RESET}"
   echo ""
@@ -104,12 +104,12 @@ else
     "Expected: ${DEPLOY_SCRIPT}"
 fi
 
-# ── Check 5: ACMS Monitor reachable ──────────────────────────────────────────
-echo -e "${CYAN}[5/5]${RESET} ACMS Monitor — http://127.0.0.1:2718"
+# ── Check 5: ACES Monitor reachable ──────────────────────────────────────────
+echo -e "${CYAN}[5/5]${RESET} ACES Monitor — http://127.0.0.1:2718"
 if curl -s --max-time 2 http://127.0.0.1:2718 > /dev/null 2>&1; then
-  check_pass "ACMS Monitor reachable at http://127.0.0.1:2718"
+  check_pass "ACES Monitor reachable at http://127.0.0.1:2718"
 else
-  check_warn "ACMS Monitor not yet running" \
+  check_warn "ACES Monitor not yet running" \
     "Launch: .\\launch_monitor.ps1  (Windows PowerShell)"
 fi
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # launch_demo3_monitor.sh
-# ACMS Demo Step 03 — open ACMS Monitor in browser.
+# ACES Demo Step 03 — open ACES Monitor in browser.
 # Architecture Standard: Mind Over Metadata LLC — Peter Heller
 #
 # The monitor is pre-warmed during pre-flight (launch_monitor.ps1 already running).
@@ -23,7 +23,7 @@ MONITOR_URL="http://127.0.0.1:2718"
 
 echo ""
 echo -e "${BOLD}${NAVY}╔══════════════════════════════════════════════════╗${RESET}"
-echo -e "${BOLD}${NAVY}║  Demo Step 03 — ACMS Monitor                     ║${RESET}"
+echo -e "${BOLD}${NAVY}║  Demo Step 03 — ACES Monitor                     ║${RESET}"
 echo -e "${BOLD}${NAVY}║  Marimo — Reactive Dashboard                     ║${RESET}"
 echo -e "${BOLD}${NAVY}╚══════════════════════════════════════════════════╝${RESET}"
 echo ""

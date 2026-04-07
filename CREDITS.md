@@ -11,7 +11,7 @@
 
 The following are original contributions of Peter Heller / Mind Over Metadata LLC:
 
-- **ACMS Architectural Framework** — the reincarnation of DEC's Application Control
+- **ACES Architectural Framework** — the reincarnation of DEC's Application Control
   and Management System as a modern agentic orchestration model, using LangGraph
   as the Execution Controller, Marimo as DECforms, and system.md as the Task
   Definition Language
@@ -52,12 +52,12 @@ definitions.
 
 **What is original here**: The application of that pattern to agent-scoped
 lifecycle hooks (pre_tool_call / post_tool_call / task_complete) within the
-ACMS Execution Controller model, governed by the FQSN taxonomy, serialized
+ACES Execution Controller model, governed by the FQSN taxonomy, serialized
 via system.toon, and orchestrated by LangGraph. The hook lifecycle itself
 derives from VS Code 1.111's agent-scoped hooks formalization (2026-03-09).
 
 Rezvani's pattern solves portability and dependency at the tool layer.
-The ACMS framework provides the orchestration, governance, and serialization
+The ACES framework provides the orchestration, governance, and serialization
 layer above it. These are complementary contributions at different layers
 of the stack.
 

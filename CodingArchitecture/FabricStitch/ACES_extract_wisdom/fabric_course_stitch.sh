@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# ACMS BASH Agent — Course FabricStitch Pipeline v1
+# ACES BASH Agent — Course FabricStitch Pipeline v1
 # Mind Over Metadata LLC — Peter Heller
 # skill: CodingArchitecture/FabricStitch/ACES_extract_wisdom
 #
@@ -194,7 +194,7 @@ mkdir -p "$STAGING"
 
 # ── Header ────────────────────────────────────────────────────
 echo "============================================================"
-echo "ACMS Course FabricStitch Pipeline v1"
+echo "ACES Course FabricStitch Pipeline v1"
 echo "Mind Over Metadata LLC — Peter Heller"
 echo "============================================================"
 echo "Source      : $SOURCE_LABEL"
@@ -319,7 +319,7 @@ OBS_FILE="${FINAL_DIR}/${FILE_BASE}-obsidian.md"
 # Repo markdown — clean, GitHub-ready
 {
   echo "> **Source**: ${SOURCE_LABEL}"
-  echo "> *Synthesized: $(date '+%Y-%m-%d') — ACMS FabricStitch — Mind Over Metadata LLC*"
+  echo "> *Synthesized: $(date '+%Y-%m-%d') — ACES FabricStitch — Mind Over Metadata LLC*"
   echo "> *Pipeline Run ID (ADR): \`${RUN_ID}\`*"
   echo ""
   echo "---"
@@ -341,7 +341,7 @@ echo "  ✓ Repo     : ${FILE_BASE}.md"
   echo "---"
   echo ""
   echo "> **Source**: ${SOURCE_LABEL}"
-  echo "> **Synthesized**: $(date '+%Y-%m-%d') — [[ACMS-FabricStitch-Pipeline|ACMS FabricStitch]]"
+  echo "> **Synthesized**: $(date '+%Y-%m-%d') — [[ACES-FabricStitch-Pipeline|ACES FabricStitch]]"
   echo "> **ADR Run ID**: \`${RUN_ID}\` — search in [[cost-audit-log|cost_audit.log]]"
   echo ""
   echo "---"
@@ -377,7 +377,7 @@ cat > "${FINAL_DIR}/manifest.json" << MANIFEST
   "created_time": "$(date '+%H:%M:%S')",
   "pipeline_run_id": "${RUN_ID}",
   "pipeline_run_id_explanation": "Architectural Decision Record (ADR) identifier — search this ID in cost_audit.log to trace every token spent and every decision made during this pipeline run.",
-  "governance_standard": "ADR-009 — ACMS Cost Audit Format",
+  "governance_standard": "ADR-009 — ACES Cost Audit Format",
   "word_limit_requested": ${WORD_LIMIT},
   "word_count_produced": ${WORD_COUNT},
   "total_cost_usd": ${total_cost},
@@ -399,7 +399,7 @@ MANIFEST
 # ── Completion Report ─────────────────────────────────────────
 echo ""
 echo "============================================================"
-echo "ACMS COURSE PIPELINE — COMPLETE"
+echo "ACES COURSE PIPELINE — COMPLETE"
 echo "============================================================"
 printf "  %-5s %-24s %-28s %8s %8s %8s %12s\n" \
     "Step" "Pattern" "Vendor|Model" "ms" "In" "Out" "Cost"

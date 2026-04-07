@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # demo_05_psa.sh
-# ACMS POC Demo — Section 5: PrincipalSystemArchitect Elicitation
+# ACES POC Demo — Section 5: PrincipalSystemArchitect Elicitation
 # Mind Over Metadata LLC © 2026 — Peter Heller
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -19,12 +19,12 @@ banner() {
 
 section() { echo -e "\n${BOLD}${YELLOW}━━━ $1 ━━━${RESET}\n"; }
 
-banner "ACMS POC — Section 5: PrincipalSystemArchitect"
+banner "ACES POC — Section 5: PrincipalSystemArchitect"
 
 # ── PSA overview ──────────────────────────────────────────────────────────────
 section "5.1 — What is the PrincipalSystemArchitect?"
 echo -e "The PSA is the ${BOLD}Navigator at the system level${RESET}."
-echo -e "It is the only ACMS skill whose tools are other skills.\n"
+echo -e "It is the only ACES skill whose tools are other skills.\n"
 echo -e "It orchestrates skill creation through a 6-step elicitation sequence:"
 echo ""
 echo -e "  Step 1  ${CYAN}ACES_requirements_identity${RESET}    — name, persona, role, domain"
@@ -35,7 +35,7 @@ echo -e "  Step 5  ${CYAN}ACES_requirements_cost_model${RESET}  — vendor, budg
 echo -e "  Step 6  ${CYAN}ACES_requirements_data${RESET}        — inputs, outputs, schemas"
 echo -e "  Step 7  ${CYAN}SYNTHESIS${RESET}                     — assemble → system.md"
 echo ""
-echo -e "This is ${BOLD}task-call-task${RESET} at the meta level — the original DEC ACMS pattern."
+echo -e "This is ${BOLD}task-call-task${RESET} at the meta level — the original DEC ACES pattern."
 
 read -p "Press Enter to view the PSA system.md →"
 

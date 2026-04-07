@@ -4,7 +4,7 @@
 > **Author**: Peter Heller, Mind Over Metadata LLC  
 > **Fabric version**: 1.4.400+ (WSL2 Ubuntu 24.04 LTS)  
 > **Last updated**: 2026-03-14  
-> **ACMS Integration**: sync_skill.sh · fabric_stitch.sh · deploy_generators.sh
+> **ACES Integration**: sync_skill.sh · fabric_stitch.sh · deploy_generators.sh
 
 ---
 
@@ -27,7 +27,7 @@
 15. [Dangerous Combinations](#15-dangerous-combinations)
 16. [Standalone Examples — No Stitching](#16-standalone-examples--no-stitching)
 17. [FabricStitch Pipeline Examples](#17-fabricstitch-pipeline-examples)
-18. [ACMS Integration Examples](#18-acms-integration-examples)
+18. [ACES Integration Examples](#18-acms-integration-examples)
 19. [Cost Accounting Integration](#19-cost-accounting-integration)
 
 ---
@@ -43,9 +43,9 @@ augmented text out. Patterns are markdown system prompts stored in
 stdin → fabric --pattern PATTERN_NAME → stdout
 ```
 
-In the ACMS architecture, Fabric is the **execution layer** for single-step
+In the ACES architecture, Fabric is the **execution layer** for single-step
 LLM invocations. FabricStitch chains multiple fabric calls into a pipeline.
-The ACMS transformers (`from_system.md_to_system.yaml`, `from_system.md_to_system.toon`)
+The ACES transformers (`from_system.md_to_system.yaml`, `from_system.md_to_system.toon`)
 are Fabric patterns deployed to `patterns_custom/`.
 
 ---
@@ -100,7 +100,7 @@ fabric --model claude-sonnet-4-6 --pattern summarize
 fabric --model gemini-2.0-flash --pattern extract_insights
 ```
 
-**ACMS models in use:**
+**ACES models in use:**
 
 | Model | Vendor | Cost | Speed | Use case |
 |-------|--------|------|-------|---------|
@@ -196,10 +196,10 @@ fabric --pattern extract_wisdom < article.md -o wisdom.md
 fabric --pattern from_system.md_to_system.yaml < system.md -o system.yaml
 ```
 
-**ACMS usage**: sync_skill.sh uses `-o` for transformer output:
+**ACES usage**: sync_skill.sh uses `-o` for transformer output:
 ```bash
 fabric --pattern from_system.md_to_system.yaml < system.md > system.yaml
-# Note: ACMS uses shell redirect (>) not -o, for pipeline compatibility
+# Note: ACES uses shell redirect (>) not -o, for pipeline compatibility
 ```
 
 ### `-c` / `--copy`
@@ -277,14 +277,14 @@ fabric --printsession acms_design
 Controls randomness (0.0 = deterministic, 1.0 = creative). Default: 0.7.
 
 ```bash
-# Deterministic — use for ACMS transformers
+# Deterministic — use for ACES transformers
 fabric --temperature 0 --pattern from_system.md_to_system.yaml < system.md
 
 # Creative — use for brainstorming
 fabric --temperature 0.9 --pattern brainstorm < topic.md
 ```
 
-**ACMS standard**: all transformer patterns should use `temperature 0`
+**ACES standard**: all transformer patterns should use `temperature 0`
 for deterministic, reproducible output. The MD5 hash-based change
 detection in sync_skill.sh depends on this.
 
@@ -431,7 +431,7 @@ fabric --scrape_url "https://docs.anthropic.com/pricing" --pattern summarize
 Searches using Jina AI and pipes results to pattern.
 
 ```bash
-fabric --scrape_question "ACMS architecture patterns" --pattern summarize
+fabric --scrape_question "ACES architecture patterns" --pattern summarize
 ```
 
 ### `--search`
@@ -595,7 +595,7 @@ fabric --setup
 
 | Combination | Use case |
 |-------------|---------|
-| `--pattern P --model M --temperature 0` | Deterministic transformation — ACMS transformers |
+| `--pattern P --model M --temperature 0` | Deterministic transformation — ACES transformers |
 | `--pattern P --model M --session S` | Multi-turn analysis session |
 | `--youtube URL --pattern P` | Video content extraction |
 | `--scrape_url URL --readability --pattern P` | Clean web article processing |
@@ -606,7 +606,7 @@ fabric --setup
 | `--transcribe-file F --split-media-file --pattern P` | Large audio file processing |
 | `--search --model gemini-2.0-flash --pattern P` | Web-augmented analysis |
 
-### ACMS-specific combinations
+### ACES-specific combinations
 
 ```bash
 # Standard transformer invocation (deterministic)
@@ -712,7 +712,7 @@ fabric --scrape_question "LangGraph agent patterns 2026" \
 ### Deterministic transformation
 
 ```bash
-# ACMS transformer — always use temperature 0
+# ACES transformer — always use temperature 0
 fabric --model gemma3:12b \
        --temperature 0 \
        --pattern from_system.md_to_system.yaml \
@@ -839,7 +839,7 @@ echo "✓ Summary saved to summary.md"
 
 ---
 
-## 18. ACMS Integration Examples
+## 18. ACES Integration Examples
 
 ### sync_skill.sh — transformer invocation
 
@@ -854,7 +854,7 @@ fabric --pattern from_system.md_to_system.toon \
   > "$SKILL_DIR/system.toon"
 ```
 
-### Custom pattern with ACMS model selection
+### Custom pattern with ACES model selection
 
 ```bash
 # Using vendor_rates.yaml default for fabric_stitch
@@ -868,16 +868,16 @@ fabric --model "$MODEL" \
        > output.md
 ```
 
-### Deploying a custom ACMS pattern
+### Deploying a custom ACES pattern
 
 ```bash
-# Create a new ACMS transformer pattern
+# Create a new ACES transformer pattern
 mkdir -p ~/.config/fabric/patterns_custom/my_pattern
 cat > ~/.config/fabric/patterns_custom/my_pattern/system.md << 'EOF'
 # IDENTITY
 You are a specialized transformer.
 # MISSION
-Transform input according to ACMS Three-File Skill Standard.
+Transform input according to ACES Three-File Skill Standard.
 EOF
 
 # Use it immediately
@@ -902,7 +902,7 @@ EOF
 
 ## 19. Cost Accounting Integration
 
-Every Fabric invocation in the ACMS pipeline is tracked in `cost_audit.log`
+Every Fabric invocation in the ACES pipeline is tracked in `cost_audit.log`
 (ADR-009 format). The cost accounting wraps each fabric call:
 
 ```bash

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # sync_patterns.sh
-# Sync ACMS custom patterns to Fabric's flat patterns/ directory.
+# Sync ACES custom patterns to Fabric's flat patterns/ directory.
 # Copies system.md + system.yaml + system.toon from each leaf skill
 # in patterns_custom/ to a flat folder in patterns/.
 #
 # Architecture:
-#   patterns_custom/  — ACMS taxonomy (conservation, survives fabric --updatepatterns)
+#   patterns_custom/  — ACES taxonomy (conservation, survives fabric --updatepatterns)
 #   patterns/         — Fabric flat namespace (what fabric --pattern invokes)
 #
 # Usage:
@@ -39,7 +39,7 @@ for arg in "$@"; do
   esac
 done
 
-echo -e "\n${BOLD}${CYAN}sync_patterns.sh — ACMS Custom Pattern Sync${RESET}"
+echo -e "\n${BOLD}${CYAN}sync_patterns.sh — ACES Custom Pattern Sync${RESET}"
 echo -e "  Source: $CUSTOM_DIR"
 echo -e "  Target: $PATTERNS_DIR"
 [[ "$DRY_RUN" == true ]] && echo -e "  ${YELLOW}[DRY RUN] No files will be written${RESET}"

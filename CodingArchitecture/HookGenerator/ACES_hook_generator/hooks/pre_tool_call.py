@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # pre_tool_call.py
-# ACMS Lifecycle Hook — Pre Tool Call
+# ACES Lifecycle Hook — Pre Tool Call
 # Skill:     ACES_extract_wisdom
 # Domain:    CodingArchitecture/FabricStitch
 # Generated: 2026-03-14

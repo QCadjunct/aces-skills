@@ -1,13 +1,13 @@
 # ADR-009 — D⁴ MDLC Governance for Agentic AI Systems
 
-> **Vault**: Agentic-ACMS-Proof-of-Concept / ADRs  
+> **Vault**: Agentic-ACES-Proof-of-Concept / ADRs  
 > **Cross-ref**: Mind-Over-Metadata / 10-AI-Agent-Orchestration  
 > **Type**: Architectural Decision Record (ADR)  
 > **Status**: Accepted  
 > **Date**: 2026-03-14  
 > **Author**: Peter Heller, Mind Over Metadata LLC  
 > **Significance**: Foundation ADR — establishes D⁴ MDLC as the governance  
-> framework for the entire ACMS agentic architecture
+> framework for the entire ACES agentic architecture
 
 ---
 
@@ -40,9 +40,9 @@ behavioral contracts as they do to database schemas. The methodology
 generalizes — metadata-driven governance is not domain-specific, it is
 a universal architectural principle.
 
-The ACMS POC is the proof of concept for this thesis:
+The ACES POC is the proof of concept for this thesis:
 
-| D⁴ Database Principle | ACMS Agentic Equivalent |
+| D⁴ Database Principle | ACES Agentic Equivalent |
 |----------------------|------------------------|
 | Physical Data Model first | system.md behavioral contract first |
 | Business Glossary Domains (BGDs) | FQSN taxonomy domain classifiers |
@@ -54,7 +54,7 @@ The ACMS POC is the proof of concept for this thesis:
 | Metadata-Driven Lifecycle (MDLC) | Cost audit log as governance audit trail |
 
 The claim this POC will prove: **what D⁴ did for database governance,
-ACMS does for agentic AI governance.** Same principles. Different payload.
+ACES does for agentic AI governance.** Same principles. Different payload.
 
 ---
 
@@ -151,7 +151,7 @@ verbose prose in `system.md`. The cost audit trail exposes this gap.
 
 ## 4. Decision 1 — Unified Cost Audit Log
 
-**Decision**: All ACMS components that touch tokens write to a single
+**Decision**: All ACES components that touch tokens write to a single
 unified audit log using a 16-field pipe-delimited format.
 
 **Log location**: `~/.config/fabric/cost_audit.log`
@@ -169,7 +169,7 @@ unified audit log using a 16-field pipe-delimited format.
 | 0 | TIMESTAMP | ISO 8601 | `2026-03-14T10:46:17.123` |
 | 1 | COMPONENT | string | `sync_skill` · `deploy_generators` · `fabric_stitch` · `pre_tool_call` · `post_tool_call` · `task_complete` · `langgraph_exc` · `marimo_monitor` · `principal_system_architect` · `requirements_gathering` |
 | 2 | RUN_ID | uuidv7 | `019541c2-a1b3-7e4d-9f2a-3b8c7d6e5f4a` |
-| 3 | SKILL | FQSN | `CodingArchitecture/FabricStitch/ACMS_extract_wisdom` |
+| 3 | SKILL | FQSN | `CodingArchitecture/FabricStitch/ACES_extract_wisdom` |
 | 4 | ARTIFACT | string | see Artifact Taxonomy below |
 | 5 | VENDOR | string | `anthropic` · `google` · `ollama` |
 | 6 | MODEL | string | `gemini-2.0-flash` · `qwen3:8b` · `claude-sonnet-4-6` |
@@ -234,13 +234,13 @@ of ownership for everything that flowed from a single system.md sync.
 **Example entries showing full chain**:
 
 ```
-[2026-03-14T10:46:17.000] | sync_skill | RUN-002 | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | skill.system.md | ollama | qwen3:8b | 478 | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | dev | RUN-001 | source measured
-[2026-03-14T10:46:17.001] | sync_skill | RUN-002 | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | transformer.yaml.system.md | ollama | qwen3:8b | 312 | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | dev | RUN-001 | transformer prompt measured
-[2026-03-14T10:46:17.002] | sync_skill | RUN-002 | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | transformer.toon.system.md | ollama | qwen3:8b | 287 | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | dev | RUN-001 | transformer prompt measured
-[2026-03-14T10:46:17.123] | sync_skill | RUN-002 | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | skill.system.yaml | ollama | qwen3:8b | 790 | 421 | 0.000000 | 0.000000 | 0.000000 | 23452 | dev | RUN-001 | in=skill+transformer combined
-[2026-03-14T10:46:17.124] | sync_skill | RUN-002 | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | skill.system.toon | ollama | qwen3:8b | 765 | 333 | 0.000000 | 0.000000 | 0.000000 | 23452 | dev | RUN-001 | in=skill+transformer combined
-[2026-03-14T11:02:44.000] | langgraph_exc | RUN-003 | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | langgraph.node_validate | google | gemini-2.0-flash | 333 | 180 | 0.000125 | 0.000270 | 0.000395 | 1240 | dev | RUN-002 | consumed skill.system.toon
-[2026-03-14T11:02:48.000] | langgraph_exc | RUN-003 | CodingArchitecture/FabricStitch/ACMS_extract_wisdom | langgraph.node_execute | anthropic | claude-sonnet-4-6 | 892 | 445 | 0.002676 | 0.006675 | 0.009351 | 8234 | dev | RUN-002 | ripple from skill.system.md
+[2026-03-14T10:46:17.000] | sync_skill | RUN-002 | CodingArchitecture/FabricStitch/ACES_extract_wisdom | skill.system.md | ollama | qwen3:8b | 478 | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | dev | RUN-001 | source measured
+[2026-03-14T10:46:17.001] | sync_skill | RUN-002 | CodingArchitecture/FabricStitch/ACES_extract_wisdom | transformer.yaml.system.md | ollama | qwen3:8b | 312 | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | dev | RUN-001 | transformer prompt measured
+[2026-03-14T10:46:17.002] | sync_skill | RUN-002 | CodingArchitecture/FabricStitch/ACES_extract_wisdom | transformer.toon.system.md | ollama | qwen3:8b | 287 | 0 | 0.000000 | 0.000000 | 0.000000 | 0 | dev | RUN-001 | transformer prompt measured
+[2026-03-14T10:46:17.123] | sync_skill | RUN-002 | CodingArchitecture/FabricStitch/ACES_extract_wisdom | skill.system.yaml | ollama | qwen3:8b | 790 | 421 | 0.000000 | 0.000000 | 0.000000 | 23452 | dev | RUN-001 | in=skill+transformer combined
+[2026-03-14T10:46:17.124] | sync_skill | RUN-002 | CodingArchitecture/FabricStitch/ACES_extract_wisdom | skill.system.toon | ollama | qwen3:8b | 765 | 333 | 0.000000 | 0.000000 | 0.000000 | 23452 | dev | RUN-001 | in=skill+transformer combined
+[2026-03-14T11:02:44.000] | langgraph_exc | RUN-003 | CodingArchitecture/FabricStitch/ACES_extract_wisdom | langgraph.node_validate | google | gemini-2.0-flash | 333 | 180 | 0.000125 | 0.000270 | 0.000395 | 1240 | dev | RUN-002 | consumed skill.system.toon
+[2026-03-14T11:02:48.000] | langgraph_exc | RUN-003 | CodingArchitecture/FabricStitch/ACES_extract_wisdom | langgraph.node_execute | anthropic | claude-sonnet-4-6 | 892 | 445 | 0.002676 | 0.006675 | 0.009351 | 8234 | dev | RUN-002 | ripple from skill.system.md
 ```
 
 **Components that write to cost_audit.log**:
@@ -272,7 +272,7 @@ Any practitioner reading the FQSN immediately understands the role
 hierarchy. This is D⁴ BGD naming applied to skill taxonomy.
 
 **FQSN**:
-`MetaArchitecture/PrincipalSystemArchitect/ACMS_principal_system_architect`
+`MetaArchitecture/PrincipalSystemArchitect/ACES_principal_system_architect`
 
 **Role**:
 - Dispatches to RequirementsGathering specialists in sequence
@@ -283,21 +283,21 @@ hierarchy. This is D⁴ BGD naming applied to skill taxonomy.
 
 **POC V1.0 dispatch sequence**:
 ```
-1. ACMS_requirements_identity     → who is this agent?
-2. ACMS_requirements_mission      → what does it do?
-3. ACMS_requirements_authorities  → what can it touch?
-4. ACMS_requirements_lifecycle    → how does it start and end?
-5. ACMS_requirements_cost_model   → what does it cost to run?
-6. ACMS_requirements_data         → what flows in and out?
+1. ACES_requirements_identity     → who is this agent?
+2. ACES_requirements_mission      → what does it do?
+3. ACES_requirements_authorities  → what can it touch?
+4. ACES_requirements_lifecycle    → how does it start and end?
+5. ACES_requirements_cost_model   → what does it cost to run?
+6. ACES_requirements_data         → what flows in and out?
 7. PrincipalSystemArchitect synthesizes → skill.system.md
 ```
 
 **Future expansion** (post-POC):
 ```
 MetaArchitecture/PrincipalSystemArchitect/
-├── ACMS_principal_system_architect/  ← dispatcher (POC V1.0)
-├── ACMS_psa_synthesizer/             ← synthesis specialist
-└── ACMS_psa_quality_gate/            ← elicitation completeness scorer
+├── ACES_principal_system_architect/  ← dispatcher (POC V1.0)
+├── ACES_psa_synthesizer/             ← synthesis specialist
+└── ACES_psa_quality_gate/            ← elicitation completeness scorer
 ```
 
 ---
@@ -318,18 +318,18 @@ Domain does not change the elicitation pattern.
 
 | FQSN | Elicits | Every skill? |
 |------|---------|-------------|
-| `CodingArchitecture/RequirementsGathering/ACMS_requirements_identity` | Persona, role, tone, name | ✅ Yes |
-| `CodingArchitecture/RequirementsGathering/ACMS_requirements_mission` | Purpose, termination condition | ✅ Yes |
-| `CodingArchitecture/RequirementsGathering/ACMS_requirements_authorities` | Tools, constraints, permissions | ✅ Yes |
-| `CodingArchitecture/RequirementsGathering/ACMS_requirements_lifecycle` | Hooks, pre/post, task_complete | ✅ Yes |
-| `CodingArchitecture/RequirementsGathering/ACMS_requirements_cost_model` | Vendor, token budget, thresholds | ACMS-specific |
-| `CodingArchitecture/RequirementsGathering/ACMS_requirements_data` | Inputs, outputs, formats, schemas | Pipeline-specific |
+| `CodingArchitecture/RequirementsGathering/ACES_requirements_identity` | Persona, role, tone, name | ✅ Yes |
+| `CodingArchitecture/RequirementsGathering/ACES_requirements_mission` | Purpose, termination condition | ✅ Yes |
+| `CodingArchitecture/RequirementsGathering/ACES_requirements_authorities` | Tools, constraints, permissions | ✅ Yes |
+| `CodingArchitecture/RequirementsGathering/ACES_requirements_lifecycle` | Hooks, pre/post, task_complete | ✅ Yes |
+| `CodingArchitecture/RequirementsGathering/ACES_requirements_cost_model` | Vendor, token budget, thresholds | ACES-specific |
+| `CodingArchitecture/RequirementsGathering/ACES_requirements_data` | Inputs, outputs, formats, schemas | Pipeline-specific |
 
 **Deferred to post-POC**:
-- `ACMS_requirements_security` — not blocking March 16
-- `ACMS_requirements_compliance` — institutional concerns
-- `ACMS_requirements_performance` — latency budgets
-- `ACMS_requirements_ux` — Marimo monitor concerns
+- `ACES_requirements_security` — not blocking March 16
+- `ACES_requirements_compliance` — institutional concerns
+- `ACES_requirements_performance` — latency budgets
+- `ACES_requirements_ux` — Marimo monitor concerns
 
 **POC V1.0 status marker** (in every specialist system.md frontmatter):
 ```yaml
@@ -361,8 +361,8 @@ must understand the role hierarchy without asking anyone.
 | Abbreviated (rejected) | Self-documenting (accepted) |
 |----------------------|---------------------------|
 | `PSA` | `PrincipalSystemArchitect` |
-| `ACMS_psa` | `ACMS_principal_system_architect` |
-| `ACMS_req_identity` | `ACMS_requirements_identity` |
+| `ACES_psa` | `ACES_principal_system_architect` |
+| `ACES_req_identity` | `ACES_requirements_identity` |
 | `psa.system.md` | `principal_system_architect.system.md` |
 | `skill.sys.md` | `skill.system.md` |
 
@@ -451,10 +451,10 @@ vendor_rates.yaml  (single source of truth)
 ```
 aces-skills/
 ├── MetaArchitecture/
-│   ├── ACMS_skill_deployers/                    ← existing
-│   ├── ACMS_skill_generators/                   ← existing (transformers)
+│   ├── ACES_skill_deployers/                    ← existing
+│   ├── ACES_skill_generators/                   ← existing (transformers)
 │   └── PrincipalSystemArchitect/                ← NEW (ADR-009)
-│       └── ACMS_principal_system_architect/
+│       └── ACES_principal_system_architect/
 │           ├── system.md
 │           ├── system.yaml
 │           └── system.toon
@@ -463,16 +463,16 @@ aces-skills/
 │   ├── FabricStitch/                            ← existing
 │   ├── HookGenerator/                           ← existing
 │   └── RequirementsGathering/                   ← NEW (ADR-009)
-│       ├── ACMS_requirements_identity/
-│       ├── ACMS_requirements_mission/
-│       ├── ACMS_requirements_authorities/
-│       ├── ACMS_requirements_lifecycle/
-│       ├── ACMS_requirements_cost_model/
-│       └── ACMS_requirements_data/
+│       ├── ACES_requirements_identity/
+│       ├── ACES_requirements_mission/
+│       ├── ACES_requirements_authorities/
+│       ├── ACES_requirements_lifecycle/
+│       ├── ACES_requirements_cost_model/
+│       └── ACES_requirements_data/
 │
 └── TaskArchitecture/
     └── DiaryWriter/                             ← existing
-        └── ACMS_daily_diary/
+        └── ACES_daily_diary/
 ```
 
 ---
@@ -511,7 +511,7 @@ beyond database design to agentic AI governance. The publication path:
 
 **Medium article**: "D⁴ MDLC — From Energy Billing to Agentic AI:
 A Universal Governance Framework" — connects the 2003 NYC DCAS origin
-to the 2026 ACMS POC. Target: Mind Over Metadata publication.
+to the 2026 ACES POC. Target: Mind Over Metadata publication.
 
 **Conference submission**: Position paper for a database/AI governance
 conference — D⁴ as universal metadata governance framework.
@@ -529,7 +529,7 @@ Office eCO, Mind Over Metadata LLC as claimant.
 
 | | |
 |--|--|
-| ⬆️ Parent ADRs | [[ACMS-Architecture-Decisions-20260313]] |
+| ⬆️ Parent ADRs | [[ACES-Architecture-Decisions-20260313]] |
 | 🔄 ADR-008 | [[ADR-008-stdlib-hook-pattern]] |
 | 🔄 VS Code 1.111 | [[VSCode-1110-Agent-Architecture]] |
 | 🔄 Transformers | [[Transformer-Patterns-Component]] |
@@ -546,4 +546,4 @@ Office eCO, Mind Over Metadata LLC as claimant.
 `#ADR` `#ADR-009` `#D4-MDLC` `#governance` `#cost-accounting`
 `#PrincipalSystemArchitect` `#RequirementsGathering` `#provenance`
 `#RUN_ID` `#UPSTREAM_ID` `#bloat-ripple` `#self-documenting`
-`#BGD` `#FQSN` `#ACMS` `#POC-V1.0` `#publication-path`
+`#BGD` `#FQSN` `#ACES` `#POC-V1.0` `#publication-path`

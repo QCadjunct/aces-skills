@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # demo_preflight.sh — Pre-demo verification checklist
-# ACMS POC Demo — Mind Over Metadata LLC © 2026 — Peter Heller
+# ACES POC Demo — Mind Over Metadata LLC © 2026 — Peter Heller
 # Run the night before / morning of the demo to verify all systems green.
 # ─────────────────────────────────────────────────────────────────────────────
 
