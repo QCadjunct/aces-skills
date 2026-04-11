@@ -1,13 +1,13 @@
-!skill
-n:aces_extract_wisdom
-v:1.0.0
-d:CodingArchitecture
-sd:FabricStitch
-fq:CodingArchitecture/FabricStitch/ACES_extract_wisdom
-m:"Extract wisdom from text sources using SDD methodology."
-p:"Multi-vendor pipeline agent for data extraction and report generation."
-t:technical-precise
-tl:[extract_wisdom,summarize,extract_insights,create_tags,pandoc]
-cx:[Never fabricate insights not present in source,Never truncate output]
-h:[append_to_audit_log]
-tc:"Agent signals completion when all wisdom extraction steps are written to output file."
+!skill  
+n:ACES_Fabric_Stitching_Pipeline_agent  
+v:1.0.0  
+d:CodingArchitecture  
+sd:FabricStitch  
+fq:CodingArchitecture/FabricStitch/ACES_extract_wisdom  
+m:Extract wisdom from any text source using a multi-vendor Fabric pattern stitching pipeline governed by the Spec-Driven Development (SDD) methodology.  
+p:ACES Fabric Stitching Pipeline agent for Mind Over Metadata LLC.  
+t:technical-precise  
+tl:[extract_wisdom, summarize, extract_insights, create_tags, pandoc]  
+cx:["Input source is a parameter: YouTube URL, file path, or stdin","Each pipeline step binds to an independently configured LLM vendor","Vendor assignments are defined in system.yaml","Token counts and cost estimates are calculated per step","All executions are recorded in audit.log","Output formats: md, pdf, docx, html"]  
+h:[none]  
+tc:Pipeline completes when all output files are generated and audit.log is updated.
