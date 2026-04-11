@@ -1,7 +1,7 @@
 # demo_04_monitor.ps1
-# ACMS POC Demo — Section 4: Marimo Monitor — D4 MDLC Tab
+# ACES POC Demo — Section 4: Marimo Monitor — D4 MDLC Tab
 # Mind Over Metadata LLC © 2026 — Peter Heller
-# Run from: Z:\VSCODE Projects\PythonProjects\acms-repo
+# Run from: E:\Projects\aces-skills\demo\
 # ─────────────────────────────────────────────────────────────────────────────
 
 param([int]$Port = 2718)
@@ -22,10 +22,10 @@ function Write-Section {
     Write-Host ""
 }
 
-Write-Banner "ACMS POC - Section 4: Marimo Monitor"
+Write-Banner "ACES POC - Section 4: Marimo Monitor"
 
-Write-Section "4.1 - ACMS Monitor Architecture"
-Write-Host "  The ACMS Monitor is the DECforms equivalent in the ACMS POC."
+Write-Section "4.1 - ACES Monitor Architecture"
+Write-Host "  The ACES Monitor is the observability layer of the ACES POC."
 Write-Host "  Built with Marimo — a reactive Python notebook framework."
 Write-Host ""
 Write-Host "  7 Tabs:"
@@ -61,12 +61,12 @@ Write-Host ""
 Write-Host "  Press Enter to launch..." -NoNewline
 $null = Read-Host
 
-$env:PYTHONPATH = "Z:\VSCODE Projects\PythonProjects\acms-repo"
-$marimo = "Z:\VSCODE Projects\PythonProjects\acms-repo\.venv\Scripts\marimo.exe"
-$monitor = "Z:\VSCODE Projects\PythonProjects\acms-repo\ui\acms_monitor.py"
+$env:PYTHONPATH = "E:\Projects\aces-repo"
+$marimo  = "E:\Projects\aces-repo\.venv\Scripts\marimo.exe"
+$monitor = "E:\Projects\aces-repo\ui\aces_monitor.py"
 
 Write-Host ""
-Write-Host "  Launching: marimo run ui\acms_monitor.py --port $Port" -ForegroundColor Cyan
+Write-Host "  Launching: marimo run ui\aces_monitor.py --port $Port" -ForegroundColor Cyan
 Write-Host "  URL: http://127.0.0.1:$Port" -ForegroundColor Green
 Write-Host ""
 Write-Host "  Navigate to the D4 MDLC tab and expand:" -ForegroundColor Yellow
