@@ -34,7 +34,7 @@ case "$CHOICE" in
   2) bash demo/demo_02_sync.sh ;;
   3) bash demo/demo_03_cost.sh ;;
   4) echo -e "\n${YELLOW}Run in PowerShell:${RESET}"
-     echo -e "  cd 'Z:\\VSCODE Projects\\PythonProjects\\aces-repo'"
+     echo -e "  cd 'E:\\Projects\\aces-repo'"
      echo -e "  powershell -ExecutionPolicy Bypass -File demo\\demo_04_monitor.ps1" ;;
   5) bash demo/demo_05_psa.sh ;;
   6) bash demo/demo_06_fabric.sh ;;
