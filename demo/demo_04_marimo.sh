@@ -2,8 +2,8 @@
 # demo_04_marimo.sh — Marimo monitor launcher (WSL)
 # Mind Over Metadata LLC © 2026 — Peter Heller
 # ─────────────────────────────────────────────────────────────────────────────
-REPO="/mnt/e/Projects/aces-skills"
-MONITOR="/mnt/e/Projects/aces-repo/ui/aces_monitor.py"
+REPO="/mnt/e/WSLData/Projects/aces-skills"
+MONITOR="/mnt/e/WSLData/Projects/aces-repo/ui/aces_monitor.py"
 PORT=2718
 
 echo ""
@@ -19,5 +19,5 @@ echo "  Press Enter to launch..."
 read -r
 
 cd "$REPO"
-PYTHONPATH="/mnt/e/Projects/aces-repo:/mnt/e/Projects/aces-skills" \
+PYTHONPATH="/mnt/e/WSLData/Projects/aces-repo:/mnt/e/WSLData/Projects/aces-skills" \
     marimo run "$MONITOR" --port $PORT
