@@ -1,6 +1,6 @@
-updated: '2026-06-05'
+updated: '2026-06-06'
 source: pricepertoken.com
-fetched: 20260605T000002
+fetched: 20260606T000001
 vendors:
   Ollama:
     qwen3.5:397b-cloud:
